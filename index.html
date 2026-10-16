@@ -376,10 +376,10 @@
               </a>
             </div>
             <h3 class="text-xl font-bold text-white group-hover:text-cyan-300 transition">
-              <a href="projects/robot-pose.html">Robot 6D Pose & Orientation Estimation (PVNet + SolvePnP)</a>
+              <a href="projects/robot-pose.html">Hospital Corridor Robot 6D Pose Estimation (PVNet + SolvePnP)</a>
             </h3>
             <p class="text-sm text-slate-300 leading-relaxed">
-              Detected 6-DoF robot orientation and 3D translation from monocular cameras using synthetic 3D CAD data, <strong>Detectron2 with custom PVNet vector-field keypoint voting</strong>, camera intrinsic/extrinsic parameters ($K, [R|t]$), and SolvePnP.
+              Tracked 6-DoF position and orientation ($[X,Y,Z, \text{Roll},\text{Pitch},\text{Yaw}]$) of cubic mobile robots in hospital corridors from overhead CCTV cameras using synthetic 3D CAD data, <strong>Detectron2 with custom PVNet vector-field keypoint voting</strong>, camera calibration ($K, [R|t]$), and SolvePnP (&lt; 5 cm error).
             </p>
           </div>
           
@@ -412,7 +412,7 @@
               <a href="projects/excavator-automation.html">Autonomous Excavator (バックホウ) Automation & Unity Digital Twin</a>
             </h3>
             <p class="text-sm text-slate-300 leading-relaxed">
-              Engineered multi-modal <strong>3D LiDAR & sensor fusion</strong>, Unity 3D physical digital twin recreation, high-frequency Python gRPC machine controllers, and machine learning autonomous digging control algorithms.
+              Engineered multi-modal <strong>3D LiDAR point-cloud terrain mapping</strong>, Unity 3D physical digital twin, high-frequency Python gRPC machine controllers, and machine learning autonomous dirt scooping and excavation control.
             </p>
           </div>
           
@@ -739,11 +739,11 @@
       },
       robotpose: {
         category: 'Robotics & 6D Computer Vision',
-        title: 'Robot 6D Position & Orientation Estimation (PVNet + SolvePnP)',
-        problem: 'Automated robot docking, handling, and collaborative navigation require precise 6-DoF 3D spatial coordinates from standard monocular 2D cameras. Traditional keypoint regression suffers severe accuracy degradation when robots are partially occluded or under factory lighting variations.',
-        solution: 'Led a 4-person engineering team to generate 50,000+ synthetic CAD dataset training variations. Integrated Detectron2 with a custom PVNet pixel-wise vector-field voting head, yielding occlusion-resilient 2D keypoint hypotheses. Formulated camera intrinsic calibration matrix K and extrinsic parameters, solving optimal 3D orientation (R) and translation (t) via Levenberg-Marquardt SolvePnP.',
-        tech: 'Detectron2 · Custom PVNet Head · OpenCV SolvePnP · 3D CAD Synthetic Data · CUDA Optimization',
-        impact: 'Accelerated inference pipeline to 38+ FPS and achieved 3D localization accuracy under 5.0 cm (averaging 2.8 cm error) across physical hardware tests on real industrial robots.'
+        title: 'Hospital Corridor AMR 6D Pose Estimation (PVNet + SolvePnP)',
+        problem: 'Autonomous mobile robots (AMRs) navigating hospital corridors require precise 6-DoF 3D spatial tracking from existing ceiling-mounted CCTV cameras without requiring expensive active beacons or physical QR markers. Occlusions from pedestrians and medical equipment cause traditional keypoint detectors to fail.',
+        solution: 'Led a 4-person engineering team to generate 50,000+ synthetic CAD dataset training variations. Integrated Detectron2 with a custom PVNet pixel-wise vector-field voting head, voting for the 8 corners of the cubic robot chassis. Solved optimal 3D orientation (R) and translation (t) from calibrated CCTV intrinsics via Levenberg-Marquardt SolvePnP.',
+        tech: 'Detectron2 · Custom PVNet Head · OpenCV SolvePnP · 3D CAD Synthetic Data · CCTV Calibration',
+        impact: 'Accelerated inference pipeline to 38+ FPS and achieved 3D localization accuracy under 5.0 cm (averaging 2.7 cm error) in real physical tests.'
       },
       excavator: {
         category: 'Robotics, Digital Twins & Automation',

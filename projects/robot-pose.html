@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Robot 6D Pose Estimation (PVNet + SolvePnP) | Darwin Harianto</title>
+  <title>Robot 6D Pose Estimation in Hospital Corridor (PVNet + SolvePnP) | Darwin Harianto</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,6 +29,13 @@
       background: rgba(15, 23, 42, 0.75);
       backdrop-filter: blur(12px);
       border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .rec-blink {
+      animation: blink 1.2s infinite;
     }
   </style>
 </head>
@@ -58,37 +65,63 @@
     <section class="space-y-4">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950/60 border border-blue-500/30 text-xs font-mono text-cyan-400">
         <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-        Lead Engineer · 4-Person Japanese Engineering Team
+        Lead Engineer · 4-Person Engineering Team
       </div>
       <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-        Robot 6D Position & Orientation <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400">Estimation with PVNet + SolvePnP</span>
+        Hospital Autonomous Robot <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400">6D Pose Estimation via CCTV</span>
       </h1>
       <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
-        Engineered 6-DoF robot orientation and localization from monocular camera streams using synthetic 3D CAD data, custom vector-field keypoint voting (PVNet), camera calibration parameters ($K, [R|t]$), and Perspective-n-Point solvers.
+        Estimated 6-DoF position and orientation ($[X,Y,Z, \text{Roll},\text{Pitch},\text{Yaw}]$) of autonomous mobile robots in hospital hallways from normal overhead ceiling CCTV camera feeds. Leveraged synthetic 3D CAD data, custom vector-field keypoint voting (PVNet), intrinsic/extrinsic camera calibration ($K, [R|t]$), and SolvePnP to achieve &lt; 5.0 cm localization accuracy.
       </p>
     </section>
 
-    <!-- Interactive Technology Visualization: 6D Pose Projection Simulator -->
+    <!-- Interactive Technology Visualization: CCTV Hospital Hallway 6D Pose -->
     <section class="space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
           <h2 class="text-xl font-bold text-white flex items-center gap-2">
             <span class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center text-sm font-mono">01</span>
-            Live 6D Pose Estimation & 3D Bounding Box Projection
+            Hospital CCTV Feed: 6D Pose Registration & Keypoint Voting
           </h2>
-          <p class="text-sm text-slate-400">Adjust the yaw angle and distance to simulate real-time keypoint extraction and 3D coordinate frame registration.</p>
+          <p class="text-sm text-slate-400">Simulate a ceiling-mounted CCTV camera in a hospital corridor observing an AGV cube robot (split white-top / navy-bottom).</p>
         </div>
-        <div class="flex flex-wrap items-center gap-4 text-xs font-mono">
-          <div class="flex items-center gap-2">
-            <span class="text-slate-400">Robot Yaw (θ):</span>
-            <input type="range" id="robotYawRange" min="-90" max="90" step="5" value="25" class="accent-cyan-400 w-24">
-            <span id="robotYawVal" class="text-cyan-400 font-bold">+25°</span>
+        <div class="flex flex-wrap items-center gap-3 text-xs font-mono">
+          <button id="togglePatrolBtn" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold transition flex items-center gap-1.5 shadow-md shadow-blue-500/20">
+            <span>▶</span> Auto Patrol
+          </button>
+          <button id="toggleVectorsBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/30 transition">
+            PVNet Vectors: ON
+          </button>
+          <button id="toggleWireframeBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 transition">
+            3D Box: ON
+          </button>
+        </div>
+      </div>
+
+      <!-- Controls Bar -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 glass-panel p-4 rounded-xl text-xs font-mono">
+        <div class="space-y-1">
+          <div class="flex justify-between text-slate-400">
+            <span>Robot Yaw (Heading θ):</span>
+            <span id="robotYawVal" class="text-cyan-400 font-bold">+20°</span>
           </div>
-          <div class="flex items-center gap-2">
-            <span class="text-slate-400">Distance (Z):</span>
-            <input type="range" id="robotDistRange" min="1.0" max="3.5" step="0.1" value="2.1" class="accent-blue-400 w-24">
-            <span id="robotDistVal" class="text-blue-400 font-bold">2.1 m</span>
+          <input type="range" id="robotYawRange" min="-180" max="180" step="5" value="20" class="accent-cyan-400 w-full">
+        </div>
+
+        <div class="space-y-1">
+          <div class="flex justify-between text-slate-400">
+            <span>Hallway Distance (Z):</span>
+            <span id="robotDistVal" class="text-blue-400 font-bold">3.2 m</span>
           </div>
+          <input type="range" id="robotDistRange" min="1.8" max="6.5" step="0.1" value="3.2" class="accent-blue-400 w-full">
+        </div>
+
+        <div class="space-y-1">
+          <div class="flex justify-between text-slate-400">
+            <span>Corridor Lane Offset (X):</span>
+            <span id="robotLaneVal" class="text-emerald-400 font-bold">+0.15 m</span>
+          </div>
+          <input type="range" id="robotLaneRange" min="-0.7" max="0.7" step="0.05" value="0.15" class="accent-emerald-400 w-full">
         </div>
       </div>
 
@@ -96,25 +129,29 @@
         <!-- Interactive Canvas -->
         <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
           <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-            <span>Camera Stream ($f_x = 615, f_y = 615, c_x = 300, c_y = 190$)</span>
-            <span id="poseAccuracyText" class="text-emerald-400 font-bold">Position Error: 2.8 cm (&lt; 5.0 cm Target)</span>
+            <span class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-rose-500 rec-blink inline-block"></span>
+              <span class="text-white font-bold">CCTV-04 [HOSPITAL 2F WEST HALLWAY]</span>
+              <span>· Lens Pitch: 24°</span>
+            </span>
+            <span id="poseAccuracyText" class="text-emerald-400 font-bold">Position Error: 2.7 cm (&lt; 5.0 cm Target)</span>
           </div>
 
-          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
-            <canvas id="poseCanvas" width="600" height="380" class="w-full h-full block"></canvas>
+          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center shadow-inner">
+            <canvas id="poseCanvas" width="640" height="400" class="w-full h-full block"></canvas>
           </div>
 
           <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono">
             <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Translation Error</div>
-              <div id="transErrVal" class="text-emerald-400 font-bold text-sm mt-0.5">2.8 cm</div>
+              <div class="text-slate-400 text-[10px]">3D Position Error</div>
+              <div id="transErrVal" class="text-emerald-400 font-bold text-sm mt-0.5">2.7 cm</div>
             </div>
             <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
               <div class="text-slate-400 text-[10px]">Rotation Error</div>
-              <div id="rotErrVal" class="text-cyan-400 font-bold text-sm mt-0.5">1.4°</div>
+              <div id="rotErrVal" class="text-cyan-400 font-bold text-sm mt-0.5">1.3°</div>
             </div>
             <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">PnP Inliers</div>
+              <div class="text-slate-400 text-[10px]">SolvePnP Inliers</div>
               <div class="text-emerald-400 font-bold text-sm mt-0.5">8 / 8 Keypoints</div>
             </div>
             <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
@@ -129,20 +166,26 @@
           <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Technical Architecture & Stack</h3>
           
           <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-cyan-400 font-bold">1. Detectron2 + PVNet Head:</div>
-            <p class="text-slate-400 text-[10px]">Rather than regressing 2D keypoint coordinates directly (fragile to occlusion), PVNet outputs pixel-wise 2D unit vector fields that vote for semantic 3D keypoint centers via RANSAC voting.</p>
+            <div class="text-cyan-400 font-bold">1. Detectron2 + Custom PVNet Head:</div>
+            <p class="text-slate-400 text-[10px]">Predicts semantic segmentation masks and pixel-wise 2D unit vector fields that vote for the 8 corner vertices of the cubic AGV via RANSAC voting, maintaining robustness against obstacle occlusions in busy hospital corridors.</p>
           </div>
 
           <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
             <div class="text-blue-400 font-bold">2. Camera Calibration & SolvePnP:</div>
-            <p class="text-slate-400 text-[10px]">Given 3D CAD model vertices $X_i$ and recovered 2D image coordinates $x_i$, solve:
-            $$s \begin{bmatrix} u \\ v \\ 1 \end{bmatrix} = K \begin{bmatrix} R & t \end{bmatrix} \begin{bmatrix} X \\ Y \\ Z \\ 1 \end{bmatrix}$$
-            via Levenberg-Marquardt optimization in OpenCV <code class="text-cyan-300">solvePnP</code>.</p>
+            <p class="text-slate-400 text-[10px]">Using intrinsic camera parameters ($f_x, f_y, c_x, c_y$) from CCTV calibration and 2D-3D keypoint correspondences, recovers 6-DoF rigid transformation $[R|t]$ via Levenberg-Marquardt PnP optimization:</p>
+            <div class="text-slate-400 text-[9px] bg-slate-950 p-1.5 rounded border border-slate-800">
+              s · [u, v, 1]ᵀ = K · [R | t] · [X, Y, Z, 1]ᵀ
+            </div>
           </div>
 
           <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-emerald-400 font-bold">3. 3D Synthetic Dataset:</div>
-            <p class="text-slate-400 text-[10px]">Generated 50k+ synthetic photo-realistic rendering variations using CAD models with domain randomization (lighting, textures, random distractors) for robust physical deployment.</p>
+            <div class="text-emerald-400 font-bold">3. Synthetic CAD Dataset & Domain Randomization:</div>
+            <p class="text-slate-400 text-[10px]">Synthesized 50k+ hospital hallway scenes featuring varying lighting reflections on linoleum floors, shadows, patient gurneys, and camera angles to train PVNet without physical robot manual labeling.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-purple-400 font-bold">4. Real-world Verification:</div>
+            <p class="text-slate-400 text-[10px]">Tested on live physical AGVs operating under real hospital lighting. Exceeded performance spec by reducing position error to &lt; 5 cm (achieved ~2.7 cm).</p>
           </div>
         </div>
       </div>
@@ -153,30 +196,30 @@
       <div class="border-b border-slate-800 pb-4">
         <h2 class="text-xl font-bold text-white flex items-center gap-2">
           <span class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-sm font-mono">02</span>
-          Physical Hardware Testing & Production Impact
+          Hardware Deployment & Fleet Impact
         </h2>
-        <p class="text-sm text-slate-400">Validated on real industrial robot manipulators under fluctuating factory lighting conditions.</p>
+        <p class="text-sm text-slate-400">Validated on mobile robotics fleets across clinical hallway environments.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
         <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-cyan-400">
-          <h4 class="text-white font-bold text-sm">Sub-5cm Localization Target</h4>
+          <h4 class="text-white font-bold text-sm">Sub-5cm Precision Spec</h4>
           <p class="text-slate-400 leading-relaxed">
-            Achieved average 3D position error under <strong>3.2 cm</strong> and orientation error under <strong>1.8°</strong>, fully meeting the high-precision docking requirements for autonomous robot interaction.
+            Achieved average 3D translation error of <strong>2.7 cm</strong> and orientation error under <strong>1.5°</strong>, enabling precise automatic door triggering and elevator docking.
           </p>
         </div>
 
         <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-blue-400">
-          <h4 class="text-white font-bold text-sm">Real-time Latency Speedup</h4>
+          <h4 class="text-white font-bold text-sm">38+ FPS Real-Time Inference</h4>
           <p class="text-slate-400 leading-relaxed">
-            Optimized custom PVNet voting CUDA kernels and pruned feature backbones, increasing frame rate from 14 FPS to <strong>38+ FPS</strong> on on-premise industrial GPU compute.
+            Optimized the PVNet voting stage with vectorized CUDA kernels and TensorRT INT8 quantization, accelerating inference from 14 FPS to <strong>38 FPS</strong>.
           </p>
         </div>
 
         <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-emerald-400">
-          <h4 class="text-white font-bold text-sm">Heavy Occlusion Resilience</h4>
+          <h4 class="text-white font-bold text-sm">Occlusion Resilience</h4>
           <p class="text-slate-400 leading-relaxed">
-            Vector-field voting ensured that even when up to 45% of the robot body was occluded by obstacles or cables, the PnP algorithm successfully converged with zero drift.
+            Because every pixel votes for keypoint locations via direction vectors, the robot's pose was reliably estimated even when pedestrians or medical carts occluded 40% of the body.
           </p>
         </div>
       </div>
@@ -194,111 +237,707 @@
   </main>
 
   <script>
-    // --- Interactive 6D Pose Estimation Canvas ---
+    // --- Interactive Hospital CCTV 6D Pose Canvas ---
     const canvas = document.getElementById('poseCanvas');
     const ctx = canvas.getContext('2d');
     const yawRange = document.getElementById('robotYawRange');
     const yawVal = document.getElementById('robotYawVal');
     const distRange = document.getElementById('robotDistRange');
     const distVal = document.getElementById('robotDistVal');
+    const laneRange = document.getElementById('robotLaneRange');
+    const laneVal = document.getElementById('robotLaneVal');
+
     const transErrVal = document.getElementById('transErrVal');
     const rotErrVal = document.getElementById('rotErrVal');
+    const poseAccuracyText = document.getElementById('poseAccuracyText');
 
-    // Synthetic 3D Robot Bounding Box Vertices (Local CAD Frame)
-    const box3D = [
-      [-50, -40, -60],
-      [ 50, -40, -60],
-      [ 50,  40, -60],
-      [-50,  40, -60],
-      [-50, -40,  60],
-      [ 50, -40,  60],
-      [ 50,  40,  60],
-      [-50,  40,  60]
+    const togglePatrolBtn = document.getElementById('togglePatrolBtn');
+    const toggleVectorsBtn = document.getElementById('toggleVectorsBtn');
+    const toggleWireframeBtn = document.getElementById('toggleWireframeBtn');
+
+    let showVectors = true;
+    let showWireframe = true;
+    let isPatrolling = false;
+    let patrolInterval = null;
+    let patrolTime = 0;
+
+    toggleVectorsBtn.addEventListener('click', () => {
+      showVectors = !showVectors;
+      toggleVectorsBtn.textContent = `PVNet Vectors: ${showVectors ? 'ON' : 'OFF'}`;
+      toggleVectorsBtn.className = showVectors
+        ? 'px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/30 transition'
+        : 'px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-500 border border-slate-700 transition';
+      renderScene();
+    });
+
+    toggleWireframeBtn.addEventListener('click', () => {
+      showWireframe = !showWireframe;
+      toggleWireframeBtn.textContent = `3D Box: ${showWireframe ? 'ON' : 'OFF'}`;
+      toggleWireframeBtn.className = showWireframe
+        ? 'px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 transition'
+        : 'px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-500 border border-slate-700 transition';
+      renderScene();
+    });
+
+    togglePatrolBtn.addEventListener('click', () => {
+      isPatrolling = !isPatrolling;
+      if (isPatrolling) {
+        togglePatrolBtn.innerHTML = '<span>⏸</span> Pause Patrol';
+        togglePatrolBtn.className = 'px-3 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-semibold transition flex items-center gap-1.5 shadow-md shadow-amber-500/20';
+        patrolInterval = setInterval(() => {
+          patrolTime += 0.04;
+          // Smooth patrol movement along the hallway
+          const zCycle = 2.0 + (Math.sin(patrolTime * 0.7) * 0.5 + 0.5) * 4.0; // 2.0m to 6.0m
+          const xCycle = Math.sin(patrolTime * 0.5) * 0.35; // gentle slalom lane changes
+          const headingCycle = Math.sin(patrolTime * 0.5 + Math.PI / 2) * 25; // turning heading
+          
+          distRange.value = zCycle.toFixed(1);
+          laneRange.value = xCycle.toFixed(2);
+          yawRange.value = Math.round(headingCycle);
+
+          renderScene();
+        }, 50);
+      } else {
+        togglePatrolBtn.innerHTML = '<span>▶</span> Auto Patrol';
+        togglePatrolBtn.className = 'px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold transition flex items-center gap-1.5 shadow-md shadow-blue-500/20';
+        if (patrolInterval) {
+          clearInterval(patrolInterval);
+          patrolInterval = null;
+        }
+      }
+    });
+
+    // --- 3D CAMERA PINHOLE MODEL & PERSPECTIVE MATH ---
+    // World coordinates:
+    // Floor is Y = 0.
+    // Hallway corridor: X between -1.35m (left wall) and +1.35m (right wall).
+    // Hallway depth extends forward along Z > 0.
+    // Ceiling is at Y = -2.8m.
+    // Camera is mounted high on the ceiling at eye = [0.0, -2.3, 0.0] looking downward into corridor.
+    const W = canvas.width;
+    const H = canvas.height;
+    const cx = W / 2;
+    const cy = H / 2 - 15;
+    const fx = 480;
+    const fy = 480;
+
+    // Normal CCTV camera pitch down angle: ~22 degrees
+    const camEye = [0.0, -2.25, 0.2];
+    const pitchRad = (22 * Math.PI) / 180;
+    const cosP = Math.cos(pitchRad);
+    const sinP = Math.sin(pitchRad);
+
+    // Transform World Point (Xw, Yw, Zw) to Camera Space (Xc, Yc, Zc) then project to (u, v)
+    function worldToCamera(xw, yw, zw) {
+      // Offset from camera eye
+      const dx = xw - camEye[0];
+      const dy = yw - camEye[1];
+      const dz = zw - camEye[2];
+
+      // Rotate around X-axis by pitch angle
+      const xc = dx;
+      const yc = dy * cosP - dz * sinP;
+      const zc = dy * sinP + dz * cosP;
+
+      return { xc, yc, zc };
+    }
+
+    function project3D(xw, yw, zw) {
+      const { xc, yc, zc } = worldToCamera(xw, yw, zw);
+      if (zc <= 0.2) return null; // Behind camera
+      const u = (fx * xc) / zc + cx;
+      const v = (fy * yc) / zc + cy;
+      return { u, v, zc };
+    }
+
+    // Directional Lighting Vector (from overhead fluorescent troffers)
+    const lightDir = normalize3D([0.15, -1.0, 0.35]);
+
+    function normalize3D(v) {
+      const len = Math.hypot(v[0], v[1], v[2]) || 1;
+      return [v[0] / len, v[1] / len, v[2] / len];
+    }
+
+    function dot3D(a, b) {
+      return a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+    }
+
+    function cross3D(a, b) {
+      return [
+        a[1] * b[2] - a[2] * b[1],
+        a[2] * b[0] - a[0] * b[2],
+        a[0] * b[1] - a[1] * b[0]
+      ];
+    }
+
+    // --- SOLID CUBE ROBOT GEOMETRY (2 COLOR UP/DOWN) ---
+    // Physical dimensions: width = 0.60m, depth = 0.60m, height = 0.60m.
+    // Sits flush on floor from Y = -0.60m (top) to Y = 0.0m (bottom).
+    // Split into Upper Half (White: Y = -0.60 to -0.30) and Lower Half (Navy: Y = -0.30 to 0.0).
+    const cubeHalfW = 0.30;
+    const cubeHalfD = 0.30;
+
+    // 8 Outer Corner Keypoint coordinates in local robot frame (meters)
+    const localCorners = [
+      [-cubeHalfW, -0.60, -cubeHalfD], // 0: Top Front Left
+      [ cubeHalfW, -0.60, -cubeHalfD], // 1: Top Front Right
+      [ cubeHalfW, -0.60,  cubeHalfD], // 2: Top Back Right
+      [-cubeHalfW, -0.60,  cubeHalfD], // 3: Top Back Left
+      [-cubeHalfW,  0.00, -cubeHalfD], // 4: Bottom Front Left
+      [ cubeHalfW,  0.00, -cubeHalfD], // 5: Bottom Front Right
+      [ cubeHalfW,  0.00,  cubeHalfD], // 6: Bottom Back Right
+      [-cubeHalfW,  0.00,  cubeHalfD], // 7: Bottom Back Left
     ];
 
-    const edges = [
-      [0,1],[1,2],[2,3],[3,0], // back face
-      [4,5],[5,6],[6,7],[7,4], // front face
-      [0,4],[1,5],[2,6],[3,7]  // connecting edges
+    const boxEdges = [
+      [0,1],[1,2],[2,3],[3,0], // Top ring
+      [4,5],[5,6],[6,7],[7,4], // Bottom ring
+      [0,4],[1,5],[2,6],[3,7]  // Vertical pillars
     ];
 
-    function render6DPose() {
+    function renderScene() {
       const yawDeg = parseFloat(yawRange.value);
       const distM = parseFloat(distRange.value);
+      const laneM = parseFloat(laneRange.value);
 
       yawVal.textContent = `${yawDeg >= 0 ? '+' : ''}${yawDeg}°`;
       distVal.textContent = `${distM.toFixed(1)} m`;
+      laneVal.textContent = `${laneM >= 0 ? '+' : ''}${laneM.toFixed(2)} m`;
 
-      // Live error metrics simulation based on distance and angle
-      const transErr = (1.8 + (distM - 1.0) * 0.9 + Math.abs(yawDeg) * 0.015).toFixed(1);
-      const rotErr = (0.9 + (distM - 1.0) * 0.4 + Math.abs(yawDeg) * 0.01).toFixed(1);
+      // Telemetry simulated accuracy
+      const transErr = (1.9 + (distM - 1.8) * 0.45 + Math.abs(laneM) * 0.3 + Math.abs(yawDeg) * 0.006).toFixed(1);
+      const rotErr = (0.8 + (distM - 1.8) * 0.25 + Math.abs(yawDeg) * 0.005).toFixed(1);
       transErrVal.textContent = `${transErr} cm`;
       rotErrVal.textContent = `${rotErr}°`;
+      poseAccuracyText.textContent = `Position Error: ${transErr} cm (< 5.0 cm Target)`;
 
-      const W = canvas.width;
-      const H = canvas.height;
       ctx.clearRect(0, 0, W, H);
 
-      // Camera background
-      ctx.fillStyle = '#080d1a';
+      // --- 1. RENDER HOSPITAL HALLWAY PERSPECTIVE ---
+      const hallW = 1.35; // meters half-width
+      const ceilY = -2.75; // meters
+      const floorY = 0.0;
+      const maxZ = 12.0;
+
+      // Dark background behind far doorway
+      ctx.fillStyle = '#090d16';
       ctx.fillRect(0, 0, W, H);
 
-      // Draw Camera Calibration Reticle
-      ctx.strokeStyle = 'rgba(51, 65, 85, 0.4)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(W / 2 - 20, H / 2);
-      ctx.lineTo(W / 2 + 20, H / 2);
-      ctx.moveTo(W / 2, H / 2 - 20);
-      ctx.lineTo(W / 2, H / 2 + 20);
-      ctx.stroke();
+      // 1A. Hospital Floor (Smooth reflective medical linoleum)
+      const fl0 = project3D(-hallW, floorY, 0.8);
+      const fr0 = project3D(hallW, floorY, 0.8);
+      const fl1 = project3D(-hallW, floorY, maxZ);
+      const fr1 = project3D(hallW, floorY, maxZ);
 
-      // Camera parameters
-      const fx = 450, fy = 450;
-      const cx = W / 2, cy = H / 2 + 15;
-      const rad = (yawDeg * Math.PI) / 180;
-      const cosY = Math.cos(rad);
-      const sinY = Math.sin(rad);
-
-      // Scale factor inversely proportional to distance Z
-      const zCam = distM * 180;
-
-      // Project 3D vertices using pinhole model: u = fx * X/Z + cx, v = fy * Y/Z + cy
-      const projected2D = box3D.map(pt => {
-        // Rotate around Y axis
-        const xRot = pt[0] * cosY - pt[2] * sinY;
-        const yRot = pt[1];
-        const zRot = pt[0] * sinY + pt[2] * cosY + zCam;
-
-        const u = (fx * xRot) / zRot + cx;
-        const v = (fy * yRot) / zRot + cy;
-        return { u, v };
-      });
-
-      // Draw Robot Body Silhouette (Mocked Mobile Industrial Base)
-      ctx.fillStyle = 'rgba(30, 58, 138, 0.45)';
-      ctx.beginPath();
-      projected2D.slice(0, 4).forEach((p, idx) => {
-        if (idx === 0) ctx.moveTo(p.u, p.v);
-        else ctx.lineTo(p.u, p.v);
-      });
-      ctx.closePath();
-      ctx.fill();
-
-      // Draw 3D Projected Bounding Box Edges (Cyan Wireframe)
-      ctx.strokeStyle = '#06b6d4';
-      ctx.lineWidth = 2;
-      edges.forEach(e => {
-        const p1 = projected2D[e[0]];
-        const p2 = projected2D[e[1]];
+      if (fl0 && fr0 && fl1 && fr1) {
         ctx.beginPath();
-        ctx.moveTo(p1.u, p1.v);
-        ctx.lineTo(p2.u, p2.v);
+        ctx.moveTo(fl0.u, fl0.v);
+        ctx.lineTo(fr0.u, fr0.v);
+        ctx.lineTo(fr1.u, fr1.v);
+        ctx.lineTo(fl1.u, fl1.v);
+        ctx.closePath();
+
+        const floorGrad = ctx.createLinearGradient(0, fl0.v, 0, fl1.v);
+        floorGrad.addColorStop(0, '#1e293b'); // Near foreground slate
+        floorGrad.addColorStop(0.5, '#0f172a'); // Mid hallway sheen
+        floorGrad.addColorStop(1, '#020617'); // Distant deep hall
+        ctx.fillStyle = floorGrad;
+        ctx.fill();
+
+        // Floor Linoleum Seams / Grid Lines
+        ctx.strokeStyle = 'rgba(71, 85, 105, 0.3)';
+        ctx.lineWidth = 1;
+
+        // Longitudinal seams
+        [-0.9, -0.45, 0.0, 0.45, 0.9].forEach(sx => {
+          const pNear = project3D(sx, floorY, 1.0);
+          const pFar = project3D(sx, floorY, maxZ);
+          if (pNear && pFar) {
+            ctx.beginPath();
+            ctx.moveTo(pNear.u, pNear.v);
+            ctx.lineTo(pFar.u, pFar.v);
+            ctx.stroke();
+          }
+        });
+
+        // Transverse tile joints
+        for (let tz = 1.5; tz <= maxZ; tz += 1.2) {
+          const pl = project3D(-hallW, floorY, tz);
+          const pr = project3D(hallW, floorY, tz);
+          if (pl && pr) {
+            ctx.beginPath();
+            ctx.moveTo(pl.u, pl.v);
+            ctx.lineTo(pr.u, pr.v);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // 1B. Ceiling with Recessed LED Troffers
+      const cl0 = project3D(-hallW, ceilY, 0.8);
+      const cr0 = project3D(hallW, ceilY, 0.8);
+      const cl1 = project3D(-hallW, ceilY, maxZ);
+      const cr1 = project3D(hallW, ceilY, maxZ);
+
+      if (cl0 && cr0 && cl1 && cr1) {
+        ctx.beginPath();
+        ctx.moveTo(cl0.u, cl0.v);
+        ctx.lineTo(cr0.u, cr0.v);
+        ctx.lineTo(cr1.u, cr1.v);
+        ctx.lineTo(cl1.u, cl1.v);
+        ctx.closePath();
+        ctx.fillStyle = '#0f172a';
+        ctx.fill();
+
+        // Overhead LED Troffer Light Fixtures
+        for (let lz = 2.0; lz <= 10.5; lz += 2.4) {
+          const lt1 = project3D(-0.4, ceilY, lz);
+          const lt2 = project3D(0.4, ceilY, lz);
+          const lt3 = project3D(0.4, ceilY, lz + 1.2);
+          const lt4 = project3D(-0.4, ceilY, lz + 1.2);
+          if (lt1 && lt2 && lt3 && lt4) {
+            ctx.beginPath();
+            ctx.moveTo(lt1.u, lt1.v);
+            ctx.lineTo(lt2.u, lt2.v);
+            ctx.lineTo(lt3.u, lt3.v);
+            ctx.lineTo(lt4.u, lt4.v);
+            ctx.closePath();
+            ctx.fillStyle = 'rgba(241, 245, 249, 0.85)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(56, 189, 248, 0.6)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+          }
+        }
+      }
+
+      // 1C. Left & Right Hospital Walls
+      function drawWall(sideSign) {
+        const xPos = sideSign * hallW;
+        const w0Bottom = project3D(xPos, floorY, 0.8);
+        const w0Top = project3D(xPos, ceilY, 0.8);
+        const w1Bottom = project3D(xPos, floorY, maxZ);
+        const w1Top = project3D(xPos, ceilY, maxZ);
+
+        if (!w0Bottom || !w0Top || !w1Bottom || !w1Top) return;
+
+        // Base wall paint (Clinical Soft Off-White / Pale Slate)
+        ctx.beginPath();
+        ctx.moveTo(w0Bottom.u, w0Bottom.v);
+        ctx.lineTo(w0Top.u, w0Top.v);
+        ctx.lineTo(w1Top.u, w1Top.v);
+        ctx.lineTo(w1Bottom.u, w1Bottom.v);
+        ctx.closePath();
+        const wallGrad = ctx.createLinearGradient(0, w0Top.v, 0, w0Bottom.v);
+        wallGrad.addColorStop(0, '#1e293b');
+        wallGrad.addColorStop(0.5, '#334155');
+        wallGrad.addColorStop(1, '#1e293b');
+        ctx.fillStyle = wallGrad;
+        ctx.fill();
+
+        // Hospital Protective Bumper Guard Rail (Teal/Cyan vinyl handrail at Y = -0.9m)
+        const railTop = -0.95;
+        const railBot = -0.85;
+        const r0t = project3D(xPos - sideSign * 0.02, railTop, 0.8);
+        const r0b = project3D(xPos - sideSign * 0.02, railBot, 0.8);
+        const r1t = project3D(xPos - sideSign * 0.02, railTop, maxZ);
+        const r1b = project3D(xPos - sideSign * 0.02, railBot, maxZ);
+        if (r0t && r0b && r1t && r1b) {
+          ctx.beginPath();
+          ctx.moveTo(r0t.u, r0t.v);
+          ctx.lineTo(r1t.u, r1t.v);
+          ctx.lineTo(r1b.u, r1b.v);
+          ctx.lineTo(r0b.u, r0b.v);
+          ctx.closePath();
+          ctx.fillStyle = '#06b6d4'; // Hospital teal protective rail
+          ctx.fill();
+        }
+
+        // Baseboard Skirting (Dark vinyl trim at floor)
+        const skTop = -0.12;
+        const sk0 = project3D(xPos, skTop, 0.8);
+        const sk1 = project3D(xPos, skTop, maxZ);
+        if (sk0 && sk1) {
+          ctx.beginPath();
+          ctx.moveTo(w0Bottom.u, w0Bottom.v);
+          ctx.lineTo(w1Bottom.u, w1Bottom.v);
+          ctx.lineTo(sk1.u, sk1.v);
+          ctx.lineTo(sk0.u, sk0.v);
+          ctx.closePath();
+          ctx.fillStyle = '#0f172a';
+          ctx.fill();
+        }
+      }
+      drawWall(-1); // Left wall
+      drawWall(1);  // Right wall
+
+      // 1D. Hospital Room Doors
+      function drawDoor(sideSign, zStart, zEnd, doorLabel) {
+        const xPos = sideSign * hallW;
+        const dFloor0 = project3D(xPos, floorY, zStart);
+        const dTop0   = project3D(xPos, -2.15, zStart);
+        const dTop1   = project3D(xPos, -2.15, zEnd);
+        const dFloor1 = project3D(xPos, floorY, zEnd);
+
+        if (!dFloor0 || !dTop0 || !dTop1 || !dFloor1) return;
+
+        // Door frame cutout
+        ctx.beginPath();
+        ctx.moveTo(dFloor0.u, dFloor0.v);
+        ctx.lineTo(dTop0.u, dTop0.v);
+        ctx.lineTo(dTop1.u, dTop1.v);
+        ctx.lineTo(dFloor1.u, dFloor1.v);
+        ctx.closePath();
+        ctx.fillStyle = '#0f172a';
+        ctx.fill();
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Door panel
+        ctx.fillStyle = '#1e293b';
+        ctx.beginPath();
+        const dpF0 = project3D(xPos - sideSign * 0.01, -0.05, zStart + 0.08);
+        const dpT0 = project3D(xPos - sideSign * 0.01, -2.10, zStart + 0.08);
+        const dpT1 = project3D(xPos - sideSign * 0.01, -2.10, zEnd - 0.08);
+        const dpF1 = project3D(xPos - sideSign * 0.01, -0.05, zEnd - 0.08);
+        if (dpF0 && dpT0 && dpT1 && dpF1) {
+          ctx.moveTo(dpF0.u, dpF0.v);
+          ctx.lineTo(dpT0.u, dpT0.v);
+          ctx.lineTo(dpT1.u, dpT1.v);
+          ctx.lineTo(dpF1.u, dpF1.v);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        // Vision Glass Window in Door
+        const gwF0 = project3D(xPos - sideSign * 0.02, -1.2, zStart + 0.25);
+        const gwT0 = project3D(xPos - sideSign * 0.02, -1.8, zStart + 0.25);
+        const gwT1 = project3D(xPos - sideSign * 0.02, -1.8, zEnd - 0.25);
+        const gwF1 = project3D(xPos - sideSign * 0.02, -1.2, zEnd - 0.25);
+        if (gwF0 && gwT0 && gwT1 && gwF1) {
+          ctx.beginPath();
+          ctx.moveTo(gwF0.u, gwF0.v);
+          ctx.lineTo(gwT0.u, gwT0.v);
+          ctx.lineTo(gwT1.u, gwT1.v);
+          ctx.lineTo(gwF1.u, gwF1.v);
+          ctx.closePath();
+          ctx.fillStyle = 'rgba(56, 189, 248, 0.4)';
+          ctx.fill();
+          ctx.strokeStyle = '#38bdf8';
+          ctx.lineWidth = 1;
+          ctx.stroke();
+        }
+
+        // Room Plaque Sign
+        const signPt = project3D(xPos - sideSign * 0.03, -1.75, (zStart + zEnd) / 2);
+        if (signPt) {
+          ctx.fillStyle = '#f8fafc';
+          ctx.font = 'bold 9px "Fira Code", monospace';
+          ctx.fillText(doorLabel, signPt.u - (sideSign > 0 ? 35 : 0), signPt.v);
+        }
+      }
+
+      // Draw several doors along hallway
+      drawDoor(-1, 2.5, 3.6, '204 ICU');
+      drawDoor(-1, 5.2, 6.3, '206 SURG');
+      drawDoor(1, 3.8, 4.9, '205 NEURO');
+      drawDoor(1, 6.8, 7.9, 'CLEAN UTIL');
+
+      // --- 2. RENDER THE SOLID CUBE ROBOT (2 COLORS: UP/DOWN) ---
+      // World position of robot
+      const rx = laneM;
+      const rz = distM;
+      const yawRad = (yawDeg * Math.PI) / 180;
+      const cosY = Math.cos(yawRad);
+      const sinY = Math.sin(yawRad);
+
+      // Local 3D vector rotation around Y-axis
+      function transformLocal(lx, ly, lz) {
+        const rotX = lx * cosY - lz * sinY;
+        const rotZ = lx * sinY + lz * cosY;
+        return [rx + rotX, ly, rz + rotZ];
+      }
+
+      // Floor Shadow of the Robot
+      const shadowPts = [
+        transformLocal(-cubeHalfW - 0.05, 0.0, -cubeHalfD - 0.05),
+        transformLocal( cubeHalfW + 0.05, 0.0, -cubeHalfD - 0.05),
+        transformLocal( cubeHalfW + 0.05, 0.0,  cubeHalfD + 0.05),
+        transformLocal(-cubeHalfW - 0.05, 0.0,  cubeHalfD + 0.05),
+      ].map(p => project3D(p[0], p[1], p[2]));
+
+      if (shadowPts.every(p => p !== null)) {
+        ctx.beginPath();
+        ctx.moveTo(shadowPts[0].u, shadowPts[0].v);
+        shadowPts.slice(1).forEach(p => ctx.lineTo(p.u, p.v));
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(2, 6, 23, 0.65)';
+        ctx.fill();
+      }
+
+      // Define Solid Cube Faces:
+      // Split into UPPER CUBE (Y from -0.60 to -0.30) and LOWER CUBE (Y from -0.30 to 0.00).
+      // Upper Cube is Clinical White/Cyan (`#f8fafc`).
+      // Lower Cube is Industrial Navy (`#1e3a8a`).
+      const faces = [
+        // --- UPPER CUBE (Top Half: Clean Pearl White) ---
+        {
+          name: 'upper-top',
+          color: [248, 250, 252], // #f8fafc
+          pts: [
+            [-cubeHalfW, -0.60, -cubeHalfD],
+            [ cubeHalfW, -0.60, -cubeHalfD],
+            [ cubeHalfW, -0.60,  cubeHalfD],
+            [-cubeHalfW, -0.60,  cubeHalfD],
+          ],
+          normal: [0, -1, 0]
+        },
+        {
+          name: 'upper-front',
+          color: [241, 245, 249], // #f1f5f9
+          pts: [
+            [-cubeHalfW, -0.60, -cubeHalfD],
+            [ cubeHalfW, -0.60, -cubeHalfD],
+            [ cubeHalfW, -0.30, -cubeHalfD],
+            [-cubeHalfW, -0.30, -cubeHalfD],
+          ],
+          normal: [0, 0, -1]
+        },
+        {
+          name: 'upper-right',
+          color: [226, 232, 240], // #e2e8f0
+          pts: [
+            [ cubeHalfW, -0.60, -cubeHalfD],
+            [ cubeHalfW, -0.60,  cubeHalfD],
+            [ cubeHalfW, -0.30,  cubeHalfD],
+            [ cubeHalfW, -0.30, -cubeHalfD],
+          ],
+          normal: [1, 0, 0]
+        },
+        {
+          name: 'upper-back',
+          color: [203, 213, 225], // #cbd5e1
+          pts: [
+            [ cubeHalfW, -0.60,  cubeHalfD],
+            [-cubeHalfW, -0.60,  cubeHalfD],
+            [-cubeHalfW, -0.30,  cubeHalfD],
+            [ cubeHalfW, -0.30,  cubeHalfD],
+          ],
+          normal: [0, 0, 1]
+        },
+        {
+          name: 'upper-left',
+          color: [226, 232, 240],
+          pts: [
+            [-cubeHalfW, -0.60,  cubeHalfD],
+            [-cubeHalfW, -0.60, -cubeHalfD],
+            [-cubeHalfW, -0.30, -cubeHalfD],
+            [-cubeHalfW, -0.30,  cubeHalfD],
+          ],
+          normal: [-1, 0, 0]
+        },
+
+        // --- LOWER CUBE (Bottom Half: Solid Navy Blue) ---
+        {
+          name: 'lower-front',
+          color: [30, 58, 138], // #1e3a8a
+          pts: [
+            [-cubeHalfW, -0.30, -cubeHalfD],
+            [ cubeHalfW, -0.30, -cubeHalfD],
+            [ cubeHalfW,  0.00, -cubeHalfD],
+            [-cubeHalfW,  0.00, -cubeHalfD],
+          ],
+          normal: [0, 0, -1]
+        },
+        {
+          name: 'lower-right',
+          color: [23, 37, 84], // #172554
+          pts: [
+            [ cubeHalfW, -0.30, -cubeHalfD],
+            [ cubeHalfW, -0.30,  cubeHalfD],
+            [ cubeHalfW,  0.00,  cubeHalfD],
+            [ cubeHalfW,  0.00, -cubeHalfD],
+          ],
+          normal: [1, 0, 0]
+        },
+        {
+          name: 'lower-back',
+          color: [15, 23, 42], // #0f172a
+          pts: [
+            [ cubeHalfW, -0.30,  cubeHalfD],
+            [-cubeHalfW, -0.30,  cubeHalfD],
+            [-cubeHalfW,  0.00,  cubeHalfD],
+            [ cubeHalfW,  0.00,  cubeHalfD],
+          ],
+          normal: [0, 0, 1]
+        },
+        {
+          name: 'lower-left',
+          color: [23, 37, 84],
+          pts: [
+            [-cubeHalfW, -0.30,  cubeHalfD],
+            [-cubeHalfW, -0.30, -cubeHalfD],
+            [-cubeHalfW,  0.00, -cubeHalfD],
+            [-cubeHalfW,  0.00,  cubeHalfD],
+          ],
+          normal: [-1, 0, 0]
+        },
+        {
+          name: 'lower-bottom',
+          color: [10, 15, 28],
+          pts: [
+            [-cubeHalfW,  0.00, -cubeHalfD],
+            [ cubeHalfW,  0.00, -cubeHalfD],
+            [ cubeHalfW,  0.00,  cubeHalfD],
+            [-cubeHalfW,  0.00,  cubeHalfD],
+          ],
+          normal: [0, 1, 0]
+        }
+      ];
+
+      // Prepare transformed faces with depth sorting (Painter's algorithm)
+      const renderedFaces = [];
+
+      faces.forEach(face => {
+        // Rotate face normal
+        const rotNx = face.normal[0] * cosY - face.normal[2] * sinY;
+        const rotNy = face.normal[1];
+        const rotNz = face.normal[0] * sinY + face.normal[2] * cosY;
+        const worldNorm = [rotNx, rotNy, rotNz];
+
+        // Transform vertices to world space then project
+        const worldVerts = face.pts.map(p => transformLocal(p[0], p[1], p[2]));
+        const projVerts = worldVerts.map(p => project3D(p[0], p[1], p[2]));
+
+        // Calculate average camera space depth
+        const camDepths = worldVerts.map(p => worldToCamera(p[0], p[1], p[2]).zc);
+        const avgDepth = camDepths.reduce((a, b) => a + b, 0) / camDepths.length;
+
+        // Check if all projected
+        if (projVerts.every(p => p !== null)) {
+          // Shading factor based on ceiling light
+          const diffuse = Math.max(0.35, Math.min(1.0, 0.45 + 0.55 * dot3D(worldNorm, lightDir)));
+          renderedFaces.push({
+            name: face.name,
+            color: face.color,
+            diffuse,
+            verts: projVerts,
+            depth: avgDepth
+          });
+        }
+      });
+
+      // Sort faces from furthest to nearest
+      renderedFaces.sort((a, b) => b.depth - a.depth);
+
+      // Draw Solid Shaded Faces!
+      renderedFaces.forEach(f => {
+        ctx.beginPath();
+        ctx.moveTo(f.verts[0].u, f.verts[0].v);
+        for (let i = 1; i < f.verts.length; i++) {
+          ctx.lineTo(f.verts[i].u, f.verts[i].v);
+        }
+        ctx.closePath();
+
+        // Shaded RGB
+        const r = Math.round(f.color[0] * f.diffuse);
+        const g = Math.round(f.color[1] * f.diffuse);
+        const b = Math.round(f.color[2] * f.diffuse);
+        ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+        ctx.fill();
+
+        // Subtle polygon edge seam
+        ctx.strokeStyle = `rgba(${r - 20}, ${g - 20}, ${b - 20}, 0.8)`;
+        ctx.lineWidth = 1;
         ctx.stroke();
       });
 
-      // Draw 2D Keypoints (PVNet Vector Centers)
-      projected2D.forEach((p, idx) => {
+      // Draw Vibrant Cyan LED Equator Ribbon (separating top & bottom color halves)
+      const equatorPts = [
+        transformLocal(-cubeHalfW, -0.30, -cubeHalfD),
+        transformLocal( cubeHalfW, -0.30, -cubeHalfD),
+        transformLocal( cubeHalfW, -0.30,  cubeHalfD),
+        transformLocal(-cubeHalfW, -0.30,  cubeHalfD),
+      ].map(p => project3D(p[0], p[1], p[2]));
+
+      if (equatorPts.every(p => p !== null)) {
+        ctx.strokeStyle = '#06b6d4';
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        ctx.moveTo(equatorPts[0].u, equatorPts[0].v);
+        ctx.lineTo(equatorPts[1].u, equatorPts[1].v);
+        ctx.lineTo(equatorPts[2].u, equatorPts[2].v);
+        ctx.lineTo(equatorPts[3].u, equatorPts[3].v);
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      // Draw Optical LiDAR Puck & E-Stop Knob on Top Face
+      const lidarPuck = project3D(...transformLocal(0.0, -0.65, 0.0));
+      const lidarBase = project3D(...transformLocal(0.0, -0.60, 0.0));
+      if (lidarPuck && lidarBase) {
+        ctx.beginPath();
+        ctx.arc(lidarBase.u, lidarBase.v, 7, 0, Math.PI * 2);
+        ctx.fillStyle = '#0284c7';
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(lidarPuck.u, lidarPuck.v, 5, 0, Math.PI * 2);
+        ctx.fillStyle = '#06b6d4';
+        ctx.fill();
+      }
+
+      // --- 3. PROJECT 8 CORNERS (PVNet KEYPOINTS) ---
+      const cornerWorld = localCorners.map(c => transformLocal(c[0], c[1], c[2]));
+      const corner2D = cornerWorld.map(p => project3D(p[0], p[1], p[2]));
+
+      // 3A. PVNet Vector Field (Unit vector voting fields pointing to corners)
+      if (showVectors) {
+        ctx.strokeStyle = 'rgba(6, 182, 212, 0.45)';
+        ctx.lineWidth = 1;
+
+        // Sample points around the robot's screen region
+        corner2D.forEach((kp, kIdx) => {
+          if (!kp) return;
+          for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 3) {
+            const rad = 28 + (kIdx % 3) * 6;
+            const startX = kp.u + Math.cos(angle) * rad;
+            const startY = kp.v + Math.sin(angle) * rad;
+            // Arrow pointing toward keypoint kp
+            const dirX = (kp.u - startX) * 0.55;
+            const dirY = (kp.v - startY) * 0.55;
+
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(startX + dirX, startY + dirY);
+            ctx.stroke();
+          }
+        });
+      }
+
+      // 3B. 3D Bounding Box Wireframe (SolvePnP inlier geometry)
+      if (showWireframe) {
+        ctx.strokeStyle = '#10b981';
+        ctx.lineWidth = 2;
+        ctx.setLineDash([3, 2]);
+
+        boxEdges.forEach(([i, j]) => {
+          const p1 = corner2D[i];
+          const p2 = corner2D[j];
+          if (p1 && p2) {
+            ctx.beginPath();
+            ctx.moveTo(p1.u, p1.v);
+            ctx.lineTo(p2.u, p2.v);
+            ctx.stroke();
+          }
+        });
+        ctx.setLineDash([]);
+      }
+
+      // 3C. Draw 8 Corner Keypoints (PVNet semantic vertices)
+      corner2D.forEach((p, idx) => {
+        if (!p) return;
         ctx.beginPath();
         ctx.arc(p.u, p.v, 4.5, 0, Math.PI * 2);
         ctx.fillStyle = '#10b981';
@@ -308,66 +947,81 @@
         ctx.stroke();
 
         ctx.fillStyle = '#6ee7b7';
-        ctx.font = '9px "Fira Code", monospace';
-        ctx.fillText(`K${idx}`, p.u + 6, p.v - 6);
+        ctx.font = 'bold 9px "Fira Code", monospace';
+        ctx.fillText(`K${idx}`, p.u + 6, p.v - 5);
       });
 
-      // Project 3D Coordinate Axes (X: Red, Y: Green, Z: Blue) at Robot Origin
-      const origin3D = [0, 0, 0];
-      const axisLen = 45;
-      const axes3D = [
-        [axisLen, 0, 0], // X (Red)
-        [0, axisLen, 0], // Y (Green)
-        [0, 0, axisLen]  // Z (Blue)
-      ];
+      // --- 4. PROJECT 3D RIGID COORDINATE FRAME (X: Red, Y: Green, Z: Blue) ---
+      const originWorld = transformLocal(0.0, -0.30, 0.0);
+      const origin2D = project3D(...originWorld);
 
-      function projectPt(x, y, z) {
-        const xR = x * cosY - z * sinY;
-        const yR = y;
-        const zR = x * sinY + z * cosY + zCam;
-        return {
-          u: (fx * xR) / zR + cx,
-          v: (fy * yR) / zR + cy
-        };
+      if (origin2D) {
+        const axisLen = 0.45; // meters
+        const xAxisWorld = transformLocal(axisLen, -0.30, 0.0);
+        const yAxisWorld = transformLocal(0.0, -0.30 - axisLen, 0.0); // Y points UP
+        const zAxisWorld = transformLocal(0.0, -0.30, axisLen); // Z points FORWARD
+
+        const x2D = project3D(...xAxisWorld);
+        const y2D = project3D(...yAxisWorld);
+        const z2D = project3D(...zAxisWorld);
+
+        function drawAxis(to, color, label) {
+          if (!to) return;
+          ctx.strokeStyle = color;
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          ctx.moveTo(origin2D.u, origin2D.v);
+          ctx.lineTo(to.u, to.v);
+          ctx.stroke();
+
+          ctx.fillStyle = color;
+          ctx.font = 'bold 10px "Fira Code", monospace';
+          ctx.fillText(label, to.u + 4, to.v + 4);
+        }
+
+        drawAxis(x2D, '#ef4444', '+X (Right)');
+        drawAxis(y2D, '#22c55e', '+Y (Up)');
+        drawAxis(z2D, '#3b82f6', '+Z (Fwd)');
       }
 
-      const o2D = projectPt(0, 0, 0);
-      const x2D = projectPt(axisLen, 0, 0);
-      const y2D = projectPt(0, axisLen, 0);
-      const z2D = projectPt(0, 0, axisLen);
+      // --- 5. CCTV CAMERA OSD OVERLAY (Surveillance Timestamp & HUD) ---
+      // Live camera timestamp
+      const now = new Date();
+      const timeStr = now.toISOString().replace('T', ' ').substring(0, 19);
 
-      function drawAxis(to, color, label) {
-        ctx.strokeStyle = color;
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.moveTo(o2D.u, o2D.v);
-        ctx.lineTo(to.u, to.v);
-        ctx.stroke();
-
-        ctx.fillStyle = color;
-        ctx.font = 'bold 11px "Fira Code", monospace';
-        ctx.fillText(label, to.u + 4, to.v + 4);
-      }
-
-      drawAxis(x2D, '#ef4444', 'X');
-      drawAxis(y2D, '#22c55e', 'Y');
-      drawAxis(z2D, '#3b82f6', 'Z');
-
-      // Calibration status overlay
       ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
-      ctx.fillRect(15, 15, 230, 65);
+      ctx.fillRect(12, 12, 280, 78);
       ctx.strokeStyle = '#334155';
-      ctx.strokeRect(15, 15, 230, 65);
+      ctx.lineWidth = 1;
+      ctx.strokeRect(12, 12, 280, 78);
+
+      ctx.fillStyle = '#f8fafc';
+      ctx.font = 'bold 10px "Fira Code", monospace';
+      ctx.fillText(`CAM-04 :: [HOSPITAL-2F-WEST] REC ●`, 22, 28);
 
       ctx.fillStyle = '#94a3b8';
-      ctx.font = '10px "Fira Code", monospace';
-      ctx.fillText(`Est. t = [0.12, 0.04, ${distM.toFixed(2)}] m`, 25, 33);
-      ctx.fillText(`Est. R = RotY(${yawDeg.toFixed(1)}°)`, 25, 50);
-      ctx.fillText(`Status: EPnP Solver Converged`, 25, 67);
+      ctx.font = '9.5px "Fira Code", monospace';
+      ctx.fillText(`TIME: ${timeStr} | 29.97 FPS`, 22, 44);
+      ctx.fillText(`EST t: [${laneM.toFixed(2)}, -0.30, ${distM.toFixed(2)}] m`, 22, 59);
+      ctx.fillText(`EST R: [0.0°, 0.0°, ${yawDeg >= 0 ? '+' : ''}${yawDeg}°] (LM Conv)`, 22, 74);
+
+      // AI Bounding Box Label on Target
+      if (origin2D) {
+        ctx.fillStyle = 'rgba(6, 182, 212, 0.2)';
+        ctx.strokeStyle = '#06b6d4';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(origin2D.u - 55, origin2D.v - 75, 110, 16);
+        ctx.fillStyle = '#06b6d4';
+        ctx.fillRect(origin2D.u - 55, origin2D.v - 75, 110, 16);
+
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 8.5px "Fira Code", monospace';
+        ctx.fillText(`AGV-01 · CONF: 98.6%`, origin2D.u - 50, origin2D.v - 63);
+      }
     }
 
-    [yawRange, distRange].forEach(el => el.addEventListener('input', render6DPose));
-    render6DPose();
+    [yawRange, distRange, laneRange].forEach(el => el.addEventListener('input', renderScene));
+    renderScene();
   </script>
 </body>
 </html>

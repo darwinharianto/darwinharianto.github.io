@@ -74,13 +74,19 @@
         <div>
           <h2 class="text-xl font-bold text-white flex items-center gap-2">
             <span class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-sm font-mono">01</span>
-            Interactive Kinematic Digital Twin & 3D LiDAR Depth Scanner
+            Interactive Kinematic Digital Twin & Dirt Pile Scooping Simulator
           </h2>
-          <p class="text-sm text-slate-400">Control joints manually or trigger ML autonomous excavation cycle with live gRPC sensor telemetry.</p>
+          <p class="text-sm text-slate-400">Simulate scooping a realistic dirt pile with terrain deformation, bucket payload, and real-time 3D LiDAR point cloud updates.</p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
           <button id="autoDigBtn" class="px-4 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-xs font-mono text-white font-semibold shadow-lg shadow-amber-500/20 transition flex items-center gap-1.5">
             <span>⚡ Run ML Auto-Dig Cycle</span>
+          </button>
+          <button id="dumpBucketBtn" class="px-3 py-1.5 rounded-lg bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700/60 text-xs font-mono text-emerald-300 transition">
+            Dump Bucket
+          </button>
+          <button id="resetPileBtn" class="px-3 py-1.5 rounded-lg bg-amber-950/80 hover:bg-amber-900 border border-amber-700/60 text-xs font-mono text-amber-300 transition">
+            Restore Dirt Pile
           </button>
           <button id="resetJointsBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300 border border-slate-700 transition">
             Reset Pose
@@ -92,7 +98,7 @@
         <!-- Digital Twin Kinematic Canvas -->
         <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
           <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-            <span>Unity Digital Twin Kinematics & LiDAR Point Cloud</span>
+            <span>Unity Digital Twin Kinematics & 3D LiDAR Point Cloud Terrain</span>
             <span id="grpcStatusText" class="text-amber-300 font-bold">gRPC Stream: CONNECTED (12ms RTT)</span>
           </div>
 
@@ -127,20 +133,20 @@
 
           <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono border-t border-slate-800">
             <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Trench Depth</div>
-              <div id="trenchDepthVal" class="text-amber-400 font-bold text-sm mt-0.5">-1.24 m</div>
+              <div class="text-slate-400 text-[10px]">Bucket Fill Factor</div>
+              <div id="bucketLoadVal" class="text-amber-400 font-bold text-sm mt-0.5">0% Empty</div>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Soil Excavated</div>
+              <div id="excavatedVolVal" class="text-emerald-400 font-bold text-sm mt-0.5">0.00 m³</div>
             </div>
             <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
               <div class="text-slate-400 text-[10px]">Hydraulic Pressure</div>
-              <div id="pressureVal" class="text-emerald-400 font-bold text-sm mt-0.5">18.4 MPa</div>
+              <div id="pressureVal" class="text-cyan-400 font-bold text-sm mt-0.5">14.2 MPa</div>
             </div>
             <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">LiDAR Points / Sec</div>
-              <div class="text-cyan-400 font-bold text-sm mt-0.5">120,000 pts</div>
-            </div>
-            <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Loop Frequency</div>
-              <div class="text-purple-400 font-bold text-sm mt-0.5">50 Hz</div>
+              <div class="text-slate-400 text-[10px]">LiDAR Scanning</div>
+              <div class="text-purple-400 font-bold text-sm mt-0.5">120k pts/s</div>
             </div>
           </div>
         </div>
@@ -184,7 +190,7 @@
   </main>
 
   <script>
-    // --- Interactive Excavator Kinematics Canvas ---
+    // --- Interactive Excavator Kinematics & Dirt Pile Scooping Canvas ---
     const canvas = document.getElementById('excavatorCanvas');
     const ctx = canvas.getContext('2d');
     const boomRange = document.getElementById('boomRange');
@@ -193,13 +199,80 @@
     const boomAngleVal = document.getElementById('boomAngleVal');
     const armPitchVal = document.getElementById('armPitchVal');
     const bucketCurlVal = document.getElementById('bucketCurlVal');
-    const trenchDepthVal = document.getElementById('trenchDepthVal');
+    const bucketLoadVal = document.getElementById('bucketLoadVal');
+    const excavatedVolVal = document.getElementById('excavatedVolVal');
     const pressureVal = document.getElementById('pressureVal');
     const autoDigBtn = document.getElementById('autoDigBtn');
+    const dumpBucketBtn = document.getElementById('dumpBucketBtn');
     const resetJointsBtn = document.getElementById('resetJointsBtn');
+    const resetPileBtn = document.getElementById('resetPileBtn');
     const grpcStatusText = document.getElementById('grpcStatusText');
 
     let autoDigInterval = null;
+    const groundY = 270;
+    const W = canvas.width;
+    const H = canvas.height;
+
+    // Dynamic Dirt Pile Elevation Profile
+    let pileProfile = new Float32Array(W);
+    let currentBucketLoad = 0; // 0 to 1
+    let totalExcavatedM3 = 0;
+    let soilParticles = []; // Dynamic dirt crumb animations
+
+    function initDirtPile() {
+      for (let x = 0; x < W; x++) {
+        pileProfile[x] = groundY;
+        // Natural Dirt Mound between x=235 and x=445
+        if (x >= 235 && x <= 445) {
+          const norm = (x - 235) / 210; // 0 to 1
+          const moundHeight = Math.sin(norm * Math.PI) * 72; // Peak 72px above ground
+          pileProfile[x] = groundY - moundHeight;
+        }
+      }
+      currentBucketLoad = 0;
+      soilParticles = [];
+      updateUIStats();
+    }
+    initDirtPile();
+
+    function updateUIStats() {
+      bucketLoadVal.textContent = currentBucketLoad > 0.05 ? `${Math.round(currentBucketLoad * 100)}% Loaded` : '0% Empty';
+      excavatedVolVal.textContent = `${totalExcavatedM3.toFixed(2)} m³`;
+    }
+
+    resetPileBtn.addEventListener('click', () => {
+      initDirtPile();
+      grpcStatusText.textContent = 'Soil Mound Restored. Ready for Excavation.';
+      renderExcavator();
+    });
+
+    function dumpSoil() {
+      if (currentBucketLoad > 0.05) {
+        totalExcavatedM3 += currentBucketLoad * 0.75;
+        // Spawn falling dirt crumbs
+        const wristX = lastWristX || 280;
+        const wristY = lastWristY || 200;
+        for (let i = 0; i < 20; i++) {
+          soilParticles.push({
+            x: wristX + (Math.random() - 0.5) * 30,
+            y: wristY + Math.random() * 20,
+            vx: (Math.random() - 0.5) * 2,
+            vy: 2 + Math.random() * 3,
+            rad: 2 + Math.random() * 3,
+            color: Math.random() > 0.5 ? '#78350f' : '#b45309',
+            alpha: 1.0
+          });
+        }
+        currentBucketLoad = 0;
+        updateUIStats();
+        grpcStatusText.textContent = 'Bucket Payload Dumped into Spoil Pit.';
+        renderExcavator();
+      }
+    }
+
+    dumpBucketBtn.addEventListener('click', dumpSoil);
+
+    let lastWristX = 0, lastWristY = 0;
 
     function renderExcavator() {
       const boomA = parseFloat(boomRange.value);
@@ -210,36 +283,62 @@
       armPitchVal.textContent = `${armA >= 0 ? '+' : ''}${armA}°`;
       bucketCurlVal.textContent = `${bucketA >= 0 ? '+' : ''}${bucketA}°`;
 
-      const W = canvas.width;
-      const H = canvas.height;
       ctx.clearRect(0, 0, W, H);
 
       // Background Sky & Trench Ground
       ctx.fillStyle = '#060a12';
       ctx.fillRect(0, 0, W, H);
 
-      const groundY = 270;
+      // 1. Draw Textured Soil & Dirt Mound Cross-Section
+      ctx.beginPath();
+      ctx.moveTo(0, H);
+      ctx.lineTo(0, groundY);
+      for (let x = 0; x < W; x += 2) {
+        ctx.lineTo(x, pileProfile[x]);
+      }
+      ctx.lineTo(W, groundY);
+      ctx.lineTo(W, H);
+      ctx.closePath();
 
-      // Draw LiDAR Point Cloud Ground Plane
-      ctx.fillStyle = 'rgba(6, 182, 212, 0.5)';
-      for (let gx = 40; gx < W - 40; gx += 12) {
-        // trench depression between 280 and 520
-        let depth = 0;
-        if (gx > 260 && gx < 480) {
-          depth = Math.sin((gx - 260) / 220 * Math.PI) * 45;
+      // Earth gradient with geological strata
+      const earthGrad = ctx.createLinearGradient(0, groundY - 75, 0, H);
+      earthGrad.addColorStop(0, '#b45309'); // Topsoil golden amber
+      earthGrad.addColorStop(0.35, '#78350f'); // Loamy dark brown
+      earthGrad.addColorStop(1, '#1c1917'); // Bedrock
+      ctx.fillStyle = earthGrad;
+      ctx.fill();
+
+      // Dirt surface outline
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Draw Pebbles & Dirt Specks on the Mound
+      ctx.fillStyle = '#fef08a';
+      for (let px = 250; px < 430; px += 20) {
+        const py = pileProfile[px];
+        if (py < groundY) {
+          ctx.beginPath();
+          ctx.arc(px + ((px * 17) % 9), py + 5, 1.8, 0, Math.PI * 2);
+          ctx.fill();
         }
-        const py = groundY + depth;
+      }
+
+      // 2. Draw 3D LiDAR Point Cloud Scanning Surface
+      ctx.fillStyle = '#06b6d4';
+      for (let gx = 30; gx < W - 30; gx += 8) {
+        const py = pileProfile[gx];
         ctx.beginPath();
         ctx.arc(gx, py, 2, 0, Math.PI * 2);
         ctx.fill();
 
-        // LiDAR scan rays
-        if (gx % 48 === 0) {
-          ctx.strokeStyle = 'rgba(6, 182, 212, 0.15)';
+        // Active cyan laser scanner beams from cabin puck
+        if (gx % 36 === 0) {
+          ctx.strokeStyle = 'rgba(6, 182, 212, 0.2)';
           ctx.lineWidth = 1;
           ctx.setLineDash([2, 4]);
           ctx.beginPath();
-          ctx.moveTo(180, 160); // LiDAR sensor position on cabin
+          ctx.moveTo(175, 165);
           ctx.lineTo(gx, py);
           ctx.stroke();
           ctx.setLineDash([]);
@@ -250,7 +349,7 @@
       const baseX = 150;
       const baseY = groundY - 15;
 
-      // 1. Draw Crawler Tracks (Dark Grey with tread pattern)
+      // 3. Draw Crawler Tracks
       ctx.fillStyle = '#1e293b';
       ctx.strokeStyle = '#475569';
       ctx.lineWidth = 3;
@@ -270,7 +369,7 @@
         ctx.stroke();
       }
 
-      // 2. Draw Operator Cabin Body (Yellow/Amber)
+      // 4. Operator Cabin (Amber)
       ctx.fillStyle = '#f59e0b';
       ctx.strokeStyle = '#d97706';
       ctx.lineWidth = 3;
@@ -279,7 +378,7 @@
       ctx.fill();
       ctx.stroke();
 
-      // Cabin Glass Window
+      // Cabin Window
       ctx.fillStyle = 'rgba(56, 189, 248, 0.35)';
       ctx.strokeStyle = '#38bdf8';
       ctx.lineWidth = 2;
@@ -288,37 +387,116 @@
       ctx.fill();
       ctx.stroke();
 
-      // LiDAR Sensor Puck (Mounted on cabin roof)
+      // LiDAR Sensor Puck (Mounted on roof)
       ctx.fillStyle = '#06b6d4';
       ctx.beginPath();
-      ctx.arc(baseX + 25, baseY - 75, 5, 0, Math.PI * 2);
+      ctx.arc(baseX + 25, baseY - 75, 5.5, 0, Math.PI * 2);
       ctx.fill();
 
-      // 3. Forward Kinematics Chain
+      // 5. Kinematic Arm Chain
       const boomPivotX = baseX + 25;
       const boomPivotY = baseY - 45;
       const boomLen = 120;
-      const armLen = 90;
-      const bucketLen = 50;
+      const armLen = 92;
+      const bucketLen = 54;
 
-      // Radian angles
       const boomRad = (boomA * Math.PI) / 180;
       const armRad = boomRad + (armA * Math.PI) / 180;
       const bucketRad = armRad + (bucketA * Math.PI) / 180;
 
-      // Joint 1: Boom Tip (Elbow)
       const elbowX = boomPivotX + boomLen * Math.cos(boomRad);
       const elbowY = boomPivotY + boomLen * Math.sin(boomRad);
 
-      // Joint 2: Wrist
       const wristX = elbowX + armLen * Math.cos(armRad);
       const wristY = elbowY + armLen * Math.sin(armRad);
+      lastWristX = wristX;
+      lastWristY = wristY;
 
-      // End Effector: Bucket Teeth Tip
       const tipX = wristX + bucketLen * Math.cos(bucketRad);
       const tipY = wristY + bucketLen * Math.sin(bucketRad);
 
-      // Draw Boom Arm (Heavy yellow link)
+      const scoopMidX = wristX + 28 * Math.cos(bucketRad) - 8 * Math.sin(bucketRad);
+      const scoopMidY = wristY + 28 * Math.sin(bucketRad) + 8 * Math.cos(bucketRad);
+
+      // --- ADVANCED DIRT CARVING & REALISTIC SCOOPING COLLISION ---
+      // Check collision points along the entire bucket blade curve
+      const probePoints = [
+        { x: tipX, y: tipY },
+        { x: (tipX + scoopMidX) / 2, y: (tipY + scoopMidY) / 2 },
+        { x: scoopMidX, y: scoopMidY },
+        { x: (scoopMidX + wristX) / 2, y: (scoopMidY + wristY) / 2 }
+      ];
+
+      let scoopedVolumeThisFrame = 0;
+      probePoints.forEach(pt => {
+        const px = Math.round(pt.x);
+        const py = pt.y;
+
+        // If blade touches or dips below current dirt elevation
+        if (px >= 220 && px < W - 20) {
+          if (py >= pileProfile[px] - 5 && py <= groundY + 35) {
+            const carveRadius = 26;
+            for (let dx = -carveRadius; dx <= carveRadius; dx++) {
+              const cx = px + dx;
+              if (cx >= 0 && cx < W) {
+                // Curved furrow cross-section
+                const falloff = 1 - (dx * dx) / (carveRadius * carveRadius);
+                if (falloff > 0) {
+                  const targetY = py + 6 * falloff;
+                  if (targetY > pileProfile[cx]) {
+                    const diff = targetY - pileProfile[cx];
+                    pileProfile[cx] = Math.min(groundY + 28, targetY);
+                    scoopedVolumeThisFrame += diff * 0.003;
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
+
+      if (scoopedVolumeThisFrame > 0) {
+        currentBucketLoad = Math.min(1.0, currentBucketLoad + scoopedVolumeThisFrame);
+        updateUIStats();
+        // Spawn small dirt crumb specks
+        if (soilParticles.length < 30) {
+          soilParticles.push({
+            x: tipX + (Math.random() - 0.5) * 8,
+            y: tipY - Math.random() * 6,
+            vx: (Math.random() - 0.5) * 1.5,
+            vy: -1 - Math.random() * 2,
+            rad: 1.5 + Math.random() * 2,
+            color: '#b45309',
+            alpha: 1.0
+          });
+        }
+      }
+
+      // Auto-dump if bucket curls backwards at high elevation
+      if (bucketA < -25 && tipY < groundY - 60 && currentBucketLoad > 0.05) {
+        dumpSoil();
+      }
+
+      // Update and Draw Falling Dirt Particles
+      soilParticles = soilParticles.filter(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.25; // gravity
+        p.alpha -= 0.03;
+
+        if (p.alpha > 0) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.rad, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.globalAlpha = p.alpha;
+          ctx.fill();
+          ctx.globalAlpha = 1.0;
+          return true;
+        }
+        return false;
+      });
+
+      // Boom Link
       ctx.strokeStyle = '#f59e0b';
       ctx.lineWidth = 14;
       ctx.lineCap = 'round';
@@ -327,7 +505,7 @@
       ctx.lineTo(elbowX, elbowY);
       ctx.stroke();
 
-      // Boom Hydraulic Cylinder (Silver piston)
+      // Boom Hydraulic Cylinder
       ctx.strokeStyle = '#94a3b8';
       ctx.lineWidth = 5;
       ctx.beginPath();
@@ -335,7 +513,7 @@
       ctx.lineTo(boomPivotX + (elbowX - boomPivotX) * 0.6, boomPivotY + (elbowY - boomPivotY) * 0.6);
       ctx.stroke();
 
-      // Draw Stick / Arm Link
+      // Stick / Arm Link
       ctx.strokeStyle = '#d97706';
       ctx.lineWidth = 10;
       ctx.beginPath();
@@ -343,15 +521,41 @@
       ctx.lineTo(wristX, wristY);
       ctx.stroke();
 
-      // Draw Bucket End-Effector (Curved scoop)
+      // Draw Bucket End-Effector (Heavy Steel Shell)
       ctx.strokeStyle = '#e2e8f0';
-      ctx.lineWidth = 6;
+      ctx.lineWidth = 5.5;
       ctx.beginPath();
       ctx.moveTo(wristX, wristY);
-      ctx.quadraticCurveTo(wristX + 25 * Math.cos(bucketRad), wristY + 25 * Math.sin(bucketRad) + 15, tipX, tipY);
+      ctx.quadraticCurveTo(scoopMidX, scoopMidY, tipX, tipY);
       ctx.stroke();
 
-      // Draw Joint Pivot Circles
+      // Bucket Teeth
+      ctx.fillStyle = '#fbbf24';
+      ctx.beginPath();
+      ctx.arc(tipX, tipY, 4, 0, Math.PI * 2);
+      ctx.fill();
+
+      // DRAW SCOOPED DIRT INSIDE BUCKET!
+      if (currentBucketLoad > 0.05) {
+        ctx.fillStyle = '#78350f';
+        ctx.beginPath();
+        ctx.moveTo(wristX, wristY);
+        ctx.quadraticCurveTo(scoopMidX, scoopMidY, tipX, tipY);
+        // Bulge of soil depending on fill factor
+        const bulgeFactor = 14 * currentBucketLoad;
+        const bulgX = (wristX + tipX) / 2 - bulgeFactor * Math.sin(bucketRad);
+        const bulgY = (wristY + tipY) / 2 + bulgeFactor * Math.cos(bucketRad);
+        ctx.quadraticCurveTo(bulgX, bulgY, wristX, wristY);
+        ctx.fill();
+
+        // Soil texture specks inside bucket
+        ctx.fillStyle = '#b45309';
+        ctx.beginPath();
+        ctx.arc((wristX + tipX) / 2, (wristY + tipY) / 2, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // Draw Joint Pivots
       function drawJoint(x, y) {
         ctx.beginPath();
         ctx.arc(x, y, 6, 0, Math.PI * 2);
@@ -365,11 +569,16 @@
       drawJoint(elbowX, elbowY);
       drawJoint(wristX, wristY);
 
-      // Live Depth & Pressure Telemetry Calculation
+      // Telemetry Calculation & Dynamic Hydraulic Pressure
       const depthM = ((tipY - groundY) * 0.035).toFixed(2);
-      trenchDepthVal.textContent = depthM > 0 ? `-${depthM} m` : `+${Math.abs(depthM)} m`;
-      const pressure = (12.0 + Math.max(0, depthM * 6.5) + Math.abs(bucketA) * 0.08).toFixed(1);
+      const isDigging = scoopedVolumeThisFrame > 0;
+      const pressure = (12.0 + Math.max(0, depthM * 7.2) + currentBucketLoad * 8.5 + (isDigging ? 4.5 : 0)).toFixed(1);
       pressureVal.textContent = `${pressure} MPa`;
+      if (isDigging) {
+        pressureVal.className = 'text-amber-400 font-bold text-sm mt-0.5 animate-pulse';
+      } else {
+        pressureVal.className = 'text-cyan-400 font-bold text-sm mt-0.5';
+      }
     }
 
     [boomRange, armRange, bucketRange].forEach(el => el.addEventListener('input', renderExcavator));
@@ -386,40 +595,48 @@
       renderExcavator();
     });
 
-    // Automated Excavation Loop
+    // Automated Soil Scooping Dig Cycle (Continuous smooth loop)
     let digStep = 0;
     autoDigBtn.addEventListener('click', () => {
       if (autoDigInterval) {
         clearInterval(autoDigInterval);
         autoDigInterval = null;
+        autoDigBtn.innerHTML = '<span>⚡ Run ML Auto-Dig Cycle</span>';
         grpcStatusText.textContent = 'gRPC Stream: IDLE';
         return;
       }
 
-      grpcStatusText.textContent = 'gRPC: EXECUTING ML AUTONOMOUS DIG CYCLE (50Hz)';
+      autoDigBtn.innerHTML = '<span>⏸ Pause Auto-Dig</span>';
+      grpcStatusText.textContent = 'gRPC: EXECUTING ML AUTONOMOUS SCOOP CYCLE (50Hz)';
       autoDigInterval = setInterval(() => {
-        digStep = (digStep + 1) % 120;
-        const phase = digStep / 120; // 0 to 1
+        digStep = (digStep + 1) % 140;
+        const phase = digStep / 140;
 
-        if (phase < 0.3) {
-          // Phase 1: Lower boom into trench
-          boomRange.value = -25 - Math.sin(phase / 0.3 * Math.PI / 2) * 20;
-          armRange.value = 40 + Math.sin(phase / 0.3 * Math.PI / 2) * 15;
-          bucketRange.value = 0;
-        } else if (phase < 0.6) {
-          // Phase 2: Curl bucket & pull arm (crowd & curl)
-          const p2 = (phase - 0.3) / 0.3;
-          armRange.value = 55 + Math.sin(p2 * Math.PI / 2) * 25;
-          bucketRange.value = Math.sin(p2 * Math.PI / 2) * 55;
-        } else if (phase < 0.85) {
-          // Phase 3: Hoist loaded bucket
-          const p3 = (phase - 0.6) / 0.25;
-          boomRange.value = -45 + Math.sin(p3 * Math.PI / 2) * 40;
+        if (phase < 0.28) {
+          // Phase 1: Reach boom and stick forward toward dirt mound
+          const p1 = phase / 0.28;
+          boomRange.value = -25 - Math.sin(p1 * Math.PI / 2) * 20;
+          armRange.value = 40 + Math.sin(p1 * Math.PI / 2) * 32;
+          bucketRange.value = -12;
+        } else if (phase < 0.58) {
+          // Phase 2: Crowd & Curl (Scoop deep into the dirt mound!)
+          const p2 = (phase - 0.28) / 0.30;
+          armRange.value = 72 + Math.sin(p2 * Math.PI / 2) * 18;
+          bucketRange.value = -12 + Math.sin(p2 * Math.PI / 2) * 68;
+        } else if (phase < 0.82) {
+          // Phase 3: Hoist loaded bucket full of scooped soil
+          const p3 = (phase - 0.58) / 0.24;
+          boomRange.value = -45 + Math.sin(p3 * Math.PI / 2) * 48;
+          armRange.value = 90 - Math.sin(p3 * Math.PI / 2) * 20;
         } else {
-          // Phase 4: Reset
-          boomRange.value = -25;
-          armRange.value = 40;
-          bucketRange.value = 15;
+          // Phase 4: Dump scooped payload into spoil pit and return
+          const p4 = (phase - 0.82) / 0.18;
+          if (p4 > 0.4 && currentBucketLoad > 0.05) {
+            dumpSoil();
+          }
+          bucketRange.value = 56 - Math.sin(p4 * Math.PI / 2) * 41;
+          boomRange.value = 3 - Math.sin(p4 * Math.PI / 2) * 28;
+          armRange.value = 70 - Math.sin(p4 * Math.PI / 2) * 30;
         }
 
         renderExcavator();
