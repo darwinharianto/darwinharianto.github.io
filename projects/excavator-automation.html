@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Autonomous Excavator & Digital Twin | Darwin Harianto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
+          colors: {
+            brand: '#f59e0b',
+            accent: '#06b6d4',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-amber-500 selection:text-white min-h-screen">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-amber-400 hover:text-amber-300 font-medium transition group">
+          <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Portfolio
+        </a>
+        <span class="text-slate-600">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded bg-amber-950/80 border border-amber-800 text-amber-300">Robotics & Digital Twins</span>
+      </div>
+      <div class="text-xs font-mono text-slate-400">
+        3D LiDAR · Unity · Python gRPC · ML Control
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
+    <!-- Project Hero Header -->
+    <section class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-950/60 border border-amber-500/30 text-xs font-mono text-amber-400">
+        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+        Lead Engineer · 4-Person Japanese Engineering Team
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+        Autonomous Excavator (バックホウ) <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-cyan-400">Automation & Unity Digital Twin</span>
+      </h1>
+      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+        Engineered multi-modal 3D LiDAR & sensor fusion, Unity 3D digital twin physical simulation, high-frequency Python gRPC machine controllers, and machine learning autonomous excavation algorithms.
+      </p>
+    </section>
+
+    <!-- Interactive Technology Visualization: Excavator Digital Twin & LiDAR Simulation -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-sm font-mono">01</span>
+            Interactive Kinematic Digital Twin & 3D LiDAR Depth Scanner
+          </h2>
+          <p class="text-sm text-slate-400">Control joints manually or trigger ML autonomous excavation cycle with live gRPC sensor telemetry.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <button id="autoDigBtn" class="px-4 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-xs font-mono text-white font-semibold shadow-lg shadow-amber-500/20 transition flex items-center gap-1.5">
+            <span>⚡ Run ML Auto-Dig Cycle</span>
+          </button>
+          <button id="resetJointsBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300 border border-slate-700 transition">
+            Reset Pose
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Digital Twin Kinematic Canvas -->
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+            <span>Unity Digital Twin Kinematics & LiDAR Point Cloud</span>
+            <span id="grpcStatusText" class="text-amber-300 font-bold">gRPC Stream: CONNECTED (12ms RTT)</span>
+          </div>
+
+          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+            <canvas id="excavatorCanvas" width="600" height="380" class="w-full h-full block"></canvas>
+          </div>
+
+          <!-- Interactive Joint Sliders -->
+          <div class="grid grid-cols-3 gap-4 pt-1 text-xs font-mono">
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">Boom Angle:</span>
+                <span id="boomAngleVal" class="text-amber-400 font-bold">-25°</span>
+              </div>
+              <input type="range" id="boomRange" min="-50" max="15" step="1" value="-25" class="w-full accent-amber-400">
+            </div>
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">Arm Pitch:</span>
+                <span id="armPitchVal" class="text-cyan-400 font-bold">+40°</span>
+              </div>
+              <input type="range" id="armRange" min="10" max="95" step="1" value="40" class="w-full accent-cyan-400">
+            </div>
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">Bucket Curl:</span>
+                <span id="bucketCurlVal" class="text-emerald-400 font-bold">+15°</span>
+              </div>
+              <input type="range" id="bucketRange" min="-45" max="65" step="1" value="15" class="w-full accent-emerald-400">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono border-t border-slate-800">
+            <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Trench Depth</div>
+              <div id="trenchDepthVal" class="text-amber-400 font-bold text-sm mt-0.5">-1.24 m</div>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Hydraulic Pressure</div>
+              <div id="pressureVal" class="text-emerald-400 font-bold text-sm mt-0.5">18.4 MPa</div>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">LiDAR Points / Sec</div>
+              <div class="text-cyan-400 font-bold text-sm mt-0.5">120,000 pts</div>
+            </div>
+            <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Loop Frequency</div>
+              <div class="text-purple-400 font-bold text-sm mt-0.5">50 Hz</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tech Details Sidebar -->
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">System Architecture</h3>
+          
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-amber-400 font-bold">1. 3D LiDAR & Multi-Sensor Fusion:</div>
+            <p class="text-slate-400 text-[10px]">Streams real-time Velodyne/Livox point clouds fused with IMU tilt angles and hydraulic pressure transducers to model terrain topography and resistance torque.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-cyan-400 font-bold">2. High-Speed Python gRPC Bridge:</div>
+            <p class="text-slate-400 text-[10px]">Implemented asynchronous bidirectional gRPC channels communicating with the physical machine's CAN-bus embedded controller at 50 Hz with &lt; 15ms latency.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-emerald-400 font-bold">3. Unity 3D Digital Twin GUI:</div>
+            <p class="text-slate-400 text-[10px]">Recreated the physical backhoe excavator with forward & inverse kinematics (IK), dynamic terrain deformation, and remote operator safety zone visualization.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-purple-400 font-bold">4. ML Autonomous Digging:</div>
+            <p class="text-slate-400 text-[10px]">Trained neural trajectory planning models to optimize bucket fill factor while preventing engine stall from excessive soil resistance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="robot-pose.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+        ← Previous: Robot 6D Pose Estimation
+      </a>
+      <a href="bolt-inspection.html" class="px-5 py-2.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-amber-500/20">
+        Next Project: iOS On-Device Bolt Safety Inspection →
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // --- Interactive Excavator Kinematics Canvas ---
+    const canvas = document.getElementById('excavatorCanvas');
+    const ctx = canvas.getContext('2d');
+    const boomRange = document.getElementById('boomRange');
+    const armRange = document.getElementById('armRange');
+    const bucketRange = document.getElementById('bucketRange');
+    const boomAngleVal = document.getElementById('boomAngleVal');
+    const armPitchVal = document.getElementById('armPitchVal');
+    const bucketCurlVal = document.getElementById('bucketCurlVal');
+    const trenchDepthVal = document.getElementById('trenchDepthVal');
+    const pressureVal = document.getElementById('pressureVal');
+    const autoDigBtn = document.getElementById('autoDigBtn');
+    const resetJointsBtn = document.getElementById('resetJointsBtn');
+    const grpcStatusText = document.getElementById('grpcStatusText');
+
+    let autoDigInterval = null;
+
+    function renderExcavator() {
+      const boomA = parseFloat(boomRange.value);
+      const armA = parseFloat(armRange.value);
+      const bucketA = parseFloat(bucketRange.value);
+
+      boomAngleVal.textContent = `${boomA >= 0 ? '+' : ''}${boomA}°`;
+      armPitchVal.textContent = `${armA >= 0 ? '+' : ''}${armA}°`;
+      bucketCurlVal.textContent = `${bucketA >= 0 ? '+' : ''}${bucketA}°`;
+
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      // Background Sky & Trench Ground
+      ctx.fillStyle = '#060a12';
+      ctx.fillRect(0, 0, W, H);
+
+      const groundY = 270;
+
+      // Draw LiDAR Point Cloud Ground Plane
+      ctx.fillStyle = 'rgba(6, 182, 212, 0.5)';
+      for (let gx = 40; gx < W - 40; gx += 12) {
+        // trench depression between 280 and 520
+        let depth = 0;
+        if (gx > 260 && gx < 480) {
+          depth = Math.sin((gx - 260) / 220 * Math.PI) * 45;
+        }
+        const py = groundY + depth;
+        ctx.beginPath();
+        ctx.arc(gx, py, 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        // LiDAR scan rays
+        if (gx % 48 === 0) {
+          ctx.strokeStyle = 'rgba(6, 182, 212, 0.15)';
+          ctx.lineWidth = 1;
+          ctx.setLineDash([2, 4]);
+          ctx.beginPath();
+          ctx.moveTo(180, 160); // LiDAR sensor position on cabin
+          ctx.lineTo(gx, py);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      }
+
+      // Excavator Base Origin
+      const baseX = 150;
+      const baseY = groundY - 15;
+
+      // 1. Draw Crawler Tracks (Dark Grey with tread pattern)
+      ctx.fillStyle = '#1e293b';
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.roundRect(baseX - 70, baseY - 20, 140, 35, 10);
+      ctx.fill();
+      ctx.stroke();
+
+      // Track Wheels
+      for (let wx = baseX - 50; wx <= baseX + 50; wx += 25) {
+        ctx.beginPath();
+        ctx.arc(wx, baseY - 2, 8, 0, Math.PI * 2);
+        ctx.fillStyle = '#0f172a';
+        ctx.fill();
+        ctx.strokeStyle = '#64748b';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+
+      // 2. Draw Operator Cabin Body (Yellow/Amber)
+      ctx.fillStyle = '#f59e0b';
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.roundRect(baseX - 55, baseY - 70, 95, 50, 6);
+      ctx.fill();
+      ctx.stroke();
+
+      // Cabin Glass Window
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.35)';
+      ctx.strokeStyle = '#38bdf8';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(baseX - 10, baseY - 65, 45, 30, 4);
+      ctx.fill();
+      ctx.stroke();
+
+      // LiDAR Sensor Puck (Mounted on cabin roof)
+      ctx.fillStyle = '#06b6d4';
+      ctx.beginPath();
+      ctx.arc(baseX + 25, baseY - 75, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 3. Forward Kinematics Chain
+      const boomPivotX = baseX + 25;
+      const boomPivotY = baseY - 45;
+      const boomLen = 120;
+      const armLen = 90;
+      const bucketLen = 50;
+
+      // Radian angles
+      const boomRad = (boomA * Math.PI) / 180;
+      const armRad = boomRad + (armA * Math.PI) / 180;
+      const bucketRad = armRad + (bucketA * Math.PI) / 180;
+
+      // Joint 1: Boom Tip (Elbow)
+      const elbowX = boomPivotX + boomLen * Math.cos(boomRad);
+      const elbowY = boomPivotY + boomLen * Math.sin(boomRad);
+
+      // Joint 2: Wrist
+      const wristX = elbowX + armLen * Math.cos(armRad);
+      const wristY = elbowY + armLen * Math.sin(armRad);
+
+      // End Effector: Bucket Teeth Tip
+      const tipX = wristX + bucketLen * Math.cos(bucketRad);
+      const tipY = wristY + bucketLen * Math.sin(bucketRad);
+
+      // Draw Boom Arm (Heavy yellow link)
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 14;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(boomPivotX, boomPivotY);
+      ctx.lineTo(elbowX, elbowY);
+      ctx.stroke();
+
+      // Boom Hydraulic Cylinder (Silver piston)
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(boomPivotX - 15, boomPivotY + 10);
+      ctx.lineTo(boomPivotX + (elbowX - boomPivotX) * 0.6, boomPivotY + (elbowY - boomPivotY) * 0.6);
+      ctx.stroke();
+
+      // Draw Stick / Arm Link
+      ctx.strokeStyle = '#d97706';
+      ctx.lineWidth = 10;
+      ctx.beginPath();
+      ctx.moveTo(elbowX, elbowY);
+      ctx.lineTo(wristX, wristY);
+      ctx.stroke();
+
+      // Draw Bucket End-Effector (Curved scoop)
+      ctx.strokeStyle = '#e2e8f0';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(wristX, wristY);
+      ctx.quadraticCurveTo(wristX + 25 * Math.cos(bucketRad), wristY + 25 * Math.sin(bucketRad) + 15, tipX, tipY);
+      ctx.stroke();
+
+      // Draw Joint Pivot Circles
+      function drawJoint(x, y) {
+        ctx.beginPath();
+        ctx.arc(x, y, 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#0f172a';
+        ctx.fill();
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+      drawJoint(boomPivotX, boomPivotY);
+      drawJoint(elbowX, elbowY);
+      drawJoint(wristX, wristY);
+
+      // Live Depth & Pressure Telemetry Calculation
+      const depthM = ((tipY - groundY) * 0.035).toFixed(2);
+      trenchDepthVal.textContent = depthM > 0 ? `-${depthM} m` : `+${Math.abs(depthM)} m`;
+      const pressure = (12.0 + Math.max(0, depthM * 6.5) + Math.abs(bucketA) * 0.08).toFixed(1);
+      pressureVal.textContent = `${pressure} MPa`;
+    }
+
+    [boomRange, armRange, bucketRange].forEach(el => el.addEventListener('input', renderExcavator));
+
+    resetJointsBtn.addEventListener('click', () => {
+      if (autoDigInterval) {
+        clearInterval(autoDigInterval);
+        autoDigInterval = null;
+      }
+      boomRange.value = -25;
+      armRange.value = 40;
+      bucketRange.value = 15;
+      grpcStatusText.textContent = 'gRPC Stream: CONNECTED (Manual Mode)';
+      renderExcavator();
+    });
+
+    // Automated Excavation Loop
+    let digStep = 0;
+    autoDigBtn.addEventListener('click', () => {
+      if (autoDigInterval) {
+        clearInterval(autoDigInterval);
+        autoDigInterval = null;
+        grpcStatusText.textContent = 'gRPC Stream: IDLE';
+        return;
+      }
+
+      grpcStatusText.textContent = 'gRPC: EXECUTING ML AUTONOMOUS DIG CYCLE (50Hz)';
+      autoDigInterval = setInterval(() => {
+        digStep = (digStep + 1) % 120;
+        const phase = digStep / 120; // 0 to 1
+
+        if (phase < 0.3) {
+          // Phase 1: Lower boom into trench
+          boomRange.value = -25 - Math.sin(phase / 0.3 * Math.PI / 2) * 20;
+          armRange.value = 40 + Math.sin(phase / 0.3 * Math.PI / 2) * 15;
+          bucketRange.value = 0;
+        } else if (phase < 0.6) {
+          // Phase 2: Curl bucket & pull arm (crowd & curl)
+          const p2 = (phase - 0.3) / 0.3;
+          armRange.value = 55 + Math.sin(p2 * Math.PI / 2) * 25;
+          bucketRange.value = Math.sin(p2 * Math.PI / 2) * 55;
+        } else if (phase < 0.85) {
+          // Phase 3: Hoist loaded bucket
+          const p3 = (phase - 0.6) / 0.25;
+          boomRange.value = -45 + Math.sin(p3 * Math.PI / 2) * 40;
+        } else {
+          // Phase 4: Reset
+          boomRange.value = -25;
+          armRange.value = 40;
+          bucketRange.value = 15;
+        }
+
+        renderExcavator();
+      }, 50);
+    });
+
+    renderExcavator();
+  </script>
+</body>
+</html>

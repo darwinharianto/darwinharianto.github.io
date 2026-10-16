@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multimodal Vector Search | Darwin Harianto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
+          colors: {
+            brand: '#06b6d4',
+            accent: '#3b82f6',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition group">
+          <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Portfolio
+        </a>
+        <span class="text-slate-600">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-950/80 border border-cyan-800 text-cyan-300">Project Deep-Dive</span>
+      </div>
+      <div class="text-xs font-mono text-slate-400">
+        Gemini VLM · FAISS HNSW · FastAPI
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
+    <!-- Project Hero Header -->
+    <section class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-xs font-mono text-cyan-400">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+        Multimodal Foundation Models & Vector DB
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+        Multimodal Visual Feature & <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-300">Semantic Vector Search</span>
+      </h1>
+      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+        Extracting complex stylistic and spatial attributes from unstructured images using Gemini Vision Language Models into 768-dimensional embeddings, queried via FAISS HNSW index in &lt;100ms.
+      </p>
+    </section>
+
+    <!-- Interactive Technology Visualization: Embedding Space Projection -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center text-sm font-mono">01</span>
+            Live High-Dimensional Embedding Vector Space Visualizer
+          </h2>
+          <p class="text-sm text-slate-400">Choose a natural language query to see its vector projection and nearest-neighbor cosine retrieval.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="text-xs text-slate-400 font-mono">Natural Language Query:</label>
+          <select id="querySelect" class="bg-slate-900 border border-slate-700 text-cyan-300 text-xs font-mono rounded-lg px-3 py-1.5 focus:border-cyan-400 outline-none">
+            <option value="scandi">"Minimalist Nordic living room with light oak"</option>
+            <option value="industrial">"Industrial open warehouse with exposed red brick"</option>
+            <option value="kitchen">"Modern compact kitchen with black granite island"</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Canvas -->
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+            <span>2D PCA Manifold Projection (768D $\to$ 2D Plane)</span>
+            <span id="retrievalTimeText" class="text-cyan-300 font-bold">FAISS Retrieval Time: 42ms</span>
+          </div>
+
+          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+            <canvas id="vectorCanvas" width="600" height="380" class="w-full h-full block"></canvas>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 pt-2 text-center text-xs font-mono">
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Top-1 Cosine Similarity</div>
+              <div id="topSimilarityVal" class="text-emerald-400 font-bold text-sm mt-0.5">0.948</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Index Scale</div>
+              <div class="text-cyan-400 font-bold text-sm mt-0.5">2.4M Images</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Search Latency (P99)</div>
+              <div class="text-teal-400 font-bold text-sm mt-0.5">&lt; 85 ms</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tech Details Sidebar -->
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">FAISS HNSW Index Architecture</h3>
+          <p>
+            Traditional exact brute-force search calculates $O(N)$ dot products, taking seconds on million-scale catalogs.
+          </p>
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-cyan-400 font-bold">Hierarchical Small World Graphs:</div>
+            <p class="text-slate-400 text-[10px]">Builds a multi-layer proximity graph where top layers have long-range skip connections (like a skip list), achieving logarithmic search complexity <strong class="text-white">$O(\log N)$</strong>.</p>
+          </div>
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-blue-400 font-bold">Gemini VLM Semantic Extraction:</div>
+            <p class="text-slate-400 text-[10px]">Generates rich descriptors for non-textual attributes (lighting warmth, architectural era, structural layout) into dense multimodal vectors.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="bolt-inspection.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+        ← Previous: iOS On-Device Bolt Safety Inspection
+      </a>
+      <a href="../index.html#projects" class="px-5 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-cyan-500/20">
+        Return to Engineering Portfolio →
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // --- Interactive Vector Space Canvas Simulation ---
+    const canvas = document.getElementById('vectorCanvas');
+    const ctx = canvas.getContext('2d');
+    const querySelect = document.getElementById('querySelect');
+    const topSimVal = document.getElementById('topSimilarityVal');
+
+    // Clusters of images in 2D projected space
+    const clusters = {
+      nordic: [
+        { x: 120, y: 110, label: 'IMG_402: Nordic Living Room' },
+        { x: 140, y: 130, label: 'IMG_409: Oak Furniture Suite' },
+        { x: 110, y: 150, label: 'IMG_421: White Scandinavian Studio' },
+        { x: 160, y: 100, label: 'IMG_433: Light Minimalist Hall' }
+      ],
+      industrial: [
+        { x: 450, y: 260, label: 'IMG_801: Brick Wall Loft' },
+        { x: 480, y: 280, label: 'IMG_812: Exposed Steel Pipes' },
+        { x: 430, y: 300, label: 'IMG_825: Concrete Warehouse' },
+        { x: 490, y: 240, label: 'IMG_839: Rustic Factory Conversion' }
+      ],
+      kitchen: [
+        { x: 440, y: 90, label: 'IMG_202: Black Granite Counter' },
+        { x: 470, y: 110, label: 'IMG_215: Modern Island Cooktop' },
+        { x: 420, y: 130, label: 'IMG_230: Minimalist Kitchen Cabinets' }
+      ]
+    };
+
+    const queryTargetMap = {
+      scandi: { x: 130, y: 125, targetCluster: 'nordic', sim: '0.948' },
+      industrial: { x: 460, y: 270, targetCluster: 'industrial', sim: '0.935' },
+      kitchen: { x: 450, y: 105, targetCluster: 'kitchen', sim: '0.942' }
+    };
+
+    function renderVectorSpace() {
+      const qKey = querySelect.value;
+      const target = queryTargetMap[qKey];
+      topSimVal.textContent = target.sim;
+
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      // Grid
+      ctx.strokeStyle = 'rgba(51, 65, 85, 0.25)';
+      ctx.lineWidth = 1;
+      for (let x = 40; x < W; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, H);
+        ctx.stroke();
+      }
+      for (let y = 40; y < H; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
+      }
+
+      // Draw Clusters
+      Object.keys(clusters).forEach(cKey => {
+        const pts = clusters[cKey];
+        const isTarget = cKey === target.targetCluster;
+
+        pts.forEach(p => {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, isTarget ? 6 : 4, 0, Math.PI * 2);
+          ctx.fillStyle = isTarget ? '#38bdf8' : '#475569';
+          ctx.fill();
+          ctx.strokeStyle = isTarget ? '#0284c7' : '#334155';
+          ctx.lineWidth = 1.5;
+          ctx.stroke();
+
+          // Text label
+          ctx.fillStyle = isTarget ? '#94a3b8' : '#64748b';
+          ctx.font = '9px "Fira Code", monospace';
+          ctx.fillText(p.label.split(':')[0], p.x + 8, p.y + 3);
+        });
+      });
+
+      // Draw Query Vector Point (Star)
+      ctx.beginPath();
+      ctx.arc(target.x, target.y, 8, 0, Math.PI * 2);
+      ctx.fillStyle = '#f43f5e';
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.fillStyle = '#fb7185';
+      ctx.font = 'bold 11px "Fira Code", monospace';
+      ctx.fillText('Query Vector [Q]', target.x + 12, target.y - 8);
+
+      // Draw Cosine Similarity Vector Lines to Top-3 nearest neighbors
+      const neighbors = clusters[target.targetCluster];
+      neighbors.slice(0, 3).forEach((n, idx) => {
+        ctx.beginPath();
+        ctx.moveTo(target.x, target.y);
+        ctx.lineTo(n.x, n.y);
+        ctx.strokeStyle = idx === 0 ? '#10b981' : 'rgba(56, 189, 248, 0.6)';
+        ctx.lineWidth = idx === 0 ? 2.5 : 1.5;
+        ctx.setLineDash([3, 3]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Similarity tag
+        const midX = (target.x + n.x) / 2;
+        const midY = (target.y + n.y) / 2;
+        ctx.fillStyle = idx === 0 ? '#34d399' : '#38bdf8';
+        ctx.font = '10px "Fira Code", monospace';
+        ctx.fillText(idx === 0 ? `sim: ${target.sim}` : `sim: ${(parseFloat(target.sim) - idx * 0.02).toFixed(3)}`, midX, midY - 4);
+      });
+    }
+
+    querySelect.addEventListener('change', renderVectorSpace);
+    renderVectorSpace();
+  </script>
+</body>
+</html>

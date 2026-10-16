@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CAD 2D Irregular Nesting Engine | Darwin Harianto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
+          colors: {
+            brand: '#2563eb',
+            accent: '#06b6d4',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition group">
+          <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Portfolio
+        </a>
+        <span class="text-slate-600">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded bg-blue-950/80 border border-blue-800 text-blue-300">Project Deep-Dive</span>
+      </div>
+      <div class="text-xs font-mono text-slate-400">
+        Google OR-Tools · NFP Geometry
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
+    <!-- Project Hero Header -->
+    <section class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950/60 border border-blue-500/30 text-xs font-mono text-cyan-400">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+        Mathematical Optimization & Computational Geometry
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+        Automated CAD 2D Irregular <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-300">Nesting & Packing Engine</span>
+      </h1>
+      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+        Solving high-constraint combinatorial 2D cutting-stock layouts from raw DXF files using Minkowski Sum No-Fit Polygons (NFP) and Google OR-Tools constraint satisfaction.
+      </p>
+    </section>
+
+    <!-- Interactive Technology Visualization: 2D Packing Simulation -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center text-sm font-mono">01</span>
+            Live 2D Sheet Packing & Collision Simulation
+          </h2>
+          <p class="text-sm text-slate-400">Observe how the algorithm dynamically places non-convex parts onto a raw metal/wood stock sheet.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <button id="resetPackingBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300 border border-slate-700 transition">
+            Reset Sheet
+          </button>
+          <button id="stepPackingBtn" class="px-4 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-xs font-mono text-white font-semibold shadow-lg shadow-cyan-500/20 transition">
+            Pack Next Part
+          </button>
+          <button id="autoPackBtn" class="px-4 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-mono text-white font-semibold transition">
+            Auto Pack All
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Canvas -->
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+            <span>Stock Sheet Material (Dimension: 1200mm × 800mm)</span>
+            <span id="packingStatusText" class="text-cyan-300 font-bold">Ready to pack parts</span>
+          </div>
+          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+            <canvas id="nestingCanvas" width="600" height="380" class="w-full h-full block"></canvas>
+          </div>
+          <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono">
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Utilization Rate</div>
+              <div id="utilizationVal" class="text-emerald-400 font-bold text-sm mt-0.5">0.0%</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Scrap Waste</div>
+              <div id="wasteVal" class="text-rose-400 font-bold text-sm mt-0.5">100.0%</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Parts Placed</div>
+              <div id="placedCountVal" class="text-cyan-400 font-bold text-sm mt-0.5">0 / 8</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">NFP Collisions</div>
+              <div class="text-emerald-400 font-bold text-sm mt-0.5">0 (Legitimate)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tech Sidebar -->
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Core Geometry: No-Fit Polygon (NFP)</h3>
+          <p>
+            Standard bounding box nesting results in terrible sheet waste for L-shaped, bracket, and curved parts. 
+          </p>
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-cyan-400 font-bold">Minkowski Difference Formula:</div>
+            <div class="text-slate-300">$\text{NFP}_{A,B} = A \oplus (-B) = \{ a - b \mid a \in A, b \in B \}$</div>
+            <p class="text-slate-400 text-[10px] mt-1">If part B's reference point is placed on the boundary of $\text{NFP}_{A,B}$, part B touches part A without overlapping!</p>
+          </div>
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1 text-slate-400 text-[11px]">
+            <div class="text-emerald-400 font-bold">Google OR-Tools Solver:</div>
+            <div>• Formulated integer linear constraints on discrete candidate placement positions.</div>
+            <div>• Penalized bounding height to maximize remaining contiguous scrap for future cuts.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture Breakdown -->
+    <section class="space-y-6">
+      <div class="border-b border-slate-800 pb-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <span class="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center text-sm font-mono">02</span>
+          End-to-End System Architecture
+        </h2>
+        <p class="text-sm text-slate-400">From CAD DXF vector geometry parsing to optimized CNC fabrication.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-xs">
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-cyan-400">
+          <span class="font-mono text-cyan-400 font-bold">Step 1: CAD Ingestion</span>
+          <h4 class="text-white font-bold text-sm">DXF Polyline Parsing</h4>
+          <p class="text-slate-400 leading-relaxed">
+            Parsed raw AutoCAD DXF files using <code class="text-slate-200">ezdxf</code>, extracting <code class="text-slate-200">LWPOLYLINE</code>, <code class="text-slate-200">SPLINE</code>, and <code class="text-slate-200">ARC</code> entities into closed polygon loops.
+          </p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-blue-400">
+          <span class="font-mono text-blue-400 font-bold">Step 2: Geometry Engine</span>
+          <h4 class="text-white font-bold text-sm">NFP Precomputation</h4>
+          <p class="text-slate-400 leading-relaxed">
+            Constructed exact No-Fit Polygons and Inner-Fit Polygons (IFP) for all part pairings across 0°, 90°, 180°, and 270° candidate rotations.
+          </p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-emerald-400">
+          <span class="font-mono text-emerald-400 font-bold">Step 3: Optimization</span>
+          <h4 class="text-white font-bold text-sm">OR-Tools Constraint Engine</h4>
+          <p class="text-slate-400 leading-relaxed">
+            Solved multi-part placement with bottom-left-fill heuristics and constraint satisfaction to minimize sheet length and maximize nesting density.
+          </p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-amber-400">
+          <span class="font-mono text-amber-400 font-bold">Step 4: Output GUI</span>
+          <h4 class="text-white font-bold text-sm">Interactive Visualizer</h4>
+          <p class="text-slate-400 leading-relaxed">
+            Delivered an intuitive desktop GUI allowing factory operators to review arrangements, manually nudge parts, and export optimized CNC laser cutting paths.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="../index.html#projects" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+        ← Back to Featured Projects
+      </a>
+      <a href="floorplan-synthesis.html" class="px-5 py-2.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-blue-500/20">
+        Next Project: SDXL Floor Plan Synthesis →
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // --- Interactive 2D Nesting Canvas Simulation ---
+    const canvas = document.getElementById('nestingCanvas');
+    const ctx = canvas.getContext('2d');
+    const stepBtn = document.getElementById('stepPackingBtn');
+    const autoBtn = document.getElementById('autoPackBtn');
+    const resetBtn = document.getElementById('resetPackingBtn');
+    const statusText = document.getElementById('packingStatusText');
+    const utilVal = document.getElementById('utilizationVal');
+    const wasteVal = document.getElementById('wasteVal');
+    const placedVal = document.getElementById('placedCountVal');
+
+    const sheet = { x: 30, y: 30, w: 540, h: 320 };
+    const sheetArea = sheet.w * sheet.h;
+
+    // Irregular part definitions (relative vertices)
+    const partLibrary = [
+      { name: 'L-Bracket A', color: '#06b6d4', pts: [[0,0],[70,0],[70,40],[35,40],[35,90],[0,90]], target: {x: 40, y: 40} },
+      { name: 'T-Beam B', color: '#3b82f6', pts: [[0,0],[80,0],[80,30],[50,30],[50,85],[30,85],[30,30],[0,30]], target: {x: 120, y: 40} },
+      { name: 'Concave Hook C', color: '#10b981', pts: [[0,0],[60,0],[60,70],[40,70],[40,25],[0,25]], target: {x: 215, y: 40} },
+      { name: 'Tri-Gusset D', color: '#f59e0b', pts: [[0,0],[75,0],[75,75]], target: {x: 290, y: 40} },
+      { name: 'L-Bracket E', color: '#a855f7', pts: [[0,0],[70,0],[70,40],[35,40],[35,90],[0,90]], target: {x: 40, y: 145} },
+      { name: 'U-Channel F', color: '#ec4899', pts: [[0,0],[70,0],[70,60],[50,60],[50,20],[20,20],[20,60],[0,60]], target: {x: 125, y: 140} },
+      { name: 'Trapezoid G', color: '#14b8a6', pts: [[20,0],[70,0],[90,50],[0,50]], target: {x: 210, y: 130} },
+      { name: 'Angle Bracket H', color: '#6366f1', pts: [[0,0],[80,0],[80,30],[30,30],[30,80],[0,80]], target: {x: 315, y: 130} }
+    ];
+
+    let placedParts = [];
+    let autoInterval = null;
+
+    function calcPolyArea(pts) {
+      let area = 0;
+      for (let i = 0; i < pts.length; i++) {
+        const j = (i + 1) % pts.length;
+        area += pts[i][0] * pts[j][1];
+        area -= pts[j][0] * pts[i][1];
+      }
+      return Math.abs(area) / 2;
+    }
+
+    function renderSheet() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Sheet Boundary
+      ctx.fillStyle = '#090d16';
+      ctx.fillRect(sheet.x, sheet.y, sheet.w, sheet.h);
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(sheet.x, sheet.y, sheet.w, sheet.h);
+
+      // Sheet Grid
+      ctx.strokeStyle = 'rgba(51, 65, 85, 0.2)';
+      ctx.lineWidth = 1;
+      for (let x = sheet.x + 40; x < sheet.x + sheet.w; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, sheet.y);
+        ctx.lineTo(x, sheet.y + sheet.h);
+        ctx.stroke();
+      }
+      for (let y = sheet.y + 40; y < sheet.y + sheet.h; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(sheet.x, y);
+        ctx.lineTo(sheet.x + sheet.w, y);
+        ctx.stroke();
+      }
+
+      // Draw Placed Polygons
+      let totalPartArea = 0;
+      placedParts.forEach(p => {
+        ctx.beginPath();
+        p.pts.forEach((pt, idx) => {
+          const vx = sheet.x + p.target.x + pt[0];
+          const vy = sheet.y + p.target.y + pt[1];
+          if (idx === 0) ctx.moveTo(vx, vy);
+          else ctx.lineTo(vx, vy);
+        });
+        ctx.closePath();
+        ctx.fillStyle = p.color + '44';
+        ctx.fill();
+        ctx.strokeStyle = p.color;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        totalPartArea += calcPolyArea(p.pts);
+
+        // Reference NFP anchor dot
+        ctx.beginPath();
+        ctx.arc(sheet.x + p.target.x, sheet.y + p.target.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+      });
+
+      // Update Stats
+      const util = (totalPartArea / sheetArea * 100);
+      utilVal.textContent = `${util.toFixed(1)}%`;
+      wasteVal.textContent = `${(100 - util).toFixed(1)}%`;
+      placedVal.textContent = `${placedParts.length} / ${partLibrary.length}`;
+    }
+
+    function packNext() {
+      if (placedParts.length < partLibrary.length) {
+        const nextPart = partLibrary[placedParts.length];
+        placedParts.push(nextPart);
+        statusText.textContent = `Packed: ${nextPart.name} via NFP Bottom-Left Fit`;
+        renderSheet();
+      } else {
+        statusText.textContent = 'All 8 parts packed! Maximum constraint density reached.';
+        if (autoInterval) {
+          clearInterval(autoInterval);
+          autoInterval = null;
+        }
+      }
+    }
+
+    stepBtn.addEventListener('click', packNext);
+
+    autoBtn.addEventListener('click', () => {
+      if (autoInterval) return;
+      autoInterval = setInterval(() => {
+        if (placedParts.length < partLibrary.length) {
+          packNext();
+        } else {
+          clearInterval(autoInterval);
+          autoInterval = null;
+        }
+      }, 400);
+    });
+
+    resetBtn.addEventListener('click', () => {
+      if (autoInterval) {
+        clearInterval(autoInterval);
+        autoInterval = null;
+      }
+      placedParts = [];
+      statusText.textContent = 'Sheet cleared. Ready to nest.';
+      renderSheet();
+    });
+
+    renderSheet();
+  </script>
+</body>
+</html>

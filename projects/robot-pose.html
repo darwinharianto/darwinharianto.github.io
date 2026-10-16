@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Robot 6D Pose Estimation (PVNet + SolvePnP) | Darwin Harianto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
+          colors: {
+            brand: '#3b82f6',
+            accent: '#06b6d4',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition group">
+          <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Portfolio
+        </a>
+        <span class="text-slate-600">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded bg-blue-950/80 border border-blue-800 text-blue-300">Robotics 6D Vision</span>
+      </div>
+      <div class="text-xs font-mono text-slate-400">
+        Detectron2 · Custom PVNet · SolvePnP
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
+    <!-- Project Hero Header -->
+    <section class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950/60 border border-blue-500/30 text-xs font-mono text-cyan-400">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+        Lead Engineer · 4-Person Japanese Engineering Team
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+        Robot 6D Position & Orientation <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400">Estimation with PVNet + SolvePnP</span>
+      </h1>
+      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+        Engineered 6-DoF robot orientation and localization from monocular camera streams using synthetic 3D CAD data, custom vector-field keypoint voting (PVNet), camera calibration parameters ($K, [R|t]$), and Perspective-n-Point solvers.
+      </p>
+    </section>
+
+    <!-- Interactive Technology Visualization: 6D Pose Projection Simulator -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center text-sm font-mono">01</span>
+            Live 6D Pose Estimation & 3D Bounding Box Projection
+          </h2>
+          <p class="text-sm text-slate-400">Adjust the yaw angle and distance to simulate real-time keypoint extraction and 3D coordinate frame registration.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-4 text-xs font-mono">
+          <div class="flex items-center gap-2">
+            <span class="text-slate-400">Robot Yaw (θ):</span>
+            <input type="range" id="robotYawRange" min="-90" max="90" step="5" value="25" class="accent-cyan-400 w-24">
+            <span id="robotYawVal" class="text-cyan-400 font-bold">+25°</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-slate-400">Distance (Z):</span>
+            <input type="range" id="robotDistRange" min="1.0" max="3.5" step="0.1" value="2.1" class="accent-blue-400 w-24">
+            <span id="robotDistVal" class="text-blue-400 font-bold">2.1 m</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Interactive Canvas -->
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+            <span>Camera Stream ($f_x = 615, f_y = 615, c_x = 300, c_y = 190$)</span>
+            <span id="poseAccuracyText" class="text-emerald-400 font-bold">Position Error: 2.8 cm (&lt; 5.0 cm Target)</span>
+          </div>
+
+          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+            <canvas id="poseCanvas" width="600" height="380" class="w-full h-full block"></canvas>
+          </div>
+
+          <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono">
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Translation Error</div>
+              <div id="transErrVal" class="text-emerald-400 font-bold text-sm mt-0.5">2.8 cm</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Rotation Error</div>
+              <div id="rotErrVal" class="text-cyan-400 font-bold text-sm mt-0.5">1.4°</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">PnP Inliers</div>
+              <div class="text-emerald-400 font-bold text-sm mt-0.5">8 / 8 Keypoints</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Inference Speed</div>
+              <div class="text-purple-400 font-bold text-sm mt-0.5">38 FPS</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tech Details Sidebar -->
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Technical Architecture & Stack</h3>
+          
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-cyan-400 font-bold">1. Detectron2 + PVNet Head:</div>
+            <p class="text-slate-400 text-[10px]">Rather than regressing 2D keypoint coordinates directly (fragile to occlusion), PVNet outputs pixel-wise 2D unit vector fields that vote for semantic 3D keypoint centers via RANSAC voting.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-blue-400 font-bold">2. Camera Calibration & SolvePnP:</div>
+            <p class="text-slate-400 text-[10px]">Given 3D CAD model vertices $X_i$ and recovered 2D image coordinates $x_i$, solve:
+            $$s \begin{bmatrix} u \\ v \\ 1 \end{bmatrix} = K \begin{bmatrix} R & t \end{bmatrix} \begin{bmatrix} X \\ Y \\ Z \\ 1 \end{bmatrix}$$
+            via Levenberg-Marquardt optimization in OpenCV <code class="text-cyan-300">solvePnP</code>.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-emerald-400 font-bold">3. 3D Synthetic Dataset:</div>
+            <p class="text-slate-400 text-[10px]">Generated 50k+ synthetic photo-realistic rendering variations using CAD models with domain randomization (lighting, textures, random distractors) for robust physical deployment.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results & Impact Section -->
+    <section class="space-y-6">
+      <div class="border-b border-slate-800 pb-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <span class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-sm font-mono">02</span>
+          Physical Hardware Testing & Production Impact
+        </h2>
+        <p class="text-sm text-slate-400">Validated on real industrial robot manipulators under fluctuating factory lighting conditions.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-cyan-400">
+          <h4 class="text-white font-bold text-sm">Sub-5cm Localization Target</h4>
+          <p class="text-slate-400 leading-relaxed">
+            Achieved average 3D position error under <strong>3.2 cm</strong> and orientation error under <strong>1.8°</strong>, fully meeting the high-precision docking requirements for autonomous robot interaction.
+          </p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-blue-400">
+          <h4 class="text-white font-bold text-sm">Real-time Latency Speedup</h4>
+          <p class="text-slate-400 leading-relaxed">
+            Optimized custom PVNet voting CUDA kernels and pruned feature backbones, increasing frame rate from 14 FPS to <strong>38+ FPS</strong> on on-premise industrial GPU compute.
+          </p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-emerald-400">
+          <h4 class="text-white font-bold text-sm">Heavy Occlusion Resilience</h4>
+          <p class="text-slate-400 leading-relaxed">
+            Vector-field voting ensured that even when up to 45% of the robot body was occluded by obstacles or cables, the PnP algorithm successfully converged with zero drift.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="tem-metrology.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+        ← Previous: TEM Semiconductor Metrology
+      </a>
+      <a href="excavator-automation.html" class="px-5 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-cyan-500/20">
+        Next Project: Autonomous Excavator & Digital Twin →
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // --- Interactive 6D Pose Estimation Canvas ---
+    const canvas = document.getElementById('poseCanvas');
+    const ctx = canvas.getContext('2d');
+    const yawRange = document.getElementById('robotYawRange');
+    const yawVal = document.getElementById('robotYawVal');
+    const distRange = document.getElementById('robotDistRange');
+    const distVal = document.getElementById('robotDistVal');
+    const transErrVal = document.getElementById('transErrVal');
+    const rotErrVal = document.getElementById('rotErrVal');
+
+    // Synthetic 3D Robot Bounding Box Vertices (Local CAD Frame)
+    const box3D = [
+      [-50, -40, -60],
+      [ 50, -40, -60],
+      [ 50,  40, -60],
+      [-50,  40, -60],
+      [-50, -40,  60],
+      [ 50, -40,  60],
+      [ 50,  40,  60],
+      [-50,  40,  60]
+    ];
+
+    const edges = [
+      [0,1],[1,2],[2,3],[3,0], // back face
+      [4,5],[5,6],[6,7],[7,4], // front face
+      [0,4],[1,5],[2,6],[3,7]  // connecting edges
+    ];
+
+    function render6DPose() {
+      const yawDeg = parseFloat(yawRange.value);
+      const distM = parseFloat(distRange.value);
+
+      yawVal.textContent = `${yawDeg >= 0 ? '+' : ''}${yawDeg}°`;
+      distVal.textContent = `${distM.toFixed(1)} m`;
+
+      // Live error metrics simulation based on distance and angle
+      const transErr = (1.8 + (distM - 1.0) * 0.9 + Math.abs(yawDeg) * 0.015).toFixed(1);
+      const rotErr = (0.9 + (distM - 1.0) * 0.4 + Math.abs(yawDeg) * 0.01).toFixed(1);
+      transErrVal.textContent = `${transErr} cm`;
+      rotErrVal.textContent = `${rotErr}°`;
+
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      // Camera background
+      ctx.fillStyle = '#080d1a';
+      ctx.fillRect(0, 0, W, H);
+
+      // Draw Camera Calibration Reticle
+      ctx.strokeStyle = 'rgba(51, 65, 85, 0.4)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(W / 2 - 20, H / 2);
+      ctx.lineTo(W / 2 + 20, H / 2);
+      ctx.moveTo(W / 2, H / 2 - 20);
+      ctx.lineTo(W / 2, H / 2 + 20);
+      ctx.stroke();
+
+      // Camera parameters
+      const fx = 450, fy = 450;
+      const cx = W / 2, cy = H / 2 + 15;
+      const rad = (yawDeg * Math.PI) / 180;
+      const cosY = Math.cos(rad);
+      const sinY = Math.sin(rad);
+
+      // Scale factor inversely proportional to distance Z
+      const zCam = distM * 180;
+
+      // Project 3D vertices using pinhole model: u = fx * X/Z + cx, v = fy * Y/Z + cy
+      const projected2D = box3D.map(pt => {
+        // Rotate around Y axis
+        const xRot = pt[0] * cosY - pt[2] * sinY;
+        const yRot = pt[1];
+        const zRot = pt[0] * sinY + pt[2] * cosY + zCam;
+
+        const u = (fx * xRot) / zRot + cx;
+        const v = (fy * yRot) / zRot + cy;
+        return { u, v };
+      });
+
+      // Draw Robot Body Silhouette (Mocked Mobile Industrial Base)
+      ctx.fillStyle = 'rgba(30, 58, 138, 0.45)';
+      ctx.beginPath();
+      projected2D.slice(0, 4).forEach((p, idx) => {
+        if (idx === 0) ctx.moveTo(p.u, p.v);
+        else ctx.lineTo(p.u, p.v);
+      });
+      ctx.closePath();
+      ctx.fill();
+
+      // Draw 3D Projected Bounding Box Edges (Cyan Wireframe)
+      ctx.strokeStyle = '#06b6d4';
+      ctx.lineWidth = 2;
+      edges.forEach(e => {
+        const p1 = projected2D[e[0]];
+        const p2 = projected2D[e[1]];
+        ctx.beginPath();
+        ctx.moveTo(p1.u, p1.v);
+        ctx.lineTo(p2.u, p2.v);
+        ctx.stroke();
+      });
+
+      // Draw 2D Keypoints (PVNet Vector Centers)
+      projected2D.forEach((p, idx) => {
+        ctx.beginPath();
+        ctx.arc(p.u, p.v, 4.5, 0, Math.PI * 2);
+        ctx.fillStyle = '#10b981';
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        ctx.fillStyle = '#6ee7b7';
+        ctx.font = '9px "Fira Code", monospace';
+        ctx.fillText(`K${idx}`, p.u + 6, p.v - 6);
+      });
+
+      // Project 3D Coordinate Axes (X: Red, Y: Green, Z: Blue) at Robot Origin
+      const origin3D = [0, 0, 0];
+      const axisLen = 45;
+      const axes3D = [
+        [axisLen, 0, 0], // X (Red)
+        [0, axisLen, 0], // Y (Green)
+        [0, 0, axisLen]  // Z (Blue)
+      ];
+
+      function projectPt(x, y, z) {
+        const xR = x * cosY - z * sinY;
+        const yR = y;
+        const zR = x * sinY + z * cosY + zCam;
+        return {
+          u: (fx * xR) / zR + cx,
+          v: (fy * yR) / zR + cy
+        };
+      }
+
+      const o2D = projectPt(0, 0, 0);
+      const x2D = projectPt(axisLen, 0, 0);
+      const y2D = projectPt(0, axisLen, 0);
+      const z2D = projectPt(0, 0, axisLen);
+
+      function drawAxis(to, color, label) {
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(o2D.u, o2D.v);
+        ctx.lineTo(to.u, to.v);
+        ctx.stroke();
+
+        ctx.fillStyle = color;
+        ctx.font = 'bold 11px "Fira Code", monospace';
+        ctx.fillText(label, to.u + 4, to.v + 4);
+      }
+
+      drawAxis(x2D, '#ef4444', 'X');
+      drawAxis(y2D, '#22c55e', 'Y');
+      drawAxis(z2D, '#3b82f6', 'Z');
+
+      // Calibration status overlay
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.85)';
+      ctx.fillRect(15, 15, 230, 65);
+      ctx.strokeStyle = '#334155';
+      ctx.strokeRect(15, 15, 230, 65);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '10px "Fira Code", monospace';
+      ctx.fillText(`Est. t = [0.12, 0.04, ${distM.toFixed(2)}] m`, 25, 33);
+      ctx.fillText(`Est. R = RotY(${yawDeg.toFixed(1)}°)`, 25, 50);
+      ctx.fillText(`Status: EPnP Solver Converged`, 25, 67);
+    }
+
+    [yawRange, distRange].forEach(el => el.addEventListener('input', render6DPose));
+    render6DPose();
+  </script>
+</body>
+</html>

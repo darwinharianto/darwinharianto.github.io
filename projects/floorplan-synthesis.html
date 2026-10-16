@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDXL Floor Plan Synthesis | Darwin Harianto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
+          colors: {
+            brand: '#a855f7',
+            accent: '#ec4899',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-purple-500 selection:text-white min-h-screen">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 font-medium transition group">
+          <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Portfolio
+        </a>
+        <span class="text-slate-600">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-950/80 border border-purple-800 text-purple-300">Project Deep-Dive</span>
+      </div>
+      <div class="text-xs font-mono text-slate-400">
+        SDXL · LoRA · ControlNet M-LSD
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
+    <!-- Project Hero Header -->
+    <section class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/60 border border-purple-500/30 text-xs font-mono text-purple-400">
+        <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+        Generative AI & Structural Control
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+        Architectural Floor Plan Synthesis with <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-300">SDXL & ControlNet</span>
+      </h1>
+      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+        Trained specialized LoRA adapters on architectural blueprints and enforced rigid wall partitions using ControlNet M-LSD with automated polygon IoU topological validation.
+      </p>
+    </section>
+
+    <!-- Interactive Technology Visualization: Generative Control Simulator -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center text-sm font-mono">01</span>
+            Interactive Structural Conditioning & LoRA Weight Visualizer
+          </h2>
+          <p class="text-sm text-slate-400">Adjust the ControlNet line weight and LoRA adapter scale to see how structural walls guide latent generation.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-4 text-xs font-mono">
+          <div class="flex items-center gap-2">
+            <span class="text-slate-400">ControlNet M-LSD:</span>
+            <input type="range" id="controlRange" min="0.0" max="1.0" step="0.05" value="0.85" class="accent-purple-400 w-24">
+            <span id="controlVal" class="text-purple-400 font-bold">0.85</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-slate-400">LoRA Scale (α):</span>
+            <input type="range" id="loraRange" min="0.0" max="1.0" step="0.05" value="0.90" class="accent-pink-400 w-24">
+            <span id="loraVal" class="text-pink-400 font-bold">0.90</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Interactive Multi-Stage Canvas -->
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+            <span>Latent Denoising Plane (Conditioning vs Synthesis Output)</span>
+            <span id="genStatusText" class="text-purple-300 font-bold">Wall Adherence: 96.4% | Topological IoU: 0.942</span>
+          </div>
+
+          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+            <canvas id="planCanvas" width="600" height="380" class="w-full h-full block"></canvas>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 pt-2 text-center text-xs font-mono">
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Partition Boundary Accuracy</div>
+              <div id="boundaryScoreVal" class="text-emerald-400 font-bold text-sm mt-0.5">96.4%</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Room Adjacency Legality</div>
+              <div id="roomLegalVal" class="text-purple-400 font-bold text-sm mt-0.5">100% Valid</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Inference Latency</div>
+              <div class="text-cyan-400 font-bold text-sm mt-0.5">1.4s (SDXL Turbo)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tech Details Sidebar -->
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">LoRA + ControlNet Architecture</h3>
+          <p>
+            Standard text prompts fail to enforce exact spatial geometries. By combining two complementary conditioning paths, we achieved sub-pixel wall alignment:
+          </p>
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-purple-400 font-bold">1. LoRA Adapter: W = W₀ + B · A</div>
+            <p class="text-slate-400 text-[10px]">Low-rank decomposition matrices ($r=16$) fine-tuned on 3,500 architectural CAD plans to teach room styles, textures, and door swings.</p>
+          </div>
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-pink-400 font-bold">2. ControlNet M-LSD Zero-Convs:</div>
+            <p class="text-slate-400 text-[10px]">Locks structural boundaries by injecting line segment features directly into UNet residual blocks via $1\times1$ zero-convolutions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Algorithmic Verification Section -->
+    <section class="space-y-6">
+      <div class="border-b border-slate-800 pb-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <span class="w-7 h-7 rounded-lg bg-pink-500/10 text-pink-400 border border-pink-500/20 flex items-center justify-center text-sm font-mono">02</span>
+          Topological IoU Room Verification Pipeline
+        </h2>
+        <p class="text-sm text-slate-400">Automated post-generation algorithmic validation ensuring architectural compliance.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-purple-500">
+          <h4 class="text-white font-bold text-sm">Semantic Mask Binarization</h4>
+          <p class="text-slate-400 leading-relaxed">
+            Extracts wall contours and partition polygons using adaptive thresholding and morphological closing operators in OpenCV to isolate individual room enclosures.
+          </p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-pink-500">
+          <h4 class="text-white font-bold text-sm">Polygon IoU Matching</h4>
+          <p class="text-slate-400 leading-relaxed">
+            Computes Intersection-over-Union $\text{IoU} = \frac{|P_{\text{gen}} \cap P_{\text{CAD}}|}{|P_{\text{gen}} \cup P_{\text{CAD}}|}$ between generated wall segments and target CAD specifications.
+          </p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-indigo-500">
+          <h4 class="text-white font-bold text-sm">Adjacency Graph Check</h4>
+          <p class="text-slate-400 leading-relaxed">
+            Constructs a planar graph of room connections (e.g., verifying that the bathroom is not accessed exclusively through the kitchen) to prevent nonsensical layouts.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="cad-nesting.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+        ← Previous: CAD 2D Nesting Engine
+      </a>
+      <a href="tem-metrology.html" class="px-5 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-purple-500/20">
+        Next Project: TEM Semiconductor Metrology →
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // --- Interactive Floor Plan Generative Canvas ---
+    const canvas = document.getElementById('planCanvas');
+    const ctx = canvas.getContext('2d');
+    const controlRange = document.getElementById('controlRange');
+    const controlVal = document.getElementById('controlVal');
+    const loraRange = document.getElementById('loraRange');
+    const loraVal = document.getElementById('loraVal');
+    const boundaryScoreVal = document.getElementById('boundaryScoreVal');
+    const genStatusText = document.getElementById('genStatusText');
+
+    function renderFloorPlan() {
+      const cWeight = parseFloat(controlRange.value);
+      const lWeight = parseFloat(loraRange.value);
+
+      controlVal.textContent = cWeight.toFixed(2);
+      loraVal.textContent = lWeight.toFixed(2);
+
+      const adherence = (70 + cWeight * 26 + lWeight * 3.5).toFixed(1);
+      boundaryScoreVal.textContent = `${adherence}%`;
+      genStatusText.textContent = `Wall Adherence: ${adherence}% | LoRA Style Fidelity: ${(lWeight * 100).toFixed(0)}%`;
+
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      // Background Blueprint paper grid
+      ctx.fillStyle = '#060a12';
+      ctx.fillRect(0, 0, W, H);
+      ctx.strokeStyle = 'rgba(30, 41, 59, 0.4)';
+      ctx.lineWidth = 1;
+      for (let x = 20; x < W; x += 25) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, H);
+        ctx.stroke();
+      }
+      for (let y = 20; y < H; y += 25) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(W, y);
+        ctx.stroke();
+      }
+
+      // Rooms Layout Geometry
+      const rooms = [
+        { name: 'LIVING ROOM', x: 60, y: 50, w: 260, h: 180, color: '#38bdf8' },
+        { name: 'KITCHEN & DINING', x: 320, y: 50, w: 220, h: 140, color: '#f59e0b' },
+        { name: 'MASTER BEDROOM', x: 60, y: 230, w: 200, h: 110, color: '#c084fc' },
+        { name: 'BATHROOM', x: 260, y: 230, w: 110, h: 110, color: '#10b981' },
+        { name: 'BALCONY TERRACE', x: 370, y: 190, w: 170, h: 150, color: '#ec4899' }
+      ];
+
+      // Draw Room Fill (LoRA Style Strength)
+      rooms.forEach(r => {
+        ctx.fillStyle = r.color + Math.floor(lWeight * 35).toString(16).padStart(2, '0');
+        ctx.fillRect(r.x, r.y, r.w, r.h);
+
+        // Room Labels
+        ctx.fillStyle = '#cbd5e1';
+        ctx.font = 'bold 10px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(r.name, r.x + r.w / 2, r.y + r.h / 2);
+      });
+
+      // Draw Walls (Governed by ControlNet M-LSD Line Weight)
+      const wallJitter = (1.0 - cWeight) * 8; // When control weight is low, walls jitter / blur
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 4;
+
+      rooms.forEach(r => {
+        ctx.beginPath();
+        const jx = (Math.random() - 0.5) * wallJitter;
+        const jy = (Math.random() - 0.5) * wallJitter;
+        ctx.rect(r.x + jx, r.y + jy, r.w, r.h);
+        ctx.stroke();
+
+        // ControlNet Wireframe Guides overlay in purple
+        if (cWeight > 0.4) {
+          ctx.strokeStyle = 'rgba(168, 85, 247, 0.6)';
+          ctx.lineWidth = 1.5;
+          ctx.setLineDash([3, 3]);
+          ctx.strokeRect(r.x, r.y, r.w, r.h);
+          ctx.setLineDash([]);
+        }
+      });
+
+      // Draw Doorway Arcs
+      function drawDoor(x, y, radius, startAngle) {
+        ctx.beginPath();
+        ctx.arc(x, y, radius, startAngle, startAngle + Math.PI / 2);
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+      }
+      drawDoor(160, 230, 25, 0);
+      drawDoor(260, 280, 20, Math.PI / 2);
+      drawDoor(370, 240, 24, 0);
+    }
+
+    [controlRange, loraRange].forEach(el => el.addEventListener('input', renderFloorPlan));
+    renderFloorPlan();
+  </script>
+</body>
+</html>

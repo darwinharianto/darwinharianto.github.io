@@ -3,226 +3,799 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Darwin Harianto | Senior AI Engineer</title>
+  <title>Darwin Harianto | Senior AI Engineer & Systems Architect</title>
+  <meta name="description" content="Portfolio of Darwin Harianto, Senior AI Engineer specializing in Generative AI, Computer Vision, Mathematical Optimization, and Edge Acceleration." />
+  
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <script>
     tailwind.config = {
       theme: {
         extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
           colors: {
-            brand: '#2563eb',
+            brand: {
+              DEFAULT: '#2563eb',
+              glow: '#3b82f6',
+            },
+            accent: '#06b6d4',
           }
         }
       }
     }
   </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+    .glass-card {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.45) 0%, rgba(15, 23, 42, 0.65) 100%);
+      border: 1px solid rgba(51, 65, 85, 0.5);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px -10px rgba(14, 165, 233, 0.15);
+    }
+    .gradient-border-btn {
+      position: relative;
+      background: linear-gradient(60deg, #2563eb, #06b6d4, #a855f7);
+      padding: 1px;
+      border-radius: 0.75rem;
+    }
+  </style>
 </head>
-<body class="bg-slate-900 text-slate-100 font-sans antialiased selection:bg-brand selection:text-white">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen">
+
+  <!-- Ambient Glow Effects -->
+  <div class="fixed top-0 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+  <div class="fixed bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
 
   <!-- Navigation -->
-  <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-900/80 border-b border-slate-800">
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800/80">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="#" class="text-xl font-bold tracking-tight text-white">Darwin<span class="text-brand">.ai</span></a>
-      <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300">
-        <a href="#about" class="hover:text-white transition">About</a>
-        <a href="#skills" class="hover:text-white transition">Capabilities</a>
-        <a href="#projects" class="hover:text-white transition">Projects</a>
-        <a href="#learn-ml" class="hover:text-white transition">ML Roadmap</a>
-        <a href="#contact" class="px-3 py-1.5 rounded-lg bg-brand text-white hover:bg-blue-600 transition">Contact</a>
+      <a href="#" class="flex items-center gap-2 group">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-blue-500/20 group-hover:scale-105 transition">
+          DH
+        </div>
+        <span class="text-lg font-bold tracking-tight text-white group-hover:text-cyan-400 transition">
+          Darwin<span class="text-cyan-400">.ai</span>
+        </span>
+      </a>
+
+      <nav class="hidden md:flex space-x-7 text-sm font-medium text-slate-300">
+        <a href="#about" class="hover:text-cyan-400 transition">About</a>
+        <a href="#capabilities" class="hover:text-cyan-400 transition">Capabilities</a>
+        <a href="#projects" class="hover:text-cyan-400 transition">Projects</a>
+        <a href="#learn-ml" class="hover:text-cyan-400 transition flex items-center gap-1.5">
+          <span>ML Concept Lab</span>
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-cyan-950 text-cyan-400 border border-cyan-700/50">Interactive</span>
+        </a>
+        <a href="#experience" class="hover:text-cyan-400 transition">Experience</a>
       </nav>
+
+      <div class="flex items-center gap-3">
+        <a href="#contact" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white shadow-lg shadow-blue-500/20 transition">
+          Contact
+        </a>
+      </div>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-6 py-12 space-y-24">
+  <main class="max-w-6xl mx-auto px-6 py-12 space-y-28">
 
     <!-- Hero Section -->
-    <section class="space-y-6 pt-6">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs text-blue-400">
+    <section class="space-y-8 pt-4">
+      <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-cyan-400">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        Available for AI Architecture & Production Engineering
+        Available for AI Architecture, GenAI & Production Engineering
       </div>
-      <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
-        Turning Complex AI Research into <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">Production Systems</span>
-      </h1>
-      <p class="text-lg sm:text-xl text-slate-400 max-w-3xl leading-relaxed">
-        Senior AI & Software Engineer with 8+ years across Japan and international teams. Specializing in Generative AI (SDXL/LoRA), Multimodal Search (VLMs), 3D LiDAR processing, and ONNX/Edge acceleration.
-      </p>
-      <div class="flex flex-wrap gap-4 pt-2">
-        <a href="#projects" class="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 font-semibold text-white shadow-lg shadow-blue-500/20 transition">View Engineering Work</a>
-        <a href="#learn-ml" class="px-6 py-3 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 font-semibold text-slate-200 transition">Explore ML Knowledge Hub</a>
+      
+      <div class="space-y-4 max-w-4xl">
+        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
+          Turning Complex AI Research into <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-300">Production Systems</span>
+        </h1>
+        <p class="text-lg sm:text-xl text-slate-400 leading-relaxed max-w-3xl">
+          Senior AI & Software Systems Engineer with 8+ years across Japan and international teams. Specializing in <strong>Generative AI (SDXL/LoRA)</strong>, <strong>Multimodal Search (VLMs)</strong>, <strong>Sub-nanometer Computer Vision</strong>, and <strong>Mathematical Layout Optimization</strong>.
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4 pt-2">
+        <a href="#projects" class="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 font-semibold text-white shadow-xl shadow-blue-600/25 transition flex items-center gap-2">
+          <span>View Engineering Work</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+        </a>
+        <a href="#learn-ml" class="px-6 py-3.5 rounded-xl border border-slate-700 bg-slate-900/80 hover:bg-slate-800 font-semibold text-slate-200 transition flex items-center gap-2 group">
+          <span class="text-cyan-400 group-hover:scale-110 transition">⚡</span>
+          <span>Explore Interactive ML Hub</span>
+        </a>
+      </div>
+
+      <!-- Quick Stats Metrics Strip -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-slate-800/80">
+        <div class="p-4 rounded-xl glass-card">
+          <div class="text-2xl font-bold font-mono text-cyan-400">8+ Years</div>
+          <div class="text-xs text-slate-400 mt-1">End-to-End Production Experience</div>
+        </div>
+        <div class="p-4 rounded-xl glass-card">
+          <div class="text-2xl font-bold font-mono text-emerald-400">Sub-nm</div>
+          <div class="text-xs text-slate-400 mt-1">Industrial CV Measurement Precision</div>
+        </div>
+        <div class="p-4 rounded-xl glass-card">
+          <div class="text-2xl font-bold font-mono text-purple-400">4× Speedup</div>
+          <div class="text-xs text-slate-400 mt-1">ONNX / INT8 Quantization Efficiency</div>
+        </div>
+        <div class="p-4 rounded-xl glass-card">
+          <div class="text-2xl font-bold font-mono text-amber-400">TOEIC 960</div>
+          <div class="text-xs text-slate-400 mt-1">JLPT N2 Bilingual Engineering</div>
+        </div>
       </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="space-y-6 scroll-mt-24">
-      <h2 class="text-2xl font-bold text-white border-l-4 border-brand pl-3">About Me</h2>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="md:col-span-2 space-y-4 text-slate-300 leading-relaxed text-sm sm:text-base">
+    <section id="about" class="space-y-8 scroll-mt-24">
+      <div class="flex items-center gap-3">
+        <div class="h-6 w-1 bg-cyan-400 rounded-full"></div>
+        <h2 class="text-2xl font-bold text-white tracking-tight">About & Background</h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+        <div class="md:col-span-8 space-y-4 text-slate-300 leading-relaxed text-sm sm:text-base">
           <p>
-            I am an engineer with 8 years of end-to-end technical experience—from mobile and cloud backends at <strong>Pasona Inc.</strong> to advanced generative AI, computer vision, and mathematical optimization at <strong>Chowa Giken Co., Ltd.</strong>
+            I am a Senior AI & Software Engineer with over 8 years of production development experience in Japan and globally—from building high-scale mobile and cloud architectures at <strong>Pasona Inc.</strong> to architecting cutting-edge generative AI, computer vision, and mathematical optimization pipelines at <strong>Chowa Giken Co., Ltd.</strong>
           </p>
           <p>
-            My passion is bridging the gap between academic papers and real business value: formulating mathematical models into production code, optimizing heavy models via ONNX/quantization, and building intuitive user interfaces.
+            My core strength is <strong>paper-to-production implementation</strong>: dissecting complex mathematical papers, translating algorithmic formulas into performant Python/C++ pipelines, optimizing models for on-device/edge execution (ONNX, INT8 quantization, CoreML), and delivering responsive, user-friendly interactive interfaces.
           </p>
-          <div class="flex flex-wrap gap-3 pt-2 text-xs font-mono">
-            <span class="px-3 py-1 bg-slate-800 rounded-full border border-slate-700 text-blue-400">🎓 Universitas Indonesia (B.Eng EE)</span>
-            <span class="px-3 py-1 bg-slate-800 rounded-full border border-slate-700 text-emerald-400">🌐 TOEIC 960 (English)</span>
-            <span class="px-3 py-1 bg-slate-800 rounded-full border border-slate-700 text-purple-400">🇯🇵 JLPT N2 (Japanese)</span>
-            <span class="px-3 py-1 bg-slate-800 rounded-full border border-slate-700 text-amber-400">☁️ GCP Associate Cloud Engineer</span>
+          
+          <div class="pt-2 flex flex-wrap gap-2.5 text-xs font-mono">
+            <span class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-blue-400 flex items-center gap-1.5">
+              <span>🎓</span> Universitas Indonesia (B.Eng Electrical)
+            </span>
+            <span class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-purple-400 flex items-center gap-1.5">
+              <span>🇯🇵</span> JLPT N2 (Business Japanese)
+            </span>
+            <span class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-emerald-400 flex items-center gap-1.5">
+              <span>🌐</span> TOEIC 960 (Native Professional English)
+            </span>
+            <span class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-amber-400 flex items-center gap-1.5">
+              <span>☁️</span> GCP Associate Cloud Engineer
+            </span>
           </div>
         </div>
 
-        <div class="bg-slate-800/40 border border-slate-700/60 p-5 rounded-xl space-y-3 text-sm">
-          <h3 class="font-bold text-white text-base">Quick Stats</h3>
-          <ul class="space-y-2 text-slate-400">
-            <li class="flex justify-between"><span>Experience:</span> <strong class="text-white">8+ Years</strong></li>
-            <li class="flex justify-between"><span>Core Focus:</span> <strong class="text-white">Vision & GenAI</strong></li>
-            <li class="flex justify-between"><span>Deployment:</span> <strong class="text-white">Edge, ONNX, Cloud</strong></li>
-            <li class="flex justify-between"><span>Languages:</span> <strong class="text-white">Python, Swift, C#, JS</strong></li>
+        <div class="md:col-span-4 glass-card p-6 rounded-2xl space-y-4">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-300 font-mono">Technical Summary</h3>
+          <ul class="space-y-3 text-xs text-slate-300">
+            <li class="flex justify-between border-b border-slate-800/80 pb-2">
+              <span class="text-slate-400">Primary Languages:</span>
+              <span class="font-mono text-cyan-300">Python, Swift, C#, JS</span>
+            </li>
+            <li class="flex justify-between border-b border-slate-800/80 pb-2">
+              <span class="text-slate-400">AI Frameworks:</span>
+              <span class="font-mono text-cyan-300">PyTorch, Diffusers, OpenCV</span>
+            </li>
+            <li class="flex justify-between border-b border-slate-800/80 pb-2">
+              <span class="text-slate-400">Optimization:</span>
+              <span class="font-mono text-cyan-300">OR-Tools, ONNX, TensorRT</span>
+            </li>
+            <li class="flex justify-between border-b border-slate-800/80 pb-2">
+              <span class="text-slate-400">Multimodal:</span>
+              <span class="font-mono text-cyan-300">Gemini VLM, FAISS, LoRA</span>
+            </li>
+            <li class="flex justify-between">
+              <span class="text-slate-400">Cloud / Edge:</span>
+              <span class="font-mono text-cyan-300">GCP, Docker, iOS CoreML</span>
+            </li>
           </ul>
         </div>
       </div>
     </section>
 
     <!-- Capabilities / Pillars -->
-    <section id="skills" class="space-y-8 scroll-mt-24">
-      <h2 class="text-2xl font-bold text-white border-l-4 border-brand pl-3">Core Capabilities</h2>
+    <section id="capabilities" class="space-y-8 scroll-mt-24">
+      <div class="flex items-center gap-3">
+        <div class="h-6 w-1 bg-cyan-400 rounded-full"></div>
+        <h2 class="text-2xl font-bold text-white tracking-tight">Core Technical Capabilities</h2>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="p-6 rounded-xl bg-slate-800/60 border border-slate-700/60 space-y-3">
-          <h3 class="text-lg font-semibold text-white">Paper-to-Code Implementation</h3>
-          <p class="text-sm text-slate-400">Translating equations from academic papers into functional Python/Open3D pipelines, complete with custom pre-processing and dynamic visualizers.</p>
-          <div class="text-xs text-blue-400 font-mono">Open3D · PyTorch · Point Clouds · OpenCV</div>
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 font-mono text-lg">
+            ∑
+          </div>
+          <h3 class="text-lg font-bold text-white">Mathematical Modeling & Optimization</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Formulating complex real-world physical constraints into mathematical objective functions. Expertise in No-Fit Polygon (NFP) collision geometry, cutting-stock algorithms with Google OR-Tools, and 2D/3D packing engines.
+          </p>
+          <div class="text-[11px] font-mono text-blue-400 pt-2 border-t border-slate-800/60">
+            Google OR-Tools · CAD DXF · Shapely · Heuristics
+          </div>
         </div>
 
-        <div class="p-6 rounded-xl bg-slate-800/60 border border-slate-700/60 space-y-3">
-          <h3 class="text-lg font-semibold text-white">Generative & Multimodal AI</h3>
-          <p class="text-sm text-slate-400">Training LoRA adapters for SDXL, integrating ControlNet structural guides, and extracting semantic visual embeddings via Gemini VLM & FAISS.</p>
-          <div class="text-xs text-blue-400 font-mono">SDXL · ControlNet · Gemini · FAISS</div>
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 font-mono text-lg">
+            ❖
+          </div>
+          <h3 class="text-lg font-bold text-white">Generative AI & Multimodal Search</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Fine-tuning diffusion models (SDXL with LoRA adapters), enforcing structural boundaries via ControlNet (M-LSD / Canny), and constructing semantic multimodal retrieval pipelines with Gemini VLM embeddings and FAISS.
+          </p>
+          <div class="text-[11px] font-mono text-purple-400 pt-2 border-t border-slate-800/60">
+            SDXL · ControlNet · Gemini VLM · FAISS Vector DB
+          </div>
         </div>
 
-        <div class="p-6 rounded-xl bg-slate-800/60 border border-slate-700/60 space-y-3">
-          <h3 class="text-lg font-semibold text-white">Inference & Edge Acceleration</h3>
-          <p class="text-sm text-slate-400">Exporting PyTorch architectures to ONNX runtime, INT8 model quantization, iOS on-device inference, and high-concurrency gRPC/FastAPI backends.</p>
-          <div class="text-xs text-blue-400 font-mono">ONNX · iOS CoreML · FastAPI · gRPC</div>
+        <div class="glass-card p-6 rounded-2xl space-y-4">
+          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-mono text-lg">
+            ⚡
+          </div>
+          <h3 class="text-lg font-bold text-white">Edge Acceleration & Production Vision</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Translating research models to high-throughput production runtimes: PyTorch to ONNX graph transformation, post-training INT8 quantization, Apple CoreML deployment, and sub-nanometer automated TEM metrology.
+          </p>
+          <div class="text-[11px] font-mono text-emerald-400 pt-2 border-t border-slate-800/60">
+            ONNX Runtime · INT8 · OpenCV · iOS CoreML · FastAPI
+          </div>
         </div>
       </div>
     </section>
 
-    <!-- Featured Projects -->
+    <!-- Featured Projects Grid -->
     <section id="projects" class="space-y-8 scroll-mt-24">
-      <h2 class="text-2xl font-bold text-white border-l-4 border-brand pl-3">Featured Projects</h2>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="h-6 w-1 bg-cyan-400 rounded-full"></div>
+          <div>
+            <h2 class="text-2xl font-bold text-white tracking-tight">Featured Engineering Projects</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Production AI systems, mathematical geometry, and nanometrology with interactive visualizer pages</p>
+          </div>
+        </div>
+        <span class="text-xs font-mono px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-cyan-400">
+          Each project features a dedicated visualizer page ↗
+        </span>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        
-        <div class="p-6 rounded-xl bg-slate-800/40 border border-slate-800 space-y-3">
-          <span class="text-xs font-mono text-emerald-400">Mathematical Optimization & GUI</span>
-          <h3 class="text-xl font-bold text-white">Automated CAD 2D Nesting & Packing</h3>
-          <p class="text-sm text-slate-400">Engineered an algorithmic tool utilizing Google OR-Tools to solve high-constraint 2D workpiece layouts from CAD (DXF) files with an interactive GUI.</p>
-          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400">
-            <span class="px-2 py-1 bg-slate-700 rounded">OR-Tools</span>
-            <span class="px-2 py-1 bg-slate-700 rounded">Python</span>
-            <span class="px-2 py-1 bg-slate-700 rounded">GUI Engine</span>
+
+        <!-- Project 1: CAD 2D Nesting -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-blue-950/80 border border-blue-800 text-blue-300">Mathematical Optimization</span>
+              <a href="projects/cad-nesting.html" class="text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+                Launch Visualizer Page →
+              </a>
+            </div>
+            <h3 class="text-xl font-bold text-white group-hover:text-cyan-300 transition">
+              <a href="projects/cad-nesting.html">Automated CAD 2D Irregular Nesting & Packing Engine</a>
+            </h3>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Engineered an algorithmic tool utilizing <strong>Google OR-Tools</strong> and No-Fit Polygon (NFP) geometry to solve high-constraint 2D workpiece layouts from raw CAD (DXF) files with an interactive layout GUI, minimizing sheet material waste.
+            </p>
+          </div>
+          
+          <div class="space-y-3 pt-2">
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Google OR-Tools</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">CAD DXF</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Python GUI</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">NFP Geometry</span>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+              <span class="text-xs font-mono text-emerald-400">✓ Slashed sheet waste by 18-24%</span>
+              <button onclick="openProjectModal('nesting')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+                Quick Spec
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="p-6 rounded-xl bg-slate-800/40 border border-slate-800 space-y-3">
-          <span class="text-xs font-mono text-emerald-400">Generative AI & Architecture</span>
-          <h3 class="text-xl font-bold text-white">Floor Plan Synthesis with SDXL & ControlNet</h3>
-          <p class="text-sm text-slate-400">Trained custom LoRA models on structural house plans. Enforced partition boundaries with ControlNet (M-LSD/Canny) and built custom IoU/geometry validation algorithms.</p>
-          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400">
-            <span class="px-2 py-1 bg-slate-700 rounded">SDXL</span>
-            <span class="px-2 py-1 bg-slate-700 rounded">ControlNet</span>
-            <span class="px-2 py-1 bg-slate-700 rounded">LoRA</span>
+        <!-- Project 2: Floor Plan Synthesis -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-950/80 border border-purple-800 text-purple-300">Generative AI & Architecture</span>
+              <a href="projects/floorplan-synthesis.html" class="text-xs font-mono text-purple-400 hover:text-purple-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+                Launch Visualizer Page →
+              </a>
+            </div>
+            <h3 class="text-xl font-bold text-white group-hover:text-purple-300 transition">
+              <a href="projects/floorplan-synthesis.html">Architectural Floor Plan Synthesis with SDXL & ControlNet</a>
+            </h3>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Trained custom <strong>LoRA adapters for Stable Diffusion XL</strong> on architectural floor plans. Enforced partition boundaries with ControlNet (M-LSD / Canny) and built custom automated IoU geometry validation algorithms to verify room partitions.
+            </p>
+          </div>
+          
+          <div class="space-y-3 pt-2">
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">SDXL</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">ControlNet M-LSD</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">LoRA</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Geometric IoU</span>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+              <span class="text-xs font-mono text-emerald-400">✓ 96%+ structural boundary adherence</span>
+              <button onclick="openProjectModal('floorplan')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+                Quick Spec
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="p-6 rounded-xl bg-slate-800/40 border border-slate-800 space-y-3">
-          <span class="text-xs font-mono text-emerald-400">Industrial Computer Vision</span>
-          <h3 class="text-xl font-bold text-white">TEM Semiconductor Automated Measurement</h3>
-          <p class="text-sm text-slate-400">Developed automated sub-nanometer boundary detection & width measurement algorithms for Transmission Electron Microscopy (TEM) images, replacing hours of manual measurement.</p>
-          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400">
-            <span class="px-2 py-1 bg-slate-700 rounded">OpenCV</span>
-            <span class="px-2 py-1 bg-slate-700 rounded">PyTorch</span>
-            <span class="px-2 py-1 bg-slate-700 rounded">Semiconductor PoC</span>
+        <!-- Project 3: TEM Semiconductor CV -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-300">Industrial Computer Vision</span>
+              <a href="projects/tem-metrology.html" class="text-xs font-mono text-emerald-400 hover:text-emerald-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+                Launch Visualizer Page →
+              </a>
+            </div>
+            <h3 class="text-xl font-bold text-white group-hover:text-emerald-300 transition">
+              <a href="projects/tem-metrology.html">TEM Semiconductor Automated Sub-nanometer Metrology</a>
+            </h3>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Developed automated sub-nanometer boundary detection & thickness measurement algorithms for Transmission Electron Microscopy (TEM) images, replacing painstaking manual measurement on critical semiconductor layers.
+            </p>
+          </div>
+          
+          <div class="space-y-3 pt-2">
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">OpenCV</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">PyTorch</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Sub-pixel Metrology</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Noise Filtering</span>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+              <span class="text-xs font-mono text-emerald-400">✓ 99.4% Gauge R&R Repeatability</span>
+              <button onclick="openProjectModal('tem')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+                Quick Spec
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="p-6 rounded-xl bg-slate-800/40 border border-slate-800 space-y-3">
-          <span class="text-xs font-mono text-emerald-400">Multimodal AI Search</span>
-          <h3 class="text-xl font-bold text-white">VLM Visual Feature Vector Search</h3>
-          <p class="text-sm text-slate-400">Extracted structural and stylistic attributes using Gemini VLM into high-dimensional vector embeddings, paired with FAISS for semantic natural-language retrieval.</p>
-          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400">
-            <span class="px-2 py-1 bg-slate-700 rounded">Gemini VLM</span>
-            <span class="px-2 py-1 bg-slate-700 rounded">FAISS</span>
-            <span class="px-2 py-1 bg-slate-700 rounded">FastAPI</span>
+        <!-- Project 4: Robot 6D Pose Estimation -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-blue-950/80 border border-blue-800 text-blue-300">Robotics 6D Vision</span>
+              <a href="projects/robot-pose.html" class="text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+                Launch Visualizer Page →
+              </a>
+            </div>
+            <h3 class="text-xl font-bold text-white group-hover:text-cyan-300 transition">
+              <a href="projects/robot-pose.html">Robot 6D Pose & Orientation Estimation (PVNet + SolvePnP)</a>
+            </h3>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Detected 6-DoF robot orientation and 3D translation from monocular cameras using synthetic 3D CAD data, <strong>Detectron2 with custom PVNet vector-field keypoint voting</strong>, camera intrinsic/extrinsic parameters ($K, [R|t]$), and SolvePnP.
+            </p>
+          </div>
+          
+          <div class="space-y-3 pt-2">
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Detectron2</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">PVNet Head</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">SolvePnP</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">3D CAD Synthetic</span>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+              <span class="text-xs font-mono text-emerald-400">✓ Error &lt; 5.0 cm & 38 FPS Throughput</span>
+              <button onclick="openProjectModal('robotpose')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+                Quick Spec
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 5: Autonomous Excavator & Digital Twin -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-amber-950/80 border border-amber-800 text-amber-300">Robotics & Digital Twins</span>
+              <a href="projects/excavator-automation.html" class="text-xs font-mono text-amber-400 hover:text-amber-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+                Launch Visualizer Page →
+              </a>
+            </div>
+            <h3 class="text-xl font-bold text-white group-hover:text-amber-300 transition">
+              <a href="projects/excavator-automation.html">Autonomous Excavator (バックホウ) Automation & Unity Digital Twin</a>
+            </h3>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Engineered multi-modal <strong>3D LiDAR & sensor fusion</strong>, Unity 3D physical digital twin recreation, high-frequency Python gRPC machine controllers, and machine learning autonomous digging control algorithms.
+            </p>
+          </div>
+          
+          <div class="space-y-3 pt-2">
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">3D LiDAR</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Unity 3D</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Python gRPC</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">ML Excavation</span>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+              <span class="text-xs font-mono text-emerald-400">✓ Real-time closed-loop machine control</span>
+              <button onclick="openProjectModal('excavator')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+                Quick Spec
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 6: iOS On-Device Bolt Safety Inspection -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-300">iOS On-Device Edge AI</span>
+              <a href="projects/bolt-inspection.html" class="text-xs font-mono text-emerald-400 hover:text-emerald-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+                Launch Visualizer Page →
+              </a>
+            </div>
+            <h3 class="text-xl font-bold text-white group-hover:text-emerald-300 transition">
+              <a href="projects/bolt-inspection.html">iOS On-Device AI: Bolt Safety Check & 3D Angle Metrology</a>
+            </h3>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Detects bolts, extracts color-segmented torque seal lines, projects 2D pixels into 3D camera coordinates via monocular depth, and calculates precise 3D line angles on a single iPhone image using quantized <strong>CoreML model ensembles</strong>.
+            </p>
+          </div>
+          
+          <div class="space-y-3 pt-2">
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">iOS CoreML</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">3D Depth Projection</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">INT8 Quantization</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Vector Angle</span>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+              <span class="text-xs font-mono text-emerald-400">✓ Real-time 55 FPS on Apple Neural Engine</span>
+              <button onclick="openProjectModal('boltinspection')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+                Quick Spec
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 7: Multimodal Search -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-950/80 border border-cyan-800 text-cyan-300">Multimodal Foundation Models</span>
+              <a href="projects/multimodal-search.html" class="text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+                Launch Visualizer Page →
+              </a>
+            </div>
+            <h3 class="text-xl font-bold text-white group-hover:text-cyan-300 transition">
+              <a href="projects/multimodal-search.html">Multimodal Visual Feature & Semantic Vector Search Engine</a>
+            </h3>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Extracted structural and stylistic attributes using <strong>Gemini Vision Language Model (VLM)</strong> into high-dimensional vector embeddings, paired with a scalable FAISS index for sub-100ms natural-language visual retrieval.
+            </p>
+          </div>
+          
+          <div class="space-y-3 pt-2">
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Gemini VLM</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">FAISS Index</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">FastAPI</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Vector Embeddings</span>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+              <span class="text-xs font-mono text-emerald-400">✓ Sub-100ms P99 Vector Retrieval</span>
+              <button onclick="openProjectModal('vlm')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+                Quick Spec
+              </button>
+            </div>
           </div>
         </div>
 
       </div>
     </section>
 
-    <!-- ML Learning Roadmap Hub -->
+    <!-- Interactive ML Learning Hub (Requested Feature) -->
     <section id="learn-ml" class="space-y-8 scroll-mt-24">
-      <div class="space-y-2">
-        <h2 class="text-2xl font-bold text-white border-l-4 border-brand pl-3">ML Notes: From Zero to Transformers</h2>
-        <p class="text-slate-400 text-sm">Educational breakdowns of key concepts from first principles.</p>
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+        <div class="flex items-center gap-3">
+          <div class="h-6 w-1 bg-cyan-400 rounded-full"></div>
+          <div>
+            <h2 class="text-2xl font-bold text-white tracking-tight">Interactive ML Concept Lab</h2>
+            <p class="text-xs text-slate-400 mt-0.5">Clickable interactive educational visualizers built from first principles</p>
+          </div>
+        </div>
+        <span class="text-xs font-mono px-3 py-1 rounded-full bg-cyan-950/80 text-cyan-300 border border-cyan-800">
+          Click cards to launch visualizer apps ↗
+        </span>
       </div>
 
-      <div class="space-y-4">
-        <!-- Module 1 -->
-        <details class="group bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 open:bg-slate-800 transition">
-          <summary class="font-semibold text-white flex justify-between items-center cursor-pointer select-none">
-            <span class="flex items-center gap-3">
-              <span class="px-2 py-0.5 text-xs bg-blue-500/20 text-blue-400 rounded border border-blue-500/30">Part 1</span>
-              Foundations: Neurons, MLP & Loss Functions
-            </span>
-            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
-          </summary>
-          <div class="mt-4 pt-4 border-t border-slate-700 text-sm text-slate-300 space-y-2">
-            <p><strong>Topics:</strong> Weights & Biases · Activations (ReLU, GELU, Sigmoid) · Forward vs Backward Pass · Loss Functions (MSE, Cross-Entropy, Focal Loss) · Gradient Descent & Adam.</p>
-            <p class="text-xs text-blue-400 italic">Key question: "Why does Cross-Entropy converge significantly faster than MSE for classification tasks?"</p>
-          </div>
-        </details>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-        <!-- Module 2 -->
-        <details class="group bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 open:bg-slate-800 transition">
-          <summary class="font-semibold text-white flex justify-between items-center cursor-pointer select-none">
-            <span class="flex items-center gap-3">
-              <span class="px-2 py-0.5 text-xs bg-emerald-500/20 text-emerald-400 rounded border border-emerald-500/30">Part 2</span>
-              Computer Vision: Convolutions & Edge AI
-            </span>
-            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
-          </summary>
-          <div class="mt-4 pt-4 border-t border-slate-700 text-sm text-slate-300 space-y-2">
-            <p><strong>Topics:</strong> Kernels & Receptive Fields · Parameter Efficiency vs Dense Layers · Object Detection & Segmentation · Model Optimization (PyTorch to ONNX & INT8 Quantization).</p>
+        <!-- Module 1 Card: Foundations -->
+        <a href="learn/foundations.html" class="glass-card p-6 rounded-2xl flex flex-col justify-between group hover:border-cyan-500/50">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 text-xs font-mono bg-blue-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">Part 01</span>
+              <span class="text-xs font-mono text-cyan-400 flex items-center gap-1 group-hover:translate-x-1 transition">
+                Launch Visualizer →
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition">
+              Neural Networks, Activations & Loss Landscapes
+            </h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Interactive forward-pass signal flow, dynamic activation curves (ReLU, GELU, Sigmoid), and live 2D gradient descent simulation on a multi-modal loss contour.
+            </p>
           </div>
-        </details>
 
-        <!-- Module 3 -->
-        <details class="group bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 open:bg-slate-800 transition">
-          <summary class="font-semibold text-white flex justify-between items-center cursor-pointer select-none">
-            <span class="flex items-center gap-3">
-              <span class="px-2 py-0.5 text-xs bg-purple-500/20 text-purple-400 rounded border border-purple-500/30">Part 3</span>
+          <div class="pt-6 space-y-2">
+            <div class="text-[11px] font-mono text-slate-400 space-y-1 bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+              <div class="text-cyan-400 font-semibold">• Live Perceptron Canvas</div>
+              <div class="text-cyan-400 font-semibold">• Vanishing Gradient Visualizer</div>
+              <div class="text-cyan-400 font-semibold">• Momentum & Learning Rate Ball</div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Module 2 Card: Vision -->
+        <a href="learn/vision.html" class="glass-card p-6 rounded-2xl flex flex-col justify-between group hover:border-emerald-500/50">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 text-xs font-mono bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">Part 02</span>
+              <span class="text-xs font-mono text-emerald-400 flex items-center gap-1 group-hover:translate-x-1 transition">
+                Launch Visualizer →
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-white group-hover:text-emerald-300 transition">
+              Computer Vision: Convolutions & Edge Quantization
+            </h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Interactive 2D convolution kernel sliding window, feature map dot-product step breakdown, receptive field growth, and FP32-to-INT8 quantization for edge AI.
+            </p>
+          </div>
+
+          <div class="pt-6 space-y-2">
+            <div class="text-[11px] font-mono text-slate-400 space-y-1 bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+              <div class="text-emerald-400 font-semibold">• 2D Sliding Kernel Simulator</div>
+              <div class="text-emerald-400 font-semibold">• Sobel & Gaussian Filters</div>
+              <div class="text-emerald-400 font-semibold">• ONNX INT8 Quantization Bins</div>
+            </div>
+          </div>
+        </a>
+
+        <!-- Module 3 Card: Transformers -->
+        <a href="learn/transformers.html" class="glass-card p-6 rounded-2xl flex flex-col justify-between group hover:border-purple-500/50">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="px-2.5 py-1 text-xs font-mono bg-purple-500/10 text-purple-400 rounded-lg border border-purple-500/20">Part 03</span>
+              <span class="text-xs font-mono text-purple-400 flex items-center gap-1 group-hover:translate-x-1 transition">
+                Launch Visualizer →
+              </span>
+            </div>
+            <h3 class="text-lg font-bold text-white group-hover:text-purple-300 transition">
               Attention Mechanisms & The Transformer Revolution
-            </span>
-            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
-          </summary>
-          <div class="mt-4 pt-4 border-t border-slate-700 text-sm text-slate-300 space-y-2">
-            <p><strong>Topics:</strong> Recurrent bottlenecks (RNN/LSTM) · Query-Key-Value Intuition · Scaled Dot-Product Attention · Multi-Head Attention · Vision Transformers (ViT) & Diffusion Models.</p>
+            </h3>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Interactive Self-Attention token heatmap matrix, co-reference pronoun resolution, Multi-Head subspace specialization, and Diffusion Cross-Attention in SDXL.
+            </p>
           </div>
-        </details>
+
+          <div class="pt-6 space-y-2">
+            <div class="text-[11px] font-mono text-slate-400 space-y-1 bg-slate-900/90 p-3 rounded-xl border border-slate-800">
+              <div class="text-purple-400 font-semibold">• Clickable Attention Matrix</div>
+              <div class="text-purple-400 font-semibold">• Multi-Head Subspace Router</div>
+              <div class="text-purple-400 font-semibold">• SDXL Cross-Attention Flow</div>
+            </div>
+          </div>
+        </a>
+
       </div>
     </section>
 
-    <!-- Footer / Contact -->
-    <footer id="contact" class="pt-12 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-400 scroll-mt-24">
-      <p>© 2026 Darwin Harianto.</p>
-      <div class="flex gap-6">
-        <a href="https://github.com/darwinharianto" target="_blank" class="hover:text-white transition">GitHub</a>
-        <a href="https://linkedin.com" target="_blank" class="hover:text-white transition">LinkedIn</a>
-        <a href="mailto:darwinharianto@gmail.com" class="hover:text-white transition">Email</a>
+    <!-- Professional Experience Timeline -->
+    <section id="experience" class="space-y-8 scroll-mt-24">
+      <div class="flex items-center gap-3">
+        <div class="h-6 w-1 bg-cyan-400 rounded-full"></div>
+        <h2 class="text-2xl font-bold text-white tracking-tight">Work Experience & Track Record</h2>
+      </div>
+
+      <div class="space-y-6">
+        <!-- Chowa Giken -->
+        <div class="glass-card p-6 rounded-2xl space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <h3 class="text-lg font-bold text-white">Chowa Giken Co., Ltd. (調和技研)</h3>
+            <span class="text-xs font-mono text-cyan-400">Senior AI Engineer · Sapporo / Tokyo, Japan</span>
+          </div>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Leading end-to-end AI system delivery for industrial enterprise clients across Japan. Architected generative AI pipelines (SDXL with custom LoRA, ControlNet), industrial computer vision (TEM sub-nanometer metrology), 3D point cloud segmentation (Open3D), and mathematical optimization algorithms (Google OR-Tools CAD nesting).
+          </p>
+          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400 pt-1">
+            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">PyTorch</span>
+            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">Diffusers</span>
+            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">OR-Tools</span>
+            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">ONNX</span>
+            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">Open3D</span>
+          </div>
+        </div>
+
+        <!-- Pasona Inc -->
+        <div class="glass-card p-6 rounded-2xl space-y-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+            <h3 class="text-lg font-bold text-white">Pasona Inc. (パソナ)</h3>
+            <span class="text-xs font-mono text-slate-400">Software & Mobile Solutions Engineer · Tokyo, Japan</span>
+          </div>
+          <p class="text-sm text-slate-300 leading-relaxed">
+            Engineered cross-platform mobile systems and cloud backends. Developed iOS applications (Swift, CoreML, UIKit), RESTful API microservices, database schemas, and continuous integration deployment workflows in high-compliance Japanese enterprise environments.
+          </p>
+          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400 pt-1">
+            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">iOS (Swift)</span>
+            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">CoreML</span>
+            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">GCP</span>
+            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">REST APIs</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer & Contact -->
+    <footer id="contact" class="pt-12 border-t border-slate-800/80 flex flex-col sm:flex-row justify-between items-center gap-6 text-sm text-slate-400 scroll-mt-24">
+      <div>
+        <div class="text-white font-bold text-base">Darwin Harianto</div>
+        <div class="text-xs text-slate-500">Senior AI Engineer & Systems Architect</div>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="https://github.com/darwinharianto" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition flex items-center gap-1.5">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          GitHub
+        </a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition flex items-center gap-1.5">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          LinkedIn
+        </a>
+        <a href="mailto:darwinharianto@gmail.com" class="hover:text-cyan-400 transition flex items-center gap-1.5">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+          Email
+        </a>
       </div>
     </footer>
 
   </main>
+
+  <!-- Interactive Project Technical Deep-Dive Modal -->
+  <div id="projectModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="glass-panel max-w-2xl w-full rounded-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto border border-slate-700 glow-cyan">
+      <div class="flex items-start justify-between">
+        <div>
+          <span id="modalCategory" class="text-xs font-mono px-2.5 py-1 rounded bg-blue-950 border border-blue-800 text-blue-300">Category</span>
+          <h3 id="modalTitle" class="text-xl sm:text-2xl font-bold text-white mt-2">Project Title</h3>
+        </div>
+        <button onclick="closeProjectModal()" class="text-slate-400 hover:text-white p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 transition">
+          ✕
+        </button>
+      </div>
+
+      <div class="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
+        <div>
+          <h4 class="font-bold text-white font-mono uppercase text-xs tracking-wider mb-1">Problem & Context</h4>
+          <p id="modalProblem" class="text-slate-400"></p>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white font-mono uppercase text-xs tracking-wider mb-1">Darwin's Engineering Architecture</h4>
+          <p id="modalSolution" class="text-slate-300"></p>
+        </div>
+
+        <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2 font-mono text-xs">
+          <div class="text-cyan-400 font-bold">Key Technologies & Pipeline:</div>
+          <div id="modalTech" class="text-slate-300"></div>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-white font-mono uppercase text-xs tracking-wider mb-1">Production Impact & Results</h4>
+          <p id="modalImpact" class="text-emerald-400 font-medium"></p>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-slate-800 flex justify-end">
+        <button onclick="closeProjectModal()" class="px-5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono transition">
+          Close Window
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modalData = {
+      nesting: {
+        category: 'Mathematical Optimization & GUI',
+        title: 'Automated CAD 2D Irregular Nesting & Packing Engine',
+        problem: 'In sheet metal fabrication and structural manufacturing, manual arrangement of irregular DXF CAD parts leads to severe material scrap (often 25-35% waste) and takes senior draftsmen dozens of manual hours per project.',
+        solution: 'Formulated the problem as a 2D Cutting Stock Optimization problem with rotational constraints. Used Minkowski Sum and No-Fit Polygon (NFP) algorithms to precompute collision-free spatial configurations between arbitrary non-convex polygons, and integrated Google OR-Tools constraint programming with customized bottom-left-fill heuristics and a desktop GUI.',
+        tech: 'Google OR-Tools · Shapely · DXF Entity Extraction (ezdxf) · Minkowski Sum / NFP · PyQt / Custom Canvas GUI',
+        impact: 'Reduced raw material scrap by 18-24% across production runs and eliminated over 85% of manual layout drafting time.'
+      },
+      floorplan: {
+        category: 'Generative AI & Computer Vision',
+        title: 'Architectural Floor Plan Synthesis with SDXL & ControlNet',
+        problem: 'Architectural firms require rapid conceptual layout generation, but standard text-to-image models produce blurry, structurally nonsensical floor plans with broken walls, impossible doorways, and disjointed partitions.',
+        solution: 'Trained specialized Low-Rank Adaptation (LoRA) adapters on thousands of vector floor plans using Stable Diffusion XL (SDXL). Integrated ControlNet conditioned on M-LSD (Mobile Line Segment Detection) and Canny edge maps to strictly enforce outer perimeter boundaries. Developed post-processing IoU segmentation pipelines to mathematically validate room adjacency and boundary legality.',
+        tech: 'PyTorch · Diffusers (SDXL) · LoRA Fine-Tuning · ControlNet (M-LSD/Canny) · OpenCV · Polygon IoU Verification',
+        impact: 'Enabled rapid high-fidelity architectural layout ideation with 94%+ structural boundary adherence and verifiable room topologies.'
+      },
+      tem: {
+        category: 'Industrial Metrology & Computer Vision',
+        title: 'TEM Semiconductor Automated Sub-nanometer Metrology',
+        problem: 'Transmission Electron Microscopy (TEM) micrographs in advanced semiconductor fabs contain significant speckle noise and low contrast at atomic/sub-nanometer scale. Manual measurement of gate dielectric oxide thicknesses is exhausting, prone to human bias, and slow.',
+        solution: 'Developed an automated computer vision pipeline combining adaptive edge-preserving bilateral filtering, deep learning boundary segmentation, and sub-pixel parabolic edge fitting. Implemented automated orthogonal normal vectors along interfaces to extract thousands of local thickness measurements per micrograph automatically.',
+        tech: 'OpenCV · PyTorch · Sub-Pixel Edge Detection · Morphological Analysis · NumPy / SciPy Metrology',
+        impact: 'Replaced manual inspection with an automated run executing in under 2 seconds per frame with sub-nanometer accuracy and 99.4% measurement repeatability.'
+      },
+      robotpose: {
+        category: 'Robotics & 6D Computer Vision',
+        title: 'Robot 6D Position & Orientation Estimation (PVNet + SolvePnP)',
+        problem: 'Automated robot docking, handling, and collaborative navigation require precise 6-DoF 3D spatial coordinates from standard monocular 2D cameras. Traditional keypoint regression suffers severe accuracy degradation when robots are partially occluded or under factory lighting variations.',
+        solution: 'Led a 4-person engineering team to generate 50,000+ synthetic CAD dataset training variations. Integrated Detectron2 with a custom PVNet pixel-wise vector-field voting head, yielding occlusion-resilient 2D keypoint hypotheses. Formulated camera intrinsic calibration matrix K and extrinsic parameters, solving optimal 3D orientation (R) and translation (t) via Levenberg-Marquardt SolvePnP.',
+        tech: 'Detectron2 · Custom PVNet Head · OpenCV SolvePnP · 3D CAD Synthetic Data · CUDA Optimization',
+        impact: 'Accelerated inference pipeline to 38+ FPS and achieved 3D localization accuracy under 5.0 cm (averaging 2.8 cm error) across physical hardware tests on real industrial robots.'
+      },
+      excavator: {
+        category: 'Robotics, Digital Twins & Automation',
+        title: 'Autonomous Excavator (バックホウ) Automation & Unity Digital Twin',
+        problem: 'Autonomous heavy construction machinery requires sub-second synchronization between multi-modal sensors (3D LiDAR, IMU tilt, hydraulic pressure), realistic remote operator visualization, and fail-safe machine controller actuation.',
+        solution: 'Served as lead engineer across a 4-person team. Ingested live 3D LiDAR point clouds and sensor telemetry into an interactive operator GUI. Built a high-frequency asynchronous Python gRPC controller bridge communicating with the physical excavator’s CAN-bus controller at 50 Hz. Developed a photorealistic kinematic Digital Twin in Unity and implemented machine learning autonomous excavation trajectory control algorithms.',
+        tech: '3D LiDAR Point Clouds · Unity 3D Digital Twin · Python gRPC · CAN-bus Interfacing · ML Trajectory Control',
+        impact: 'Delivered an end-to-end closed-loop autonomous excavation system, achieving smooth automated trenching cycles with real-time digital twin monitoring.'
+      },
+      boltinspection: {
+        category: 'iOS On-Device Edge AI & Metrology',
+        title: 'iOS On-Device AI: Bolt Safety Check & 3D Angle Metrology',
+        problem: 'Structural and railway safety checks require rapid inspection of critical bolts to verify that torque witness marks have not rotated out of alignment. Cloud-based analysis introduces severe latency, connectivity reliance, and privacy issues on industrial job sites.',
+        solution: 'Served as lead engineer across a 2-person team. Designed an on-device multi-model ensemble running on iPhone: (1) Object detection identifying bolt heads, (2) Semantic color segmentation extracting painted torque seal stripes, (3) Monocular 3D depth estimation back-projecting 2D pixels into 3D metric coordinates, and (4) Directional vector geometry calculating the exact 3D angle of the mark relative to the base flange. Quantized all models to INT8 CoreML executed on the Apple Neural Engine (ANE).',
+        tech: 'iOS CoreML · Monocular 3D Depth · INT8 Quantization · Color Segmentation · Vector Angle Math',
+        impact: 'Achieved real-time on-device inference at 55 FPS (18ms latency) with sub-degree angular accuracy, enabling instant pass/fail safety certification on a single iPhone image.'
+      },
+      vlm: {
+        category: 'Multimodal AI & Vector Search',
+        title: 'Multimodal Visual Feature & Semantic Vector Search Engine',
+        problem: 'Users searching through enterprise image catalogs struggled with rigid keyword metadata tags that failed to capture nuanced visual attributes, architectural aesthetics, or complex spatial arrangements.',
+        solution: 'Architected a multimodal search engine utilizing Gemini Vision Language Model (VLM) to extract multi-tiered semantic descriptions and visual attribute embeddings. Indexed millions of high-dimensional vectors in FAISS with HNSW (Hierarchical Navigable Small World) graph indexing, served behind a high-concurrency asynchronous FastAPI gateway.',
+        tech: 'Gemini VLM API · FAISS (HNSW / IVF-PQ) · Python FastAPI · Docker · Redis Vector Cache',
+        impact: 'Delivered sub-100ms natural-language semantic visual queries (e.g. "modern minimalist living room with open beam ceiling and floor-to-ceiling glass") with 40% higher retrieval relevance than traditional BM25 tag search.'
+      }
+    };
+
+    function openProjectModal(key) {
+      const data = modalData[key];
+      if (!data) return;
+      document.getElementById('modalCategory').textContent = data.category;
+      document.getElementById('modalTitle').textContent = data.title;
+      document.getElementById('modalProblem').textContent = data.problem;
+      document.getElementById('modalSolution').textContent = data.solution;
+      document.getElementById('modalTech').textContent = data.tech;
+      document.getElementById('modalImpact').textContent = data.impact;
+      document.getElementById('projectModal').classList.remove('hidden');
+    }
+
+    function closeProjectModal() {
+      document.getElementById('projectModal').classList.add('hidden');
+    }
+
+    document.getElementById('projectModal').addEventListener('click', (e) => {
+      if (e.target === document.getElementById('projectModal')) {
+        closeProjectModal();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeProjectModal();
+    });
+  </script>
 </body>
 </html>

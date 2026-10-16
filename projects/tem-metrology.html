@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TEM Semiconductor Metrology | Darwin Harianto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
+          colors: {
+            brand: '#10b981',
+            accent: '#06b6d4',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-white min-h-screen">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-emerald-400 hover:text-emerald-300 font-medium transition group">
+          <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Portfolio
+        </a>
+        <span class="text-slate-600">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-300">Project Deep-Dive</span>
+      </div>
+      <div class="text-xs font-mono text-slate-400">
+        Industrial Computer Vision · Sub-nanometer Metrology
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
+    <!-- Project Hero Header -->
+    <section class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-xs font-mono text-emerald-400">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        Semiconductor Fab Nanometrology
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+        TEM Automated <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Sub-nanometer Boundary Metrology</span>
+      </h1>
+      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+        High-precision automated boundary detection and layer thickness extraction on Transmission Electron Microscopy (TEM) micrographs, replacing manual measurements with sub-pixel edge detection.
+      </p>
+    </section>
+
+    <!-- Interactive Technology Visualization: TEM Micrograph Inspector -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-sm font-mono">01</span>
+            Live TEM Micrograph Pipeline & Caliper Visualizer
+          </h2>
+          <p class="text-sm text-slate-400">Switch filter modes and hover/drag the measurement caliper across atomic semiconductor layers.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
+          <button id="modeRaw" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white" onclick="setTemMode('raw')">
+            1. Raw TEM
+          </button>
+          <button id="modeFiltered" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white" onclick="setTemMode('filtered')">
+            2. Bilateral Denoised
+          </button>
+          <button id="modeEdge" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold ring-2 ring-emerald-400" onclick="setTemMode('edge')">
+            3. Sub-Pixel Calipers
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Interactive Canvas -->
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+            <span>TEM Micrograph Inspection Field (Scale: 1px = 0.042 nm)</span>
+            <span id="caliperMeasurementLabel" class="text-emerald-400 font-bold">Dielectric Layer Thickness: 2.38 nm</span>
+          </div>
+
+          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+            <canvas id="temCanvas" width="600" height="380" class="w-full h-full block cursor-ew-resize"></canvas>
+          </div>
+
+          <div class="grid grid-cols-3 gap-2 pt-2 text-center text-xs font-mono">
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Measurement Precision</div>
+              <div class="text-emerald-400 font-bold text-sm mt-0.5">±0.038 nm</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Repeatability (Gauge R&R)</div>
+              <div class="text-cyan-400 font-bold text-sm mt-0.5">99.4%</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Processing Speed</div>
+              <div class="text-teal-400 font-bold text-sm mt-0.5">1.8s / Micrograph</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tech Details Sidebar -->
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Computer Vision Metrology Stack</h3>
+          <p>
+            At sub-nanometer scale, standard pixel-level thresholding creates step-quantization errors exceeding 20% of total film thickness.
+          </p>
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-emerald-400 font-bold">1. Sub-Pixel Parabolic Fitting:</div>
+            <p class="text-slate-400 text-[10px]">Finds the peak of the image gradient curve $\nabla I(x)$ by fitting a continuous second-order polynomial through the 3 highest gradient pixels: $\delta = \frac{g_{i-1} - g_{i+1}}{2(g_{i-1} - 2g_i + g_{i+1})}$.</p>
+          </div>
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-cyan-400 font-bold">2. Normal Vector Raycasting:</div>
+            <p class="text-slate-400 text-[10px]">Casts 500+ orthogonal interface rays perpendicular to the substrate contour to capture true local thickness distribution without perspective distortion.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="floorplan-synthesis.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+        ← Previous: SDXL Floor Plan Synthesis
+      </a>
+      <a href="robot-pose.html" class="px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-emerald-500/20">
+        Next Project: Robot 6D Pose Estimation →
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // --- Interactive TEM Canvas Simulation ---
+    const canvas = document.getElementById('temCanvas');
+    const ctx = canvas.getContext('2d');
+    const caliperLabel = document.getElementById('caliperMeasurementLabel');
+
+    let currentMode = 'edge'; // 'raw' | 'filtered' | 'edge'
+    let caliperX = 300;
+
+    function setTemMode(mode) {
+      currentMode = mode;
+      ['raw', 'filtered', 'edge'].forEach(m => {
+        const btn = document.getElementById(`mode${m.charAt(0).toUpperCase() + m.slice(1)}`);
+        if (m === mode) {
+          btn.className = 'px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold ring-2 ring-emerald-400';
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white';
+        }
+      });
+      renderTem();
+    }
+
+    function renderTem() {
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      // Layer 1: Silicon Substrate (Bottom)
+      // Layer 2: High-k Dielectric Thin Film (Middle: ~2.4 nm)
+      // Layer 3: Gate Electrode Metal (Top)
+
+      const layerTop = 135;
+      const layerBottom = 195;
+      const thicknessPx = layerBottom - layerTop;
+      const thicknessNm = (thicknessPx * 0.041).toFixed(2);
+      caliperLabel.textContent = `Dielectric Layer Thickness at x=${caliperX}px: ${thicknessNm} nm`;
+
+      // 1. Draw Background Lattice Gradient
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, 0, W, H);
+
+      // Metal Gate
+      ctx.fillStyle = currentMode === 'raw' ? '#1e293b' : '#334155';
+      ctx.fillRect(0, 0, W, layerTop);
+
+      // Dielectric Thin Film
+      ctx.fillStyle = currentMode === 'raw' ? '#090d16' : '#0f172a';
+      ctx.fillRect(0, layerTop, W, thicknessPx);
+
+      // Substrate
+      ctx.fillStyle = currentMode === 'raw' ? '#1e293b' : '#1e293b';
+      ctx.fillRect(0, layerBottom, W, H - layerBottom);
+
+      // 2. TEM Noise Simulation
+      if (currentMode === 'raw') {
+        const imgData = ctx.getImageData(0, 0, W, H);
+        const data = imgData.data;
+        for (let i = 0; i < data.length; i += 4) {
+          const noise = (Math.random() - 0.5) * 60;
+          data[i] = Math.max(0, Math.min(255, data[i] + noise));
+          data[i+1] = Math.max(0, Math.min(255, data[i+1] + noise));
+          data[i+2] = Math.max(0, Math.min(255, data[i+2] + noise));
+        }
+        ctx.putImageData(imgData, 0, 0);
+      }
+
+      // 3. Sub-Pixel Boundaries & Calipers
+      if (currentMode === 'edge') {
+        // Upper interface curve
+        ctx.strokeStyle = '#22d3ee';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        for (let x = 0; x < W; x++) {
+          const y = layerTop + Math.sin(x * 0.03) * 1.5;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Lower interface curve
+        ctx.strokeStyle = '#10b981';
+        ctx.beginPath();
+        for (let x = 0; x < W; x++) {
+          const y = layerBottom + Math.cos(x * 0.025) * 1.8;
+          if (x === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.stroke();
+
+        // Draw Interactive Measurement Caliper at caliperX
+        const yTop = layerTop + Math.sin(caliperX * 0.03) * 1.5;
+        const yBot = layerBottom + Math.cos(caliperX * 0.025) * 1.8;
+
+        ctx.strokeStyle = '#f43f5e';
+        ctx.lineWidth = 2.5;
+        ctx.beginPath();
+        ctx.moveTo(caliperX, yTop - 15);
+        ctx.lineTo(caliperX, yBot + 15);
+        ctx.stroke();
+
+        // Caliper top tick
+        ctx.beginPath();
+        ctx.moveTo(caliperX - 10, yTop);
+        ctx.lineTo(caliperX + 10, yTop);
+        ctx.stroke();
+
+        // Caliper bottom tick
+        ctx.beginPath();
+        ctx.moveTo(caliperX - 10, yBot);
+        ctx.lineTo(caliperX + 10, yBot);
+        ctx.stroke();
+
+        // Label tag
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 11px "Fira Code", monospace';
+        ctx.fillText(`${((yBot - yTop) * 0.041).toFixed(2)} nm`, caliperX + 12, (yTop + yBot) / 2);
+      }
+    }
+
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      caliperX = Math.floor((e.clientX - rect.left) * (canvas.width / rect.width));
+      renderTem();
+    });
+
+    renderTem();
+  </script>
+</body>
+</html>

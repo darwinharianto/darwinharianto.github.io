@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>iOS On-Device AI Bolt Safety Inspection | Darwin Harianto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
+          colors: {
+            brand: '#10b981',
+            accent: '#06b6d4',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-white min-h-screen">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-emerald-400 hover:text-emerald-300 font-medium transition group">
+          <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Portfolio
+        </a>
+        <span class="text-slate-600">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-300">iOS Edge AI</span>
+      </div>
+      <div class="text-xs font-mono text-slate-400">
+        CoreML · 3D Depth Projection · Quantization
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
+    <!-- Project Hero Header -->
+    <section class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-xs font-mono text-emerald-400">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        Lead Engineer · 2-Person Engineering Team
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+        iOS On-Device AI: Automated <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Bolt Safety Check & 3D Angle Metrology</span>
+      </h1>
+      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+        Developed a real-time, on-device iOS safety inspection system. Performs bolt detection, color segmentation of torque seal marks, monocular 3D depth projection, and 3D angle calculation entirely on a single iPhone image using quantized CoreML model ensembles.
+      </p>
+    </section>
+
+    <!-- Interactive Technology Visualization: iPhone Inspection View Simulator -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-sm font-mono">01</span>
+            Interactive iPhone Camera View & 3D Line Inspector
+          </h2>
+          <p class="text-sm text-slate-400">Adjust the bolt looseness rotation or switch pipeline stages to observe 2D-to-3D projection and safety validation.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-4 text-xs font-mono">
+          <div class="flex items-center gap-2">
+            <span class="text-slate-400">Bolt Looseness (Δθ):</span>
+            <input type="range" id="boltAngleRange" min="-45" max="45" step="1" value="0" class="accent-emerald-400 w-28">
+            <span id="boltAngleVal" class="text-emerald-400 font-bold">0.0°</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Interactive Canvas Viewport (iPhone Screen Format) -->
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">iPhone 15 Pro Lens</span>
+              <span id="safetyStatusBadge" class="px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold">
+                ✓ SAFETY PASS (ALIGNED)
+              </span>
+            </div>
+            <span class="text-slate-400">Apple Neural Engine: 18ms</span>
+          </div>
+
+          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+            <canvas id="boltCanvas" width="600" height="380" class="w-full h-full block"></canvas>
+          </div>
+
+          <!-- Pipeline Stage Selector -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs font-mono border-t border-slate-800">
+            <span class="text-slate-400">Visual Pipeline View:</span>
+            <div class="flex flex-wrap gap-2">
+              <button id="viewDetection" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="setBoltView('detection')">1. Bolt Detection</button>
+              <button id="viewSegment" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="setBoltView('segment')">2. Mark Segment</button>
+              <button id="viewDepth" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="setBoltView('depth')">3. 3D Depth Map</button>
+              <button id="viewAngle" class="px-2.5 py-1 rounded bg-emerald-600 text-white font-bold ring-2 ring-emerald-400" onclick="setBoltView('angle')">4. 3D Vector Angle</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono border-t border-slate-800">
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Mark 3D Deviation</div>
+              <div id="deviationMetricVal" class="text-emerald-400 font-bold text-sm mt-0.5">0.0°</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Quantized Model</div>
+              <div class="text-cyan-400 font-bold text-sm mt-0.5">INT8 CoreML (14MB)</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">On-Device Latency</div>
+              <div class="text-teal-400 font-bold text-sm mt-0.5">18 ms (55 FPS)</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Tolerance Limit</div>
+              <div class="text-amber-400 font-bold text-sm mt-0.5">±3.5° Max Allowed</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tech Details Sidebar -->
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Single-Image 3D Algorithm</h3>
+          
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-emerald-400 font-bold">1. Bolt & Torque Mark Mask:</div>
+            <p class="text-slate-400 text-[10px]">Detects the hexagonal bolt head and performs color-segmented mask extraction for the witness line stripe painted across the nut and flange surface.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-cyan-400 font-bold">2. Monocular 3D Depth Projection:</div>
+            <p class="text-slate-400 text-[10px]">Back-projects segmented 2D line pixels $(u, v)$ with predicted metric depth $Z$ using the calibrated iPhone intrinsic matrix:
+            $$X = \frac{(u - c_x) Z}{f_x}, \quad Y = \frac{(v - c_y) Z}{f_y}$$</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-teal-400 font-bold">3. 3D Angle Calculation:</div>
+            <p class="text-slate-400 text-[10px]">Calculates the 3D directional vector of the bolt line $\vec{v}_{\text{bolt}}$ and flange baseline $\vec{v}_{\text{base}}$:
+            $$\theta = \arccos\left(\frac{\vec{v}_{\text{bolt}} \cdot \vec{v}_{\text{base}}}{\|\vec{v}_{\text{bolt}}\| \|\vec{v}_{\text{base}}\|}\right)$$
+            eliminating optical perspective distortion from non-perpendicular camera angles.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-purple-400 font-bold">4. CoreML INT8 Quantization:</div>
+            <p class="text-slate-400 text-[10px]">Compressed the ensemble network by 75% for zero-latency execution on the Apple Neural Engine without heating the mobile device.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="excavator-automation.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+        ← Previous: Autonomous Excavator Digital Twin
+      </a>
+      <a href="multimodal-search.html" class="px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-emerald-500/20">
+        Next Project: Multimodal Vector Search →
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // --- Interactive Bolt Inspection Canvas ---
+    const canvas = document.getElementById('boltCanvas');
+    const ctx = canvas.getContext('2d');
+    const angleRange = document.getElementById('boltAngleRange');
+    const angleVal = document.getElementById('boltAngleVal');
+    const deviationVal = document.getElementById('deviationMetricVal');
+    const safetyBadge = document.getElementById('safetyStatusBadge');
+
+    let activeView = 'angle'; // 'detection' | 'segment' | 'depth' | 'angle'
+
+    function setBoltView(view) {
+      activeView = view;
+      ['detection', 'segment', 'depth', 'angle'].forEach(v => {
+        const btn = document.getElementById(`view${v.charAt(0).toUpperCase() + v.slice(1)}`);
+        if (v === view) {
+          btn.className = 'px-2.5 py-1 rounded bg-emerald-600 text-white font-bold ring-2 ring-emerald-400';
+        } else {
+          btn.className = 'px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white';
+        }
+      });
+      renderBoltInspection();
+    }
+
+    function renderBoltInspection() {
+      const deltaAngle = parseFloat(angleRange.value);
+      angleVal.textContent = `${deltaAngle >= 0 ? '+' : ''}${deltaAngle.toFixed(1)}°`;
+      deviationVal.textContent = `${Math.abs(deltaAngle).toFixed(1)}°`;
+
+      const isSafe = Math.abs(deltaAngle) <= 3.5;
+      if (isSafe) {
+        safetyBadge.className = 'px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold';
+        safetyBadge.textContent = '✓ SAFETY PASS (ALIGNED)';
+      } else {
+        safetyBadge.className = 'px-2 py-0.5 rounded bg-rose-500/20 border border-rose-500/40 text-rose-300 font-bold animate-pulse';
+        safetyBadge.textContent = '⚠ DANGER: LOOSE BOLT';
+      }
+
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      const cx = W / 2;
+      const cy = H / 2;
+
+      // 1. Background Steel Flange Plate
+      if (activeView === 'depth') {
+        // Depth map pseudo-color visualization (distance from camera)
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 0, W, H);
+        const grad = ctx.createRadialGradient(cx, cy, 20, cx, cy, 180);
+        grad.addColorStop(0, '#38bdf8'); // Close (bolt top)
+        grad.addColorStop(0.4, '#6366f1'); // Mid (washer)
+        grad.addColorStop(1, '#0f172a'); // Background plate
+        ctx.fillStyle = grad;
+        ctx.fillRect(cx - 180, cy - 180, 360, 360);
+      } else {
+        // Realistic steel plate background
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(0, 0, W, H);
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 1;
+        for (let i = 20; i < W; i += 30) {
+          ctx.beginPath();
+          ctx.moveTo(i, 0);
+          ctx.lineTo(i, H);
+          ctx.stroke();
+        }
+      }
+
+      // 2. Base Flange Reference Mark (Static straight line below bolt on flange)
+      ctx.strokeStyle = activeView === 'segment' ? '#f59e0b' : '#fbbf24';
+      ctx.lineWidth = activeView === 'segment' ? 6 : 4;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy + 50);
+      ctx.lineTo(cx, cy + 130);
+      ctx.stroke();
+
+      // 3. Draw Steel Washer
+      ctx.beginPath();
+      ctx.arc(cx, cy, 95, 0, Math.PI * 2);
+      ctx.fillStyle = activeView === 'depth' ? 'rgba(99, 102, 241, 0.4)' : '#334155';
+      ctx.fill();
+      ctx.strokeStyle = '#475569';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // 4. Draw Hexagonal Bolt Head
+      const boltRadius = 65;
+      ctx.beginPath();
+      for (let i = 0; i < 6; i++) {
+        const rad = (i * 60 * Math.PI) / 180;
+        const x = cx + boltRadius * Math.cos(rad);
+        const y = cy + boltRadius * Math.sin(rad);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fillStyle = activeView === 'depth' ? 'rgba(56, 189, 248, 0.7)' : '#475569';
+      ctx.fill();
+      ctx.strokeStyle = '#cbd5e1';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Inner Bolt Circle
+      ctx.beginPath();
+      ctx.arc(cx, cy, 35, 0, Math.PI * 2);
+      ctx.fillStyle = activeView === 'depth' ? '#38bdf8' : '#334155';
+      ctx.fill();
+
+      // 5. Draw Bolt Witness Mark Line (Rotates with boltAngle)
+      ctx.save();
+      ctx.translate(cx, cy);
+      ctx.rotate((deltaAngle * Math.PI) / 180);
+
+      // Line across bolt head
+      ctx.strokeStyle = activeView === 'segment' ? '#f59e0b' : (isSafe ? '#fbbf24' : '#f43f5e');
+      ctx.lineWidth = activeView === 'segment' ? 7 : 4;
+      ctx.beginPath();
+      ctx.moveTo(0, -60);
+      ctx.lineTo(0, 50);
+      ctx.stroke();
+      ctx.restore();
+
+      // --- Mode Specific Overlays ---
+
+      if (activeView === 'detection') {
+        // Bounding Box with Label
+        ctx.strokeStyle = '#22d3ee';
+        ctx.lineWidth = 2.5;
+        ctx.strokeRect(cx - 105, cy - 105, 210, 210);
+
+        ctx.fillStyle = '#22d3ee';
+        ctx.fillRect(cx - 105, cy - 132, 130, 26);
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 11px "Fira Code", monospace';
+        ctx.fillText('BOLT: 0.982', cx - 98, cy - 115);
+      }
+
+      if (activeView === 'segment') {
+        // Color Mask Highlight Label
+        ctx.fillStyle = 'rgba(245, 158, 11, 0.2)';
+        ctx.beginPath();
+        ctx.arc(cx, cy, 100, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = 'bold 11px "Fira Code", monospace';
+        ctx.fillText('COLOR MASK: HSV TORQUE STRIPE [Pass: 870 px]', 30, 40);
+      }
+
+      if (activeView === 'angle') {
+        // Draw 3D Vector Rays & Angle Arc
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        ctx.lineWidth = 1;
+        ctx.setLineDash([3, 3]);
+        // Baseline extension line
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - 70);
+        ctx.lineTo(cx, cy + 130);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Angle Arc
+        if (Math.abs(deltaAngle) > 0.5) {
+          ctx.beginPath();
+          const startR = Math.PI / 2;
+          const endR = startR + (deltaAngle * Math.PI) / 180;
+          ctx.arc(cx, cy, 40, Math.min(startR, endR), Math.max(startR, endR));
+          ctx.strokeStyle = isSafe ? '#10b981' : '#f43f5e';
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+
+          ctx.fillStyle = isSafe ? '#34d399' : '#fb7185';
+          ctx.font = 'bold 12px "Fira Code", monospace';
+          ctx.fillText(`Δθ = ${deltaAngle > 0 ? '+' : ''}${deltaAngle.toFixed(1)}°`, cx + 25, cy + 25);
+        }
+      }
+    }
+
+    angleRange.addEventListener('input', renderBoltInspection);
+    renderBoltInspection();
+  </script>
+</body>
+</html>

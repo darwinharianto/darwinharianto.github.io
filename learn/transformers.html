@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Transformers & Attention Mechanisms Visualizer | Darwin Harianto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
+          colors: {
+            brand: '#a855f7',
+            accent: '#ec4899',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+    .attn-glow {
+      box-shadow: 0 0 20px -3px rgba(168, 85, 247, 0.35);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-purple-500 selection:text-white min-h-screen">
+
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="../index.html" class="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 font-medium transition group">
+          <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Portfolio
+        </a>
+        <span class="text-slate-600">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-950/80 border border-purple-800 text-purple-300">Part 03 · Visual Interactive</span>
+      </div>
+      <div class="flex items-center gap-3 text-xs font-mono">
+        <span class="text-slate-400">ML Concept Lab</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
+    <!-- Intro Header -->
+    <section class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/60 border border-purple-500/30 text-xs font-mono text-purple-400">
+        <span class="w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
+        Interactive Deep Dive: Attention & Modern Foundation Models
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+        Attention Mechanisms & The <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400">Transformer Revolution</span>
+      </h1>
+      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+        Visualizing Scaled Dot-Product Attention, Query-Key retrieval intuition, Multi-Head disentangled representations, and Cross-Attention in Latent Diffusion (SDXL).
+      </p>
+    </section>
+
+    <!-- Visualizer 1: Interactive Self-Attention Matrix -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center text-sm font-mono">01</span>
+            Interactive Self-Attention & Co-Reference Visualizer
+          </h2>
+          <p class="text-sm text-slate-400">Select a prompt sentence or click on individual tokens to inspect pairwise attention weights.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="text-xs text-slate-400 font-mono">Sentence:</label>
+          <select id="sentenceSelect" class="bg-slate-900 border border-slate-700 text-purple-300 text-xs font-mono rounded-lg px-3 py-1.5 focus:border-purple-400 outline-none">
+            <option value="coref">"The robot crossed the street because it was autonomous"</option>
+            <option value="vision">"Detecting semiconductor defects in TEM electron imagery"</option>
+            <option value="diffusion">"Synthesizing architectural floor plans with LoRA and ControlNet"</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Interactive Attention Heatmap & Token Connector -->
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-6">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+            <span>Token Interaction Ribbon:</span>
+            <span class="text-purple-400">Click a token to query its attention vector</span>
+          </div>
+
+          <!-- Token Buttons Ribbon -->
+          <div id="tokensRibbon" class="flex flex-wrap gap-2 pt-1"></div>
+
+          <!-- Attention Heatmap Matrix -->
+          <div class="space-y-3 pt-3 border-t border-slate-800">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="text-slate-300">Attention Weight Matrix: $\text{Softmax}(Q K^T / \sqrt{d_k})$</span>
+              <span class="text-purple-400 font-bold" id="selectedTokenLabel">Query Token: [it]</span>
+            </div>
+            
+            <div class="overflow-x-auto pb-2">
+              <div id="heatmapContainer" class="inline-block min-w-full bg-slate-900/90 p-4 rounded-xl border border-slate-800"></div>
+            </div>
+          </div>
+
+          <!-- Formula Step Visualizer -->
+          <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 font-mono text-xs space-y-2">
+            <div class="text-purple-400 font-bold flex justify-between">
+              <span>Mathematical Flow for Token [q]:</span>
+              <span class="text-slate-500">d_k = 64 (scaling factor = 1/8)</span>
+            </div>
+            <div class="text-slate-300 text-xs leading-relaxed space-y-1">
+              <div>1. <span class="text-purple-300">Similarity Scores:</span> $S_{i,j} = \frac{q_i \cdot k_j}{\sqrt{d_k}}$</div>
+              <div>2. <span class="text-pink-300">Softmax Normalization:</span> $\alpha_{i,j} = \frac{\exp(S_{i,j})}{\sum_m \exp(S_{i,m})}$</div>
+              <div>3. <span class="text-emerald-300">Context Output:</span> $z_i = \sum_j \alpha_{i,j} v_j$</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar: Why Transformers Replaced RNNs -->
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs leading-relaxed text-slate-300">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Why Attention Beat RNNs</h3>
+          
+          <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1.5">
+            <div class="text-purple-400 font-bold font-mono">1. O(1) Path Length</div>
+            <p class="text-slate-400">RNNs must step sequentially through $N$ tokens, causing early information to degrade (vanishing gradient across time). Attention computes direct relationships between any two tokens in a single step.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1.5">
+            <div class="text-pink-400 font-bold font-mono">2. Massive Parallelization</div>
+            <p class="text-slate-400">Because tokens do not wait for previous hidden states $h_{t-1}$, the entire sequence is computed simultaneously via matrix multiplications on modern GPU tensor cores.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1.5">
+            <div class="text-indigo-400 font-bold font-mono">3. Dynamic Context Routing</div>
+            <p class="text-slate-400">Unlike fixed convolutional kernels, attention weights are input-dependent: the network dynamically re-routes focus based on semantic relevance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visualizer 2: Multi-Head Attention Heads Switcher -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-pink-500/10 text-pink-400 border border-pink-500/20 flex items-center justify-center text-sm font-mono">02</span>
+            Multi-Head Attention (MHA): Subspace Token Routing Graph
+          </h2>
+          <p class="text-sm text-slate-400">Toggle distinct attention heads to observe how each head specializes in different semantic subspaces.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
+          <button id="headBtn1" class="px-3 py-1.5 rounded-lg bg-purple-600 text-white font-bold ring-2 ring-purple-400 transition" onclick="selectHead(1)">
+            Head 1: Syntactic (Subject-Verb)
+          </button>
+          <button id="headBtn2" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white transition" onclick="selectHead(2)">
+            Head 2: Co-reference (it → robot)
+          </button>
+          <button id="headBtn3" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white transition" onclick="selectHead(3)">
+            Head 3: Positional Proximity
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Interactive Multi-Head Graph Canvas -->
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+            <span>Inter-Token Attention Arc Graph</span>
+            <span id="headDescLabel" class="text-purple-300 font-bold">Head 1: Tracking subject "robot" to predicate "crossed"</span>
+          </div>
+          <div class="relative w-full aspect-[16/8] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+            <canvas id="mhaCanvas" width="620" height="280" class="w-full h-full block"></canvas>
+          </div>
+          <div class="flex items-center justify-between text-xs font-mono text-slate-400 pt-2 border-t border-slate-800">
+            <span>$\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h) W^O$</span>
+            <span class="text-pink-400">Line thickness = Attention weight</span>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Subspace Specialization</h3>
+          <p>
+            Instead of performing a single attention function with $d_{\text{model}}$-dimensional keys, queries and values, linearly projecting the queries, keys, and values $h$ times allows the model to jointly attend to information from different representation subspaces.
+          </p>
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1 text-slate-400 font-mono text-[11px]">
+            <div>• $d_{\text{model}} = 512, h = 8 \text{ heads}$</div>
+            <div>• $d_k = d_v = d_{\text{model}} / h = 64$</div>
+            <div>• Total compute remains identical to single-head attention!</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visualizer 3: Cross-Attention in Generative Diffusion & Vision Transformers -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center text-sm font-mono">03</span>
+            Interactive Diffusion Cross-Attention Spatial Heatmap
+          </h2>
+          <p class="text-sm text-slate-400">Click a text prompt token to visualize where it injects latent features on the spatial floor plan grid.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
+          <span class="text-slate-400">Select Prompt Token:</span>
+          <button id="crossToken1" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-bold" onclick="selectCrossToken(0)">[structural walls]</button>
+          <button id="crossToken2" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="selectCrossToken(1)">[living room]</button>
+          <button id="crossToken3" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="selectCrossToken(2)">[wooden floor]</button>
+          <button id="crossToken4" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="selectCrossToken(3)">[open balcony]</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Interactive Cross-Attention Canvas -->
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="text-slate-400">Spatial Latent Attention Map (64×64 UNet Feature Resolution)</span>
+            <span id="crossTokenStatus" class="text-indigo-300 font-bold">Query: Spatial Pixels $\leftrightarrow$ Key: "[structural walls]"</span>
+          </div>
+
+          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+            <canvas id="crossAttnCanvas" width="560" height="340" class="w-full h-full block"></canvas>
+          </div>
+
+          <div class="flex items-center justify-between text-xs font-mono text-slate-400 pt-2 border-t border-slate-800">
+            <span>$A_{\text{cross}} = \text{Softmax}\left(\frac{Q_{\text{spatial}} K_{\text{text}}^T}{\sqrt{d}}\right) \cdot V_{\text{text}}$</span>
+            <span class="text-indigo-400">Bright glow = High spatial alignment</span>
+          </div>
+        </div>
+
+          <div class="space-y-4">
+            <!-- Latent Image Tokens -->
+            <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1.5">
+              <div class="text-xs font-mono text-cyan-400 font-bold">Query Matrix Q: Spatial Latents (UNet Feature Map)</div>
+              <p class="text-[11px] text-slate-400">Each spatial pixel position $(h, w)$ acts as a Query asking: <em>"What architectural element should exist here?"</em></p>
+            </div>
+
+            <!-- Flow Arrow -->
+            <div class="flex justify-center">
+              <span class="text-purple-400 text-xs font-mono flex items-center gap-2 px-3 py-1 bg-purple-950/60 rounded-full border border-purple-800">
+                Cross-Attention Interaction: Softmax(Q · Kᵀ / √d) · V
+              </span>
+            </div>
+
+            <!-- Text CLIP Tokens -->
+            <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1.5">
+              <div class="text-xs font-mono text-pink-400 font-bold">Key (K) & Value (V): Text Embeddings (CLIP / OpenCLIP)</div>
+              <p class="text-[11px] text-slate-400">Tokens like <code>"living room"</code>, <code>"wooden floor"</code>, <code>"open balcony"</code> provide Keys for matching and Values for spatial feature injection.</p>
+            </div>
+          </div>
+
+          <div class="p-3 bg-purple-950/30 rounded-xl border border-purple-800/40 text-xs text-purple-200">
+            <strong>Darwin's Engineering Integration:</strong> By pairing SDXL cross-attention with ControlNet zero-convolutions, the generation strictly respects structural boundary polylines extracted from CAD / DXF drawings!
+          </div>
+        </div>
+
+        <!-- Vision Transformer ViT Diagram -->
+        <div class="lg:col-span-5 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Vision Transformers (ViT)</h3>
+          <p>
+            ViT discards convolutions entirely by cutting an image into non-overlapping patches (e.g., 16×16 pixels), flattening them, and projecting them linearly into standard 1D token embeddings.
+          </p>
+          <div class="space-y-2 font-mono text-[11px] text-slate-400 bg-slate-900 p-3 rounded-xl border border-slate-800">
+            <div>• Image Resolution: 224 × 224</div>
+            <div>• Patch Size: 16 × 16 → 196 Patches</div>
+            <div>• Patch Tokens + [CLS] Token + 1D Positional Embeddings</div>
+            <div>• Fed through standard Transformer Encoder blocks</div>
+          </div>
+          <p class="text-slate-400">
+            Unlike CNNs with fixed local inductive biases, ViTs learn both fine textures and global scene topology from scratch, scaling effectively with massive dataset sizes.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="vision.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+        ← Previous: Computer Vision & Convolutions
+      </a>
+      <a href="../index.html" class="px-5 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-purple-500/20">
+        Return to Engineering Portfolio →
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // --- Interactive Attention Visualizer Script ---
+    const sentenceSelect = document.getElementById('sentenceSelect');
+    const tokensRibbon = document.getElementById('tokensRibbon');
+    const heatmapContainer = document.getElementById('heatmapContainer');
+    const selectedTokenLabel = document.getElementById('selectedTokenLabel');
+
+    const datasets = {
+      coref: {
+        tokens: ["The", "robot", "crossed", "the", "street", "because", "it", "was", "autonomous"],
+        weights: [
+          [0.30, 0.40, 0.10, 0.05, 0.05, 0.02, 0.03, 0.02, 0.03],
+          [0.10, 0.45, 0.20, 0.05, 0.05, 0.03, 0.04, 0.03, 0.05],
+          [0.05, 0.25, 0.35, 0.05, 0.20, 0.02, 0.02, 0.03, 0.03],
+          [0.02, 0.03, 0.05, 0.25, 0.55, 0.02, 0.02, 0.03, 0.03],
+          [0.02, 0.05, 0.20, 0.15, 0.45, 0.03, 0.02, 0.03, 0.05],
+          [0.05, 0.05, 0.10, 0.05, 0.05, 0.30, 0.20, 0.10, 0.15],
+          // "it" attends heavily to "robot" (0.52) and "autonomous" (0.24)
+          [0.02, 0.54, 0.05, 0.02, 0.03, 0.04, 0.08, 0.04, 0.18],
+          [0.02, 0.04, 0.03, 0.02, 0.02, 0.03, 0.25, 0.35, 0.24],
+          [0.02, 0.38, 0.04, 0.02, 0.02, 0.04, 0.16, 0.06, 0.26]
+        ]
+      },
+      vision: {
+        tokens: ["Detecting", "semiconductor", "defects", "in", "TEM", "electron", "microscopy"],
+        weights: [
+          [0.40, 0.25, 0.20, 0.02, 0.05, 0.04, 0.04],
+          [0.10, 0.50, 0.25, 0.02, 0.05, 0.03, 0.05],
+          [0.15, 0.35, 0.35, 0.02, 0.05, 0.03, 0.05],
+          [0.02, 0.05, 0.05, 0.20, 0.30, 0.20, 0.18],
+          [0.05, 0.10, 0.10, 0.05, 0.40, 0.15, 0.15],
+          [0.02, 0.08, 0.05, 0.02, 0.25, 0.30, 0.28],
+          [0.03, 0.05, 0.05, 0.02, 0.25, 0.25, 0.35]
+        ]
+      },
+      diffusion: {
+        tokens: ["Synthesizing", "architectural", "floor", "plans", "with", "LoRA", "and", "ControlNet"],
+        weights: [
+          [0.35, 0.15, 0.15, 0.15, 0.02, 0.08, 0.02, 0.08],
+          [0.08, 0.45, 0.25, 0.15, 0.01, 0.02, 0.01, 0.03],
+          [0.05, 0.20, 0.45, 0.22, 0.01, 0.02, 0.01, 0.04],
+          [0.05, 0.15, 0.25, 0.45, 0.01, 0.03, 0.01, 0.05],
+          [0.02, 0.02, 0.02, 0.02, 0.20, 0.35, 0.05, 0.32],
+          [0.08, 0.04, 0.08, 0.08, 0.02, 0.40, 0.04, 0.26],
+          [0.01, 0.01, 0.01, 0.01, 0.05, 0.42, 0.08, 0.42],
+          [0.08, 0.06, 0.08, 0.08, 0.02, 0.28, 0.04, 0.36]
+        ]
+      }
+    };
+
+    let activeKey = 'coref';
+    let selectedTokenIdx = 6; // default on "it"
+
+    function renderAttention() {
+      const data = datasets[activeKey];
+      const tokens = data.tokens;
+      const matrix = data.weights;
+
+      if (selectedTokenIdx >= tokens.length) {
+        selectedTokenIdx = 0;
+      }
+
+      selectedTokenLabel.textContent = `Query Token: [${tokens[selectedTokenIdx]}]`;
+
+      // 1. Render Ribbon Buttons
+      tokensRibbon.innerHTML = '';
+      tokens.forEach((tok, idx) => {
+        const btn = document.createElement('button');
+        const isSelected = idx === selectedTokenIdx;
+        const attnWeight = matrix[selectedTokenIdx][idx];
+        
+        btn.className = `px-3 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5 ${
+          isSelected 
+            ? 'bg-purple-600 text-white font-bold ring-2 ring-purple-300 scale-105' 
+            : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700'
+        }`;
+        
+        btn.innerHTML = `
+          <span>${tok}</span>
+          <span class="text-[10px] px-1 py-0.2 rounded ${isSelected ? 'bg-purple-800 text-purple-200' : 'bg-slate-800 text-purple-400'}">
+            ${(attnWeight * 100).toFixed(0)}%
+          </span>
+        `;
+        
+        btn.addEventListener('click', () => {
+          selectedTokenIdx = idx;
+          renderAttention();
+        });
+        tokensRibbon.appendChild(btn);
+      });
+
+      // 2. Render Heatmap Table
+      heatmapContainer.innerHTML = '';
+      const table = document.createElement('table');
+      table.className = 'w-full text-center border-collapse font-mono text-[11px]';
+
+      // Header row
+      const thead = document.createElement('thead');
+      const headRow = document.createElement('tr');
+      headRow.innerHTML = `<th class="p-2 text-slate-500 font-normal border-b border-slate-800 text-left">Query \\ Key</th>`;
+      tokens.forEach((tok) => {
+        const th = document.createElement('th');
+        th.className = 'p-2 text-slate-400 font-medium border-b border-slate-800';
+        th.textContent = tok;
+        headRow.appendChild(th);
+      });
+      thead.appendChild(headRow);
+      table.appendChild(thead);
+
+      // Body rows
+      const tbody = document.createElement('tbody');
+      tokens.forEach((qTok, qIdx) => {
+        const tr = document.createElement('tr');
+        const isRowActive = qIdx === selectedTokenIdx;
+        if (isRowActive) {
+          tr.className = 'bg-purple-950/40 ring-1 ring-purple-500/40';
+        }
+
+        const labelCell = document.createElement('td');
+        labelCell.className = `p-2 font-medium text-left border-b border-slate-800/60 ${isRowActive ? 'text-purple-300 font-bold' : 'text-slate-400'}`;
+        labelCell.textContent = qTok;
+        labelCell.addEventListener('click', () => {
+          selectedTokenIdx = qIdx;
+          renderAttention();
+        });
+        labelCell.style.cursor = 'pointer';
+        tr.appendChild(labelCell);
+
+        tokens.forEach((kTok, kIdx) => {
+          const td = document.createElement('td');
+          const weight = matrix[qIdx][kIdx];
+          td.className = 'p-2 border-b border-slate-800/60 transition-colors cursor-pointer';
+
+          // Color scale based on weight
+          const alpha = Math.min(0.9, Math.max(0.08, weight * 1.5));
+          td.style.backgroundColor = `rgba(168, 85, 247, ${alpha})`;
+          td.style.color = weight > 0.25 ? '#ffffff' : '#cbd5e1';
+          td.textContent = weight.toFixed(2);
+
+          td.addEventListener('click', () => {
+            selectedTokenIdx = qIdx;
+            renderAttention();
+          });
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      table.appendChild(tbody);
+      heatmapContainer.appendChild(table);
+    }
+
+    sentenceSelect.addEventListener('change', (e) => {
+      activeKey = e.target.value;
+      selectedTokenIdx = 0;
+      renderAttention();
+    });
+
+    renderAttention();
+
+    // --- 02: Multi-Head Attention Graph Canvas ---
+    const mhaCanvas = document.getElementById('mhaCanvas');
+    const mhaCtx = mhaCanvas.getContext('2d');
+    const headDescLabel = document.getElementById('headDescLabel');
+
+    const mhaSentence = ["The", "robot", "saw", "the", "cat", "because", "it", "was", "tired"];
+    
+    // Distinct attention heads
+    const headConnections = {
+      1: {
+        desc: 'Head 1 (Syntax): Binds subject "robot" to verb "saw" and "it" to "was"',
+        color: '#c084fc',
+        arcs: [
+          { from: 1, to: 2, weight: 0.85 }, // robot -> saw
+          { from: 4, to: 2, weight: 0.70 }, // cat -> saw
+          { from: 6, to: 7, weight: 0.80 }, // it -> was
+          { from: 8, to: 7, weight: 0.65 }  // tired -> was
+        ]
+      },
+      2: {
+        desc: 'Head 2 (Co-reference): High similarity between pronoun "it" and subject "robot"',
+        color: '#f472b6',
+        arcs: [
+          { from: 6, to: 1, weight: 0.92 }, // it -> robot (Primary co-ref)
+          { from: 6, to: 4, weight: 0.18 }, // it -> cat
+          { from: 8, to: 1, weight: 0.40 }  // tired -> robot
+        ]
+      },
+      3: {
+        desc: 'Head 3 (Positional Proximity): Focuses heavily on adjacent neighboring tokens (n-grams)',
+        color: '#818cf8',
+        arcs: [
+          { from: 0, to: 1, weight: 0.80 },
+          { from: 1, to: 2, weight: 0.75 },
+          { from: 2, to: 3, weight: 0.70 },
+          { from: 3, to: 4, weight: 0.85 },
+          { from: 4, to: 5, weight: 0.60 },
+          { from: 5, to: 6, weight: 0.75 },
+          { from: 6, to: 7, weight: 0.80 },
+          { from: 7, to: 8, weight: 0.85 }
+        ]
+      }
+    };
+
+    let activeHeadId = 1;
+
+    function selectHead(headId) {
+      activeHeadId = headId;
+      for (let i = 1; i <= 3; i++) {
+        const btn = document.getElementById(`headBtn${i}`);
+        if (i === headId) {
+          btn.className = 'px-3 py-1.5 rounded-lg bg-purple-600 text-white font-bold ring-2 ring-purple-400 transition';
+        } else {
+          btn.className = 'px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white transition';
+        }
+      }
+      renderMhaGraph();
+    }
+
+    function renderMhaGraph() {
+      const head = headConnections[activeHeadId];
+      headDescLabel.textContent = head.desc;
+
+      const W = mhaCanvas.width;
+      const H = mhaCanvas.height;
+      mhaCtx.clearRect(0, 0, W, H);
+
+      const numTokens = mhaSentence.length;
+      const tokenSpacing = (W - 80) / (numTokens - 1);
+      const baselineY = H - 55;
+
+      const tokenPositions = mhaSentence.map((tok, i) => ({
+        x: 40 + i * tokenSpacing,
+        y: baselineY,
+        text: tok
+      }));
+
+      // Draw Arcs
+      head.arcs.forEach(arc => {
+        const p1 = tokenPositions[arc.from];
+        const p2 = tokenPositions[arc.to];
+        const midX = (p1.x + p2.x) / 2;
+        const dist = Math.abs(p1.x - p2.x);
+        const arcHeight = Math.min(180, dist * 0.7 + 35);
+        const controlY = baselineY - arcHeight;
+
+        mhaCtx.beginPath();
+        mhaCtx.moveTo(p1.x, p1.y - 10);
+        mhaCtx.quadraticCurveTo(midX, controlY, p2.x, p2.y - 10);
+        mhaCtx.strokeStyle = head.color;
+        mhaCtx.lineWidth = Math.max(1.5, arc.weight * 5);
+        mhaCtx.stroke();
+      });
+
+      // Draw Tokens
+      tokenPositions.forEach(p => {
+        // Node circle
+        mhaCtx.beginPath();
+        mhaCtx.arc(p.x, p.y - 10, 5, 0, Math.PI * 2);
+        mhaCtx.fillStyle = '#f8fafc';
+        mhaCtx.fill();
+
+        // Label
+        mhaCtx.fillStyle = '#cbd5e1';
+        mhaCtx.font = '11px "Fira Code", monospace';
+        mhaCtx.textAlign = 'center';
+        mhaCtx.fillText(p.text, p.x, p.y + 15);
+      });
+    }
+
+    renderMhaGraph();
+
+    // --- 03: Diffusion Cross-Attention Spatial Canvas ---
+    const crossAttnCanvas = document.getElementById('crossAttnCanvas');
+    const crossCtx = crossAttnCanvas.getContext('2d');
+    const crossTokenStatus = document.getElementById('crossTokenStatus');
+
+    const crossTokens = [
+      { text: "[structural walls]", desc: 'Key: "[structural walls]" → Activates outer perimeter and interior partition coordinates' },
+      { text: "[living room]", desc: 'Key: "[living room]" → Activates central open-plan rectangular space' },
+      { text: "[wooden floor]", desc: 'Key: "[wooden floor]" → Activates broad spatial area inside room partitions' },
+      { text: "[open balcony]", desc: 'Key: "[open balcony]" → Activates perimeter extension boundary on south terrace' }
+    ];
+
+    let activeCrossIdx = 0;
+
+    function selectCrossToken(idx) {
+      activeCrossIdx = idx;
+      for (let i = 0; i < 4; i++) {
+        const btn = document.getElementById(`crossToken${i + 1}`);
+        if (i === idx) {
+          btn.className = 'px-2.5 py-1 rounded bg-indigo-600 text-white font-bold';
+        } else {
+          btn.className = 'px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white';
+        }
+      }
+      renderCrossAttention();
+    }
+
+    function renderCrossAttention() {
+      const item = crossTokens[activeCrossIdx];
+      crossTokenStatus.textContent = item.desc;
+
+      const W = crossAttnCanvas.width;
+      const H = crossAttnCanvas.height;
+      crossCtx.clearRect(0, 0, W, H);
+
+      const gridSize = 16; // 16x16 UNet latent spatial tokens
+      const cellW = (W - 80) / gridSize;
+      const cellH = (H - 40) / gridSize;
+      const startX = 40;
+      const startY = 20;
+
+      for (let r = 0; r < gridSize; r++) {
+        for (let c = 0; c < gridSize; c++) {
+          let intensity = 0.05; // background
+
+          if (activeCrossIdx === 0) {
+            // Walls: border + cross partitions
+            const isBorder = (r === 2 || r === 13 || c === 2 || c === 13);
+            const isPartition = (r === 8 || c === 8);
+            if (isBorder || isPartition) intensity = 0.95;
+          } else if (activeCrossIdx === 1) {
+            // Living room: middle left quadrant
+            if (r >= 3 && r <= 7 && c >= 3 && c <= 7) intensity = 0.85;
+          } else if (activeCrossIdx === 2) {
+            // Wooden floor: living room + kitchen
+            if ((r >= 3 && r <= 7 && c >= 3 && c <= 7) || (r >= 9 && r <= 12 && c >= 3 && c <= 7)) intensity = 0.75;
+          } else if (activeCrossIdx === 3) {
+            // Balcony: right side terrace
+            if (r >= 4 && r <= 11 && c >= 14 && c <= 15) intensity = 0.95;
+          }
+
+          const x = startX + c * cellW;
+          const y = startY + r * cellH;
+
+          crossCtx.fillStyle = `rgba(99, 102, 241, ${intensity})`;
+          crossCtx.fillRect(x + 1, y + 1, cellW - 2, cellH - 2);
+
+          crossCtx.strokeStyle = 'rgba(79, 70, 229, 0.25)';
+          crossCtx.lineWidth = 1;
+          crossCtx.strokeRect(x + 1, y + 1, cellW - 2, cellH - 2);
+        }
+      }
+
+      // Draw Floor Plan Blueprint Overlay
+      crossCtx.strokeStyle = '#ffffff';
+      crossCtx.lineWidth = 2;
+      crossCtx.strokeRect(startX + 2 * cellW, startY + 2 * cellH, 11 * cellW, 11 * cellH);
+    }
+
+    renderCrossAttention();
+  </script>
+</body>
+</html>

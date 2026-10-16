@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ML Foundations Visualizer | Darwin Harianto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
+          colors: {
+            brand: '#3b82f6',
+            accent: '#06b6d4',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+    .glow-cyan {
+      box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.25);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen">
+
+  <!-- Header / Navigation -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="../index.html" class="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition group">
+          <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Portfolio
+        </a>
+        <span class="text-slate-600">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-950/80 border border-cyan-800 text-cyan-300">Part 01 · Visual Interactive</span>
+      </div>
+      <div class="flex items-center gap-3 text-xs font-mono">
+        <span class="text-slate-400">ML Concept Lab</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
+    <!-- Intro Header -->
+    <section class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-xs font-mono text-cyan-400">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+        Interactive Deep Dive: First Principles
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+        Neural Networks, Activations & <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">Loss Optimization</span>
+      </h1>
+      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+        Explore how signals flow forward through artificial neurons, why non-linear activation functions bend decision boundaries, and how gradient descent navigates complex loss landscapes.
+      </p>
+    </section>
+
+    <!-- Interactive Visualizer 1: Perceptron / Forward Pass -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center text-sm font-mono">01</span>
+            Interactive Artificial Neuron (Forward Pass)
+          </h2>
+          <p class="text-sm text-slate-400">Tweak inputs, weights, bias, and observe the activation output in real-time.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="text-xs text-slate-400 font-mono">Activation:</label>
+          <select id="activationSelect" class="bg-slate-900 border border-slate-700 text-cyan-300 text-xs font-mono rounded-lg px-3 py-1.5 focus:border-cyan-400 outline-none">
+            <option value="relu">ReLU (max(0, z))</option>
+            <option value="gelu">GELU (Gaussian Error Linear)</option>
+            <option value="sigmoid">Sigmoid (1 / (1 + e^-z))</option>
+            <option value="tanh">Tanh (Hyperbolic Tangent)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Interactive Controls -->
+        <div class="lg:col-span-5 glass-panel rounded-2xl p-6 space-y-5">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-300 font-mono">Input Parameters</h3>
+          
+          <div class="space-y-4 text-xs font-mono">
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">Input X1:</span>
+                <span id="x1Val" class="text-cyan-400">1.50</span>
+              </div>
+              <input type="range" id="x1Range" min="-3" max="3" step="0.1" value="1.5" class="w-full accent-cyan-400">
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">Weight W1:</span>
+                <span id="w1Val" class="text-cyan-400">0.80</span>
+              </div>
+              <input type="range" id="w1Range" min="-3" max="3" step="0.1" value="0.8" class="w-full accent-cyan-400">
+            </div>
+
+            <div class="border-t border-slate-800 pt-3">
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">Input X2:</span>
+                <span id="x2Val" class="text-cyan-400">-1.00</span>
+              </div>
+              <input type="range" id="x2Range" min="-3" max="3" step="0.1" value="-1.0" class="w-full accent-cyan-400">
+            </div>
+
+            <div>
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">Weight W2:</span>
+                <span id="w2Val" class="text-cyan-400">-0.60</span>
+              </div>
+              <input type="range" id="w2Range" min="-3" max="3" step="0.1" value="-0.6" class="w-full accent-cyan-400">
+            </div>
+
+            <div class="border-t border-slate-800 pt-3">
+              <div class="flex justify-between mb-1">
+                <span class="text-slate-400">Bias (b):</span>
+                <span id="bVal" class="text-amber-400">0.20</span>
+              </div>
+              <input type="range" id="bRange" min="-3" max="3" step="0.1" value="0.2" class="w-full accent-amber-400">
+            </div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2 text-xs font-mono">
+            <div class="text-slate-400">Linear Affine Combination:</div>
+            <div class="text-cyan-300 font-bold text-sm">
+              z = (x₁·w₁) + (x₂·w₂) + b = <span id="linearZOutput">1.80</span>
+            </div>
+            <div class="text-slate-400 pt-2 border-t border-slate-800">Final Activated Output:</div>
+            <div class="text-emerald-400 font-bold text-base">
+              a = σ(z) = <span id="activatedOutput">1.80</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas Visualizer Diagram -->
+        <div class="lg:col-span-7 glass-panel rounded-2xl p-6 flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-mono text-slate-400">Dynamic Signal Flow Graph</span>
+            <span class="text-xs font-mono text-cyan-400">Live Canvas Rendering</span>
+          </div>
+          <div class="relative w-full aspect-[16/10] bg-slate-950/70 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+            <canvas id="neuronCanvas" width="600" height="380" class="w-full h-full block"></canvas>
+          </div>
+          <div class="mt-4 text-xs text-slate-400 leading-relaxed">
+            <span class="text-cyan-400 font-semibold">Key Intuition:</span> The affine transformation <code class="text-slate-300 font-mono">z = W·X + b</code> defines an n-dimensional hyperplane. Without a non-linear activation <code class="text-slate-300 font-mono">σ(z)</code>, stacking multiple layers collapses mathematically into a single linear matrix multiplication.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Visualizer 2: Activation Function & Gradient Comparator -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20 flex items-center justify-center text-sm font-mono">02</span>
+            Activation Functions & Gradient Vanishing Visualizer
+          </h2>
+          <p class="text-sm text-slate-400">Interact with dynamic curves of activations $f(x)$ alongside their backpropagation gradients $f'(x)$.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
+          <label class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900 border border-slate-700 cursor-pointer">
+            <input type="checkbox" id="plotRelu" checked class="accent-cyan-400">
+            <span class="text-cyan-400 font-bold">ReLU</span>
+          </label>
+          <label class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900 border border-slate-700 cursor-pointer">
+            <input type="checkbox" id="plotGelu" checked class="accent-blue-400">
+            <span class="text-blue-400 font-bold">GELU</span>
+          </label>
+          <label class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900 border border-slate-700 cursor-pointer">
+            <input type="checkbox" id="plotSigmoid" checked class="accent-amber-400">
+            <span class="text-amber-400 font-bold">Sigmoid</span>
+          </label>
+          <label class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900 border border-slate-700 cursor-pointer">
+            <input type="checkbox" id="plotTanh" class="accent-purple-400">
+            <span class="text-purple-400 font-bold">Tanh</span>
+          </label>
+          <label class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900 border border-slate-700 cursor-pointer ml-2">
+            <input type="checkbox" id="showDerivatives" checked class="accent-emerald-400">
+            <span class="text-emerald-400 font-bold">Show Gradients f'(x)</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Interactive Canvas Chart -->
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-400 mb-2">
+            <span>Dynamic Mathematical Coordinate Plane: x ∈ [-4.5, +4.5]</span>
+            <span id="chartCoordHover" class="text-cyan-300 font-bold">Hover to inspect point & gradient</span>
+          </div>
+          <div class="relative w-full aspect-[16/9] bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
+            <canvas id="activationChartCanvas" width="640" height="360" class="w-full h-full block cursor-crosshair"></canvas>
+          </div>
+          <div class="flex flex-wrap items-center gap-4 text-xs font-mono pt-3 border-t border-slate-800/80 text-slate-400">
+            <span class="flex items-center gap-1"><span class="w-3 h-0.5 bg-cyan-400"></span> Solid = Activation $f(x)$</span>
+            <span class="flex items-center gap-1"><span class="w-3 h-0.5 border-t border-dashed border-emerald-400"></span> Dashed = Derivative Gradient $f'(x)$</span>
+          </div>
+        </div>
+
+        <!-- Explanatory Breakdown -->
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed flex flex-col justify-between">
+          <div class="space-y-3">
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Vanishing Gradient Insight</h3>
+            <p>
+              Notice how the derivative of <strong class="text-amber-400">Sigmoid</strong> peaks at only <code class="text-white">0.25</code> when $x = 0$, and decays asymptotically to 0 whenever $|x| > 2.5$.
+            </p>
+            <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+              <div class="text-amber-300 font-bold">Chain Rule In Deep Networks:</div>
+              <div class="text-slate-400">$\frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial a_L} \cdot \prod_{l=1}^L \sigma'(z_l) \cdot x$</div>
+              <div class="text-rose-400">With 10 layers: $0.25^{10} \approx 9.5 \times 10^{-7}$ (Signal dies!)</div>
+            </div>
+            <p>
+              <strong class="text-cyan-400">ReLU</strong> keeps gradient exactly <code class="text-white">1.0</code> for all positive inputs, allowing error signals to flow back across hundreds of layers without attenuation.
+            </p>
+          </div>
+
+          <div class="p-3 bg-emerald-950/40 rounded-xl border border-emerald-800/60 font-mono text-[11px] text-emerald-300">
+            <strong>GELU Advantage:</strong> Smooth probabilistic gating avoids the complete dead-neuron cutoff of ReLU while preserving strong gradients.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Visualizer 3: Gradient Descent Simulation -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-sm font-mono">03</span>
+            Interactive Gradient Descent on Loss Landscape
+          </h2>
+          <p class="text-sm text-slate-400">Click anywhere on the loss contour map to place a parameter checkpoint and run optimization.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-3">
+          <button id="resetOptBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300 border border-slate-700 transition">
+            Reset Ball
+          </button>
+          <button id="stepOptBtn" class="px-4 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-xs font-mono text-white font-semibold shadow-lg shadow-cyan-500/20 transition">
+            Run 10 Steps
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6">
+          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
+            <canvas id="lossCanvas" width="640" height="400" class="w-full h-full block cursor-crosshair"></canvas>
+            <div class="absolute bottom-3 left-3 bg-slate-900/90 backdrop-blur px-3 py-1.5 rounded-lg border border-slate-800 text-xs font-mono text-slate-400">
+              Contour: Loss Surface $L(w_1, w_2) = 0.5w_1^2 + 2w_2^2 + \sin(2w_1)$
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 flex flex-col justify-between space-y-4">
+          <div class="space-y-4">
+            <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-300 font-mono">Hyperparameters</h3>
+            
+            <div class="space-y-3 text-xs font-mono">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-slate-400">Learning Rate (η):</span>
+                  <span id="lrVal" class="text-cyan-400">0.08</span>
+                </div>
+                <input type="range" id="lrRange" min="0.01" max="0.3" step="0.01" value="0.08" class="w-full accent-cyan-400">
+              </div>
+
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-slate-400">Momentum (β):</span>
+                  <span id="momentumVal" class="text-cyan-400">0.85</span>
+                </div>
+                <input type="range" id="momentumRange" min="0.0" max="0.95" step="0.05" value="0.85" class="w-full accent-cyan-400">
+              </div>
+
+              <div class="pt-2">
+                <label class="flex items-center gap-2 cursor-pointer select-none">
+                  <input type="checkbox" id="useMomentum" checked class="rounded bg-slate-800 border-slate-700 text-cyan-500">
+                  <span class="text-slate-300">Enable Momentum (Heavy Ball)</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-2 text-xs font-mono">
+              <div class="flex justify-between">
+                <span class="text-slate-400">Current Position:</span>
+                <span id="coordDisplay" class="text-cyan-300 font-bold">(w₁: -2.0, w₂: 1.5)</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Current Loss L:</span>
+                <span id="lossDisplay" class="text-emerald-400 font-bold">4.218</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-slate-400">Step Count:</span>
+                <span id="stepDisplay" class="text-amber-400 font-bold">0</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-400 leading-relaxed">
+            <span class="text-cyan-400 font-semibold">Tip:</span> High learning rate on narrow valleys causes oscillations (zig-zag). Momentum dampens transverse oscillations while accelerating along the consistent gradient direction.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="../index.html#learn-ml" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+        ← Back to Learning Modules
+      </a>
+      <a href="vision.html" class="px-5 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-cyan-500/20">
+        Next: Computer Vision & Convolutions →
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // --- 01: Neuron Canvas Simulation ---
+    const x1Range = document.getElementById('x1Range');
+    const x2Range = document.getElementById('x2Range');
+    const w1Range = document.getElementById('w1Range');
+    const w2Range = document.getElementById('w2Range');
+    const bRange = document.getElementById('bRange');
+    const actSelect = document.getElementById('activationSelect');
+
+    const x1Val = document.getElementById('x1Val');
+    const x2Val = document.getElementById('x2Val');
+    const w1Val = document.getElementById('w1Val');
+    const w2Val = document.getElementById('w2Val');
+    const bVal = document.getElementById('bVal');
+    const linearZOutput = document.getElementById('linearZOutput');
+    const activatedOutput = document.getElementById('activatedOutput');
+    const canvas = document.getElementById('neuronCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function applyActivation(z, type) {
+      if (type === 'relu') return Math.max(0, z);
+      if (type === 'gelu') {
+        return 0.5 * z * (1 + Math.tanh(Math.sqrt(2 / Math.PI) * (z + 0.044715 * Math.pow(z, 3))));
+      }
+      if (type === 'sigmoid') return 1 / (1 + Math.exp(-z));
+      if (type === 'tanh') return Math.tanh(z);
+      return z;
+    }
+
+    function renderNeuron() {
+      const x1 = parseFloat(x1Range.value);
+      const x2 = parseFloat(x2Range.value);
+      const w1 = parseFloat(w1Range.value);
+      const w2 = parseFloat(w2Range.value);
+      const b = parseFloat(bRange.value);
+      const act = actSelect.value;
+
+      x1Val.textContent = x1.toFixed(2);
+      x2Val.textContent = x2.toFixed(2);
+      w1Val.textContent = w1.toFixed(2);
+      w2Val.textContent = w2.toFixed(2);
+      bVal.textContent = b.toFixed(2);
+
+      const z = (x1 * w1) + (x2 * w2) + b;
+      const a = applyActivation(z, act);
+
+      linearZOutput.textContent = z.toFixed(3);
+      activatedOutput.textContent = a.toFixed(3);
+
+      // Canvas Rendering
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      // Node Positions
+      const nodeX1 = { x: 90, y: 110 };
+      const nodeX2 = { x: 90, y: 270 };
+      const nodeSum = { x: 300, y: 190 };
+      const nodeAct = { x: 440, y: 190 };
+      const nodeOut = { x: 550, y: 190 };
+
+      // Helper line drawer
+      function drawConnection(from, to, weight, label) {
+        ctx.beginPath();
+        ctx.moveTo(from.x, from.y);
+        ctx.lineTo(to.x, to.y);
+        const intensity = Math.min(1, Math.abs(weight) / 2);
+        ctx.strokeStyle = weight >= 0 ? `rgba(6, 182, 212, ${0.3 + intensity * 0.7})` : `rgba(244, 63, 94, ${0.3 + intensity * 0.7})`;
+        ctx.lineWidth = Math.max(1.5, Math.abs(weight) * 2.5);
+        ctx.stroke();
+
+        // Label
+        const midX = (from.x + to.x) / 2;
+        const midY = (from.y + to.y) / 2 - 8;
+        ctx.fillStyle = weight >= 0 ? '#38bdf8' : '#fb7185';
+        ctx.font = '11px "Fira Code", monospace';
+        ctx.fillText(`${label}: ${weight.toFixed(1)}`, midX - 25, midY);
+      }
+
+      drawConnection(nodeX1, nodeSum, w1, 'w₁');
+      drawConnection(nodeX2, nodeSum, w2, 'w₂');
+
+      // Bias arrow into sum
+      ctx.beginPath();
+      ctx.moveTo(nodeSum.x, 80);
+      ctx.lineTo(nodeSum.x, nodeSum.y - 30);
+      ctx.strokeStyle = '#f59e0b';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#fbbf24';
+      ctx.font = '11px "Fira Code", monospace';
+      ctx.fillText(`b: ${b.toFixed(1)}`, nodeSum.x - 18, 70);
+
+      // Connection Sum -> Act
+      ctx.beginPath();
+      ctx.moveTo(nodeSum.x, nodeSum.y);
+      ctx.lineTo(nodeAct.x, nodeAct.y);
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Connection Act -> Out
+      ctx.beginPath();
+      ctx.moveTo(nodeAct.x, nodeAct.y);
+      ctx.lineTo(nodeOut.x, nodeOut.y);
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Node drawer helper
+      function drawNode(pos, radius, bg, border, title, sub) {
+        ctx.beginPath();
+        ctx.arc(pos.x, pos.y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = bg;
+        ctx.fill();
+        ctx.strokeStyle = border;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = 'bold 12px "Plus Jakarta Sans", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(title, pos.x, pos.y - (sub ? 6 : 0));
+
+        if (sub) {
+          ctx.fillStyle = '#94a3b8';
+          ctx.font = '10px "Fira Code", monospace';
+          ctx.fillText(sub, pos.x, pos.y + 10);
+        }
+      }
+
+      drawNode(nodeX1, 30, '#0f172a', '#38bdf8', 'x₁', x1.toFixed(1));
+      drawNode(nodeX2, 30, '#0f172a', '#38bdf8', 'x₂', x2.toFixed(1));
+      drawNode(nodeSum, 32, '#1e293b', '#64748b', 'Σ', `z=${z.toFixed(1)}`);
+      drawNode(nodeAct, 30, '#1e293b', '#a855f7', 'σ(z)', act.toUpperCase());
+      drawNode(nodeOut, 26, '#064e3b', '#34d399', 'a', a.toFixed(2));
+    }
+
+    [x1Range, x2Range, w1Range, w2Range, bRange, actSelect].forEach(el => {
+      el.addEventListener('input', renderNeuron);
+    });
+    renderNeuron();
+
+    // --- 02: Activation Functions & Gradient Curves Chart ---
+    const chartCanvas = document.getElementById('activationChartCanvas');
+    const chartCtx = chartCanvas.getContext('2d');
+    const plotRelu = document.getElementById('plotRelu');
+    const plotGelu = document.getElementById('plotGelu');
+    const plotSigmoid = document.getElementById('plotSigmoid');
+    const plotTanh = document.getElementById('plotTanh');
+    const showDerivatives = document.getElementById('showDerivatives');
+    const chartCoordHover = document.getElementById('chartCoordHover');
+
+    const fnDefs = {
+      relu: {
+        color: '#22d3ee', // cyan-400
+        f: (x) => Math.max(0, x),
+        df: (x) => x > 0 ? 1 : (x === 0 ? 0.5 : 0)
+      },
+      gelu: {
+        color: '#60a5fa', // blue-400
+        f: (x) => 0.5 * x * (1 + Math.tanh(Math.sqrt(2 / Math.PI) * (x + 0.044715 * Math.pow(x, 3)))),
+        df: (x) => {
+          const h = 0.001;
+          const fPlus = 0.5 * (x + h) * (1 + Math.tanh(Math.sqrt(2 / Math.PI) * ((x + h) + 0.044715 * Math.pow(x + h, 3))));
+          const fMinus = 0.5 * (x - h) * (1 + Math.tanh(Math.sqrt(2 / Math.PI) * ((x - h) + 0.044715 * Math.pow(x - h, 3))));
+          return (fPlus - fMinus) / (2 * h);
+        }
+      },
+      sigmoid: {
+        color: '#fbbf24', // amber-400
+        f: (x) => 1 / (1 + Math.exp(-x)),
+        df: (x) => {
+          const s = 1 / (1 + Math.exp(-x));
+          return s * (1 - s);
+        }
+      },
+      tanh: {
+        color: '#c084fc', // purple-400
+        f: (x) => Math.tanh(x),
+        df: (x) => 1 - Math.pow(Math.tanh(x), 2)
+      }
+    };
+
+    let hoverXVal = null;
+
+    function renderActivationChart() {
+      const W = chartCanvas.width;
+      const H = chartCanvas.height;
+      chartCtx.clearRect(0, 0, W, H);
+
+      const minX = -4.5, maxX = 4.5;
+      const minY = -1.5, maxY = 3.5;
+
+      const toScreenX = (x) => ((x - minX) / (maxX - minX)) * W;
+      const toScreenY = (y) => ((maxY - y) / (maxY - minY)) * H;
+      const toMathX = (px) => minX + (px / W) * (maxX - minX);
+
+      // Draw Grid Lines & Axes
+      chartCtx.strokeStyle = 'rgba(51, 65, 85, 0.4)';
+      chartCtx.lineWidth = 1;
+      chartCtx.setLineDash([]);
+
+      // Vertical grid
+      for (let x = -4; x <= 4; x += 1) {
+        chartCtx.beginPath();
+        chartCtx.moveTo(toScreenX(x), 0);
+        chartCtx.lineTo(toScreenX(x), H);
+        chartCtx.stroke();
+      }
+      // Horizontal grid
+      for (let y = -1; y <= 3; y += 1) {
+        chartCtx.beginPath();
+        chartCtx.moveTo(0, toScreenY(y));
+        chartCtx.lineTo(W, toScreenY(y));
+        chartCtx.stroke();
+      }
+
+      // Main Axes
+      chartCtx.strokeStyle = '#64748b';
+      chartCtx.lineWidth = 1.5;
+      chartCtx.beginPath();
+      chartCtx.moveTo(0, toScreenY(0));
+      chartCtx.lineTo(W, toScreenY(0));
+      chartCtx.moveTo(toScreenX(0), 0);
+      chartCtx.lineTo(toScreenX(0), H);
+      chartCtx.stroke();
+
+      // Axis labels
+      chartCtx.fillStyle = '#94a3b8';
+      chartCtx.font = '10px "Fira Code", monospace';
+      chartCtx.fillText('x = 0', toScreenX(0) + 4, toScreenY(0) - 4);
+      chartCtx.fillText('y = 1', toScreenX(0) + 4, toScreenY(1) - 4);
+
+      // Plot Functions
+      const activeKeys = [];
+      if (plotRelu.checked) activeKeys.push('relu');
+      if (plotGelu.checked) activeKeys.push('gelu');
+      if (plotSigmoid.checked) activeKeys.push('sigmoid');
+      if (plotTanh.checked) activeKeys.push('tanh');
+
+      const steps = 300;
+
+      activeKeys.forEach((key) => {
+        const item = fnDefs[key];
+        
+        // 1. Draw Activation Curve f(x)
+        chartCtx.beginPath();
+        chartCtx.setLineDash([]);
+        chartCtx.strokeStyle = item.color;
+        chartCtx.lineWidth = 2.5;
+
+        for (let i = 0; i <= steps; i++) {
+          const x = minX + (i / steps) * (maxX - minX);
+          const y = item.f(x);
+          const px = toScreenX(x);
+          const py = toScreenY(y);
+          if (i === 0) chartCtx.moveTo(px, py);
+          else chartCtx.lineTo(px, py);
+        }
+        chartCtx.stroke();
+
+        // 2. Draw Derivative f'(x)
+        if (showDerivatives.checked) {
+          chartCtx.beginPath();
+          chartCtx.setLineDash([4, 4]);
+          chartCtx.strokeStyle = item.color;
+          chartCtx.lineWidth = 1.8;
+
+          for (let i = 0; i <= steps; i++) {
+            const x = minX + (i / steps) * (maxX - minX);
+            const y = item.df(x);
+            const px = toScreenX(x);
+            const py = toScreenY(y);
+            if (i === 0) chartCtx.moveTo(px, py);
+            else chartCtx.lineTo(px, py);
+          }
+          chartCtx.stroke();
+          chartCtx.setLineDash([]);
+        }
+      });
+
+      // Hover Crosshair & Values
+      if (hoverXVal !== null) {
+        const hx = toScreenX(hoverXVal);
+        chartCtx.beginPath();
+        chartCtx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+        chartCtx.lineWidth = 1;
+        chartCtx.setLineDash([2, 2]);
+        chartCtx.moveTo(hx, 0);
+        chartCtx.lineTo(hx, H);
+        chartCtx.stroke();
+        chartCtx.setLineDash([]);
+
+        let hoverTexts = [`x: ${hoverXVal.toFixed(2)}`];
+        activeKeys.forEach(k => {
+          const fVal = fnDefs[k].f(hoverXVal).toFixed(2);
+          const dfVal = fnDefs[k].df(hoverXVal).toFixed(2);
+          hoverTexts.push(`${k.toUpperCase()}: f=${fVal}, f'=${dfVal}`);
+        });
+        chartCoordHover.textContent = hoverTexts.join(' | ');
+      }
+    }
+
+    [plotRelu, plotGelu, plotSigmoid, plotTanh, showDerivatives].forEach(el => {
+      el.addEventListener('change', renderActivationChart);
+    });
+
+    chartCanvas.addEventListener('mousemove', (e) => {
+      const rect = chartCanvas.getBoundingClientRect();
+      const px = (e.clientX - rect.left) * (chartCanvas.width / rect.width);
+      const minX = -4.5, maxX = 4.5;
+      hoverXVal = minX + (px / chartCanvas.width) * (maxX - minX);
+      renderActivationChart();
+    });
+
+    chartCanvas.addEventListener('mouseleave', () => {
+      hoverXVal = null;
+      chartCoordHover.textContent = 'Hover to inspect point & gradient';
+      renderActivationChart();
+    });
+
+    renderActivationChart();
+
+    // --- 03: Loss Landscape & Gradient Descent Simulator ---
+    const lossCanvas = document.getElementById('lossCanvas');
+    const lossCtx = lossCanvas.getContext('2d');
+    const lrRange = document.getElementById('lrRange');
+    const lrVal = document.getElementById('lrVal');
+    const momentumRange = document.getElementById('momentumRange');
+    const momentumVal = document.getElementById('momentumVal');
+    const useMomentum = document.getElementById('useMomentum');
+    const coordDisplay = document.getElementById('coordDisplay');
+    const lossDisplay = document.getElementById('lossDisplay');
+    const stepDisplay = document.getElementById('stepDisplay');
+    const stepOptBtn = document.getElementById('stepOptBtn');
+    const resetOptBtn = document.getElementById('resetOptBtn');
+
+    let currentPos = { w1: -2.2, w2: 1.4 };
+    let velocity = { w1: 0, w2: 0 };
+    let history = [ { ...currentPos } ];
+    let stepCount = 0;
+
+    // Loss function L(w1, w2) = 0.5 * w1^2 + 2.0 * w2^2 + sin(2 * w1)
+    function calcLoss(w1, w2) {
+      return 0.5 * w1 * w1 + 2.0 * w2 * w2 + Math.sin(2 * w1) + 1.0;
+    }
+
+    function calcGrad(w1, w2) {
+      const gradW1 = w1 + 2 * Math.cos(2 * w1);
+      const gradW2 = 4.0 * w2;
+      return { gradW1, gradW2 };
+    }
+
+    // Coordinate mapping
+    const minW = -3.5, maxW = 3.5;
+    function toCanvasCoord(w1, w2) {
+      const x = ((w1 - minW) / (maxW - minW)) * lossCanvas.width;
+      const y = ((maxW - w2) / (maxW - minW)) * lossCanvas.height;
+      return { x, y };
+    }
+
+    function fromCanvasCoord(x, y) {
+      const w1 = minW + (x / lossCanvas.width) * (maxW - minW);
+      const w2 = maxW - (y / lossCanvas.height) * (maxW - minW);
+      return { w1, w2 };
+    }
+
+    // Draw contour background
+    let bgCache = null;
+    function renderLossBackground() {
+      if (bgCache) {
+        lossCtx.drawImage(bgCache, 0, 0);
+        return;
+      }
+      bgCache = document.createElement('canvas');
+      bgCache.width = lossCanvas.width;
+      bgCache.height = lossCanvas.height;
+      const bCtx = bgCache.getContext('2d');
+
+      const imgData = bCtx.createImageData(bgCache.width, bgCache.height);
+      const data = imgData.data;
+
+      for (let py = 0; py < bgCache.height; py++) {
+        for (let px = 0; px < bgCache.width; px++) {
+          const w1 = minW + (px / bgCache.width) * (maxW - minW);
+          const w2 = maxW - (py / bgCache.height) * (maxW - minW);
+          const loss = calcLoss(w1, w2);
+
+          // Contour rings
+          const ring = Math.floor(loss * 2.5) % 2 === 0 ? 1 : 0.85;
+          const norm = Math.min(1, loss / 15);
+
+          const idx = (py * bgCache.width + px) * 4;
+          data[idx] = Math.floor((10 + norm * 20) * ring);        // R
+          data[idx + 1] = Math.floor((18 + (1 - norm) * 45) * ring); // G
+          data[idx + 2] = Math.floor((36 + (1 - norm) * 90) * ring); // B
+          data[idx + 3] = 255;
+        }
+      }
+      bCtx.putImageData(imgData, 0, 0);
+      lossCtx.drawImage(bgCache, 0, 0);
+    }
+
+    function renderOptimization() {
+      lossCtx.clearRect(0, 0, lossCanvas.width, lossCanvas.height);
+      renderLossBackground();
+
+      // Draw Grid / Center axes
+      const center = toCanvasCoord(0, 0);
+      lossCtx.strokeStyle = 'rgba(71, 85, 105, 0.4)';
+      lossCtx.lineWidth = 1;
+      lossCtx.beginPath();
+      lossCtx.moveTo(0, center.y);
+      lossCtx.lineTo(lossCanvas.width, center.y);
+      lossCtx.moveTo(center.x, 0);
+      lossCtx.lineTo(center.x, lossCanvas.height);
+      lossCtx.stroke();
+
+      // Draw history trajectory
+      if (history.length > 1) {
+        lossCtx.beginPath();
+        const start = toCanvasCoord(history[0].w1, history[0].w2);
+        lossCtx.moveTo(start.x, start.y);
+        for (let i = 1; i < history.length; i++) {
+          const pt = toCanvasCoord(history[i].w1, history[i].w2);
+          lossCtx.lineTo(pt.x, pt.y);
+        }
+        lossCtx.strokeStyle = '#06b6d4';
+        lossCtx.lineWidth = 2.5;
+        lossCtx.stroke();
+
+        // Draw points along path
+        history.forEach((pt, idx) => {
+          const c = toCanvasCoord(pt.w1, pt.w2);
+          lossCtx.beginPath();
+          lossCtx.arc(c.x, c.y, idx === history.length - 1 ? 5 : 2.5, 0, Math.PI * 2);
+          lossCtx.fillStyle = idx === history.length - 1 ? '#38bdf8' : 'rgba(6, 182, 212, 0.6)';
+          lossCtx.fill();
+        });
+      }
+
+      // Current Ball
+      const curr = toCanvasCoord(currentPos.w1, currentPos.w2);
+      lossCtx.beginPath();
+      lossCtx.arc(curr.x, curr.y, 7, 0, Math.PI * 2);
+      lossCtx.fillStyle = '#f43f5e';
+      lossCtx.fill();
+      lossCtx.lineWidth = 2;
+      lossCtx.strokeStyle = '#ffffff';
+      lossCtx.stroke();
+
+      // UI stats update
+      coordDisplay.textContent = `(w₁: ${currentPos.w1.toFixed(2)}, w₂: ${currentPos.w2.toFixed(2)})`;
+      lossDisplay.textContent = calcLoss(currentPos.w1, currentPos.w2).toFixed(3);
+      stepDisplay.textContent = stepCount;
+    }
+
+    function doStep() {
+      const lr = parseFloat(lrRange.value);
+      const beta = useMomentum.checked ? parseFloat(momentumRange.value) : 0;
+      const { gradW1, gradW2 } = calcGrad(currentPos.w1, currentPos.w2);
+
+      velocity.w1 = beta * velocity.w1 + (1 - beta) * gradW1;
+      velocity.w2 = beta * velocity.w2 + (1 - beta) * gradW2;
+
+      currentPos.w1 -= lr * velocity.w1;
+      currentPos.w2 -= lr * velocity.w2;
+
+      history.push({ ...currentPos });
+      stepCount++;
+      renderOptimization();
+    }
+
+    stepOptBtn.addEventListener('click', () => {
+      for (let i = 0; i < 10; i++) {
+        doStep();
+      }
+    });
+
+    resetOptBtn.addEventListener('click', () => {
+      currentPos = { w1: -2.2, w2: 1.4 };
+      velocity = { w1: 0, w2: 0 };
+      history = [{ ...currentPos }];
+      stepCount = 0;
+      renderOptimization();
+    });
+
+    lossCanvas.addEventListener('click', (e) => {
+      const rect = lossCanvas.getBoundingClientRect();
+      const scaleX = lossCanvas.width / rect.width;
+      const scaleY = lossCanvas.height / rect.height;
+      const x = (e.clientX - rect.left) * scaleX;
+      const y = (e.clientY - rect.top) * scaleY;
+      currentPos = fromCanvasCoord(x, y);
+      velocity = { w1: 0, w2: 0 };
+      history = [{ ...currentPos }];
+      stepCount = 0;
+      renderOptimization();
+    });
+
+    lrRange.addEventListener('input', () => lrVal.textContent = parseFloat(lrRange.value).toFixed(2));
+    momentumRange.addEventListener('input', () => momentumVal.textContent = parseFloat(momentumRange.value).toFixed(2));
+
+    renderOptimization();
+  </script>
+</body>
+</html>
