@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Darwin Hariyanto | Senior AI Engineer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: '#2563eb',
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased selection:bg-brand selection:text-white">
+
+  <!-- Navigation -->
+  <header class="sticky top-0 z-50 backdrop-blur-md bg-slate-900/80 border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <span class="text-xl font-bold tracking-tight text-white">Darwin<span class="text-brand">.ai</span></span>
+      <nav class="space-x-8 text-sm font-medium text-slate-300">
+        <a href="#about" class="hover:text-white transition">About</a>
+        <a href="#skills" class="hover:text-white transition">Capabilities</a>
+        <a href="#projects" class="hover:text-white transition">Projects</a>
+        <a href="#learn-ml" class="hover:text-white transition">ML Roadmap</a>
+        <a href="#contact" class="px-3 py-1.5 rounded-lg bg-brand text-white hover:bg-blue-600 transition">Get in Touch</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-16 space-y-28">
+
+    <!-- Hero Section -->
+    <section class="space-y-6 pt-10">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs text-blue-400">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        Available for AI Architecture & High-Performance Engineering
+      </div>
+      <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-tight">
+        Turning Complex AI Research into <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-teal-400">Production Systems</span>.
+      </h1>
+      <p class="text-lg sm:text-xl text-slate-400 max-w-3xl leading-relaxed">
+        Senior AI Engineer with 8+ years of full-stack and machine learning experience. Specializing in generative models (SDXL, LoRA), multimodal VLM search, 3D point cloud analysis, and edge/ONNX inference optimization.
+      </p>
+      <div class="flex flex-wrap gap-4 pt-4">
+        <a href="#projects" class="px-6 py-3 rounded-lg bg-blue-600 hover:bg-blue-500 font-semibold text-white shadow-lg shadow-blue-500/20 transition">View Engineering Work</a>
+        <a href="#learn-ml" class="px-6 py-3 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 font-semibold text-slate-200 transition">Explore ML Knowledge Hub</a>
+      </div>
+    </section>
+
+    <!-- Capabilities / Pillars -->
+    <section id="skills" class="space-y-8">
+      <h2 class="text-2xl font-bold text-white border-l-4 border-brand pl-3">Core Capabilities</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="p-6 rounded-xl bg-slate-800/60 border border-slate-700/60 space-y-3">
+          <h3 class="text-lg font-semibold text-white">Paper-to-Code Implementation</h3>
+          <p class="text-sm text-slate-400">Reading academic papers, deriving algorithms from mathematical formulas, and building custom pipelines (LiDAR 3D edge detection, custom evaluation metrics).</p>
+          <div class="text-xs text-blue-400 font-mono">Open3D · PyTorch · Python · OpenCV</div>
+        </div>
+
+        <div class="p-6 rounded-xl bg-slate-800/60 border border-slate-700/60 space-y-3">
+          <h3 class="text-lg font-semibold text-white">Generative & Multimodal AI</h3>
+          <p class="text-sm text-slate-400">Developing commercial SDXL, LoRA, and ControlNet image synthesis pipelines. Building semantic search with Gemini VLM and FAISS vector databases.</p>
+          <div class="text-xs text-blue-400 font-mono">SDXL · ControlNet · Gemini · FAISS</div>
+        </div>
+
+        <div class="p-6 rounded-xl bg-slate-800/60 border border-slate-700/60 space-y-3">
+          <h3 class="text-lg font-semibold text-white">Inference & Edge Optimization</h3>
+          <p class="text-sm text-slate-400">Accelerating models for real-world deployments using ONNX runtime, model quantization (INT8), On-Device iOS inference, and gRPC/FastAPI microservices.</p>
+          <div class="text-xs text-blue-400 font-mono">ONNX · iOS CoreML · FastAPI · gRPC</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Projects -->
+    <section id="projects" class="space-y-8">
+      <h2 class="text-2xl font-bold text-white border-l-4 border-brand pl-3">Featured Projects</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Project 1 -->
+        <div class="p-6 rounded-xl bg-slate-800/40 border border-slate-800 space-y-4">
+          <span class="text-xs font-mono text-emerald-400">Production AI / PoC</span>
+          <h3 class="text-xl font-bold text-white">Automated CAD Nesting & 2D Optimization</h3>
+          <p class="text-sm text-slate-400">Extracted structural rules from DXF (CAD) files to compute optimal spatial arrangements of workpieces, complete with an interactive GUI.</p>
+          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400">
+            <span class="px-2 py-1 bg-slate-700 rounded">Google OR-Tools</span>
+            <span class="px-2 py-1 bg-slate-700 rounded">Python</span>
+            <span class="px-2 py-1 bg-slate-700 rounded">GUI Engine</span>
+          </div>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="p-6 rounded-xl bg-slate-800/40 border border-slate-800 space-y-4">
+          <span class="text-xs font-mono text-emerald-400">GenAI & Computer Vision</span>
+          <h3 class="text-xl font-bold text-white">Architectural Floor Plan Generation (SDXL)</h3>
+          <p class="text-sm text-slate-400">Trained custom LoRA models on structural house blueprints. Enforced room partition integrity using ControlNet (M-LSD/Canny) and custom IoU quality scripts.</p>
+          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400">
+            <span class="px-2 py-1 bg-slate-700 rounded">SDXL</span>
+            <span class="px-2 py-1 bg-slate-700 rounded">ControlNet</span>
+            <span class="px-2 py-1 bg-slate-700 rounded">LoRA</span>
+          </div>
+        </div>
+
+        <!-- Project 3 -->
+        <div class="p-6 rounded-xl bg-slate-800/40 border border-slate-800 space-y-4">
+          <span class="text-xs font-mono text-emerald-400">3D Point Cloud & Research</span>
+          <h3 class="text-xl font-bold text-white">LiDAR 3D Edge Detection Engine</h3>
+          <p class="text-sm text-slate-400">Rebuilt academic formulas into an operational Python/Open3D prototype. Engineered point-cloud pre-processing (downsampling, noise filtering) and 3D visualizers.</p>
+          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400">
+            <span class="px-2 py-1 bg-slate-700 rounded">Open3D</span>
+            <span class="px-2 py-1 bg-slate-700 rounded">LiDAR</span>
+            <span class="px-2 py-1 bg-slate-700 rounded">Algorithm Design</span>
+          </div>
+        </div>
+
+        <!-- Project 4 -->
+        <div class="p-6 rounded-xl bg-slate-800/40 border border-slate-800 space-y-4">
+          <span class="text-xs font-mono text-emerald-400">Multimodal & Search</span>
+          <h3 class="text-xl font-bold text-white">VLM Vector Search Engine</h3>
+          <p class="text-sm text-slate-400">Leveraged Gemini VLM to parse visual attributes into rich semantic embeddings. Connected to FAISS index for high-dimensional natural language queries.</p>
+          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400">
+            <span class="px-2 py-1 bg-slate-700 rounded">Gemini VLM</span>
+            <span class="px-2 py-1 bg-slate-700 rounded">FAISS</span>
+            <span class="px-2 py-1 bg-slate-700 rounded">FastAPI</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ML Learning Roadmap Hub -->
+    <section id="learn-ml" class="space-y-8">
+      <div class="space-y-2">
+        <h2 class="text-2xl font-bold text-white border-l-4 border-brand pl-3">ML Notes: From Zero to Transformers</h2>
+        <p class="text-slate-400 text-sm">A structured knowledge base breaking down machine learning concepts from fundamental linear algebra to state-of-the-art attention models.</p>
+      </div>
+
+      <div class="space-y-4">
+        <!-- Level 1 -->
+        <details class="group bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 open:bg-slate-800 transition">
+          <summary class="font-semibold text-white flex justify-between items-center cursor-pointer select-none">
+            <span class="flex items-center gap-3">
+              <span class="px-2 py-0.5 text-xs bg-blue-500/20 text-blue-400 rounded border border-blue-500/30">Part 1</span>
+              Foundations: Neurons, MLP & Loss Functions
+            </span>
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div class="mt-4 pt-4 border-t border-slate-700 text-sm text-slate-300 space-y-2">
+            <p><strong>Topics:</strong> Weights & Biases · Activation Functions (ReLU, GELU, Sigmoid) · Forward vs Backward Pass · Loss Functions (MSE, Cross-Entropy, Focal Loss) · Gradient Descent & Adam Optimizer.</p>
+            <p class="text-xs text-slate-400 italic">"Why does cross-entropy work better for probabilities than mean squared error?"</p>
+          </div>
+        </details>
+
+        <!-- Level 2 -->
+        <details class="group bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 open:bg-slate-800 transition">
+          <summary class="font-semibold text-white flex justify-between items-center cursor-pointer select-none">
+            <span class="flex items-center gap-3">
+              <span class="px-2 py-0.5 text-xs bg-emerald-500/20 text-emerald-400 rounded border border-emerald-500/30">Part 2</span>
+              Computer Vision: Convolutions & Edge AI
+            </span>
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div class="mt-4 pt-4 border-t border-slate-700 text-sm text-slate-300 space-y-2">
+            <p><strong>Topics:</strong> Kernels and Filters · Convolutions vs Fully Connected Layers · Receptive Fields · Pooling & Strides · Object Detection & Segmentation · Model Export (PyTorch to ONNX & Quantization).</p>
+            <p class="text-xs text-slate-400 italic">"How convolution preserves spatial invariance while drastically slashing parameter counts."</p>
+          </div>
+        </details>
+
+        <!-- Level 3 -->
+        <details class="group bg-slate-800/60 border border-slate-700/60 rounded-xl p-5 open:bg-slate-800 transition">
+          <summary class="font-semibold text-white flex justify-between items-center cursor-pointer select-none">
+            <span class="flex items-center gap-3">
+              <span class="px-2 py-0.5 text-xs bg-purple-500/20 text-purple-400 rounded border border-purple-500/30">Part 3</span>
+              Attention Mechanisms & The Transformer Revolution
+            </span>
+            <span class="text-slate-400 group-open:rotate-180 transition-transform">▼</span>
+          </summary>
+          <div class="mt-4 pt-4 border-t border-slate-700 text-sm text-slate-300 space-y-2">
+            <p><strong>Topics:</strong> The bottleneck of RNNs & LSTMs · Query, Key, Value intuition · Scaled Dot-Product Attention · Multi-Head Attention · Positional Encodings · Vision Transformers (ViT) and Multimodal LLMs.</p>
+            <p class="text-xs text-slate-400 italic">"Step-by-step matrix multiplication walkthrough of self-attention."</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- Footer / Contact -->
+    <footer id="contact" class="pt-12 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-slate-400">
+      <p>© 2026 Darwin Hariyanto. All rights reserved.</p>
+      <div class="flex gap-6">
+        <a href="https://github.com" class="hover:text-white transition">GitHub</a>
+        <a href="https://linkedin.com" class="hover:text-white transition">LinkedIn</a>
+        <a href="mailto:your-email@example.com" class="hover:text-white transition">Email</a>
+      </div>
+    </footer>
+
+  </main>
+</body>
+</html>
