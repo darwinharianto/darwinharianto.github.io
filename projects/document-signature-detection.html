@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Japanese Signed Document Detection & OCR | Darwin Harianto</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Noto Sans JP"', 'sans-serif'],
+            mono: ['"Fira Code"', 'monospace'],
+          },
+          colors: {
+            brand: '#0ea5e9',
+            accent: '#f43f5e',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-panel {
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(51, 65, 85, 0.6);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-sky-500 selection:text-white min-h-screen">
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-4">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-sky-400 hover:text-sky-300 font-medium transition group">
+          <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+          </svg>
+          Back to Portfolio
+        </a>
+        <span class="text-slate-600">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded bg-sky-950/80 border border-sky-800 text-sky-300">Document AI & OCR</span>
+      </div>
+      <div class="text-xs font-mono text-slate-400">
+        PDF Layout Analysis · Japanese Name NER · 99% Accuracy
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
+    <!-- Project Hero Header -->
+    <section class="space-y-4">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-950/60 border border-sky-500/30 text-xs font-mono text-sky-400">
+        <span class="w-2 h-2 rounded-full bg-sky-400 animate-pulse"></span>
+        Production Document AI Pipeline · 99% Verified Accuracy
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+        Automated <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-300 to-rose-400">Japanese Signed Document Detection</span>
+      </h1>
+      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+        Engineered an automated document verification pipeline for complex legal and property survey PDFs. Analyzes asymmetric layouts containing cadastral maps on one side and structured metadata tables on the other, accurately isolating the designated signature box to verify the presence of valid Japanese person names (Kanji handwriting / seal signatures) with <strong>99% accuracy</strong>, slashing manual inspection labor.
+      </p>
+    </section>
+
+    <!-- Interactive Technology Visualization: Document Inspector & Pipeline Simulator -->
+    <section class="space-y-6">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+        <div>
+          <h2 class="text-xl font-bold text-white flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20 flex items-center justify-center text-sm font-mono">01</span>
+            Interactive PDF Document Layout & Japanese Name Verifier
+          </h2>
+          <p class="text-sm text-slate-400">Select test document samples to simulate layout analysis, signature box localization, and Japanese name recognition.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-xs font-mono text-slate-400">Confidence Threshold:</span>
+          <input type="range" id="confThreshold" min="0.5" max="0.95" step="0.05" value="0.80" class="w-24 accent-sky-400">
+          <span id="confDisplay" class="text-xs font-mono text-sky-400 font-bold">80%</span>
+        </div>
+      </div>
+
+      <!-- Document Sample Selector Buttons -->
+      <div class="glass-panel p-4 rounded-xl space-y-3 text-xs font-mono">
+        <div class="text-slate-400 font-bold flex items-center justify-between">
+          <span>Select Document Sample (PDF Preset):</span>
+          <span id="sampleDesc" class="text-sky-300">Sample 1: Valid Japanese Kanji Signature (佐藤 健一)</span>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
+          <button class="sample-btn px-2.5 py-2 rounded-lg bg-sky-600 text-white font-semibold transition text-center border border-sky-400 shadow-md" data-sample="valid1">
+            ✓ 佐藤 健一 (Valid)
+          </button>
+          <button class="sample-btn px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-center border border-slate-700" data-sample="valid2">
+            ✓ 田中 雅子 (Name+印)
+          </button>
+          <button class="sample-btn px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-center border border-slate-700" data-sample="valid3">
+            ✓ 鈴木 隆 (Handwritten)
+          </button>
+          <button class="sample-btn px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-center border border-slate-700" data-sample="blank">
+            ✗ 未署名 (Blank Box)
+          </button>
+          <button class="sample-btn px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-center border border-slate-700" data-sample="company">
+            ⚠ 会社印 (Corporate Seal)
+          </button>
+          <button class="sample-btn px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-center border border-slate-700" data-sample="scribble">
+            ✗ 判読不能 (Scribble)
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Interactive Multi-Stage Document Canvas -->
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">PDF Document Layout</span>
+              <span id="decisionBadge" class="px-2.5 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold">
+                ✓ VALID SIGNATURE DETECTED
+              </span>
+            </div>
+            <span class="text-slate-400 font-mono" id="processingTime">Inference: 182 ms</span>
+          </div>
+
+          <div class="relative w-full aspect-[16/11] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+            <canvas id="docCanvas" width="640" height="420" class="w-full h-full block"></canvas>
+          </div>
+
+          <!-- Pipeline Stage Selector -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs font-mono border-t border-slate-800">
+            <span class="text-slate-400">Analysis Pipeline Stage:</span>
+            <div class="flex flex-wrap gap-2">
+              <button id="stageDoc" class="px-2.5 py-1 rounded bg-sky-600 text-white font-bold ring-2 ring-sky-400" onclick="setPipelineStage('doc')">
+                1. Full Document Layout
+              </button>
+              <button id="stageCells" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="setPipelineStage('cells')">
+                2. Table & Box Detection
+              </button>
+              <button id="stageRoi" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="setPipelineStage('roi')">
+                3. Signature ROI Isolation
+              </button>
+              <button id="stageOcr" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="setPipelineStage('ocr')">
+                4. Japanese Name OCR / NER
+              </button>
+            </div>
+          </div>
+
+          <!-- Performance & Accuracy Telemetry Cards -->
+          <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono border-t border-slate-800">
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Verification Status</div>
+              <div id="statusResultVal" class="text-emerald-400 font-bold text-sm mt-0.5">PASS</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">OCR Name Confidence</div>
+              <div id="confidenceVal" class="text-sky-400 font-bold text-sm mt-0.5">99.4%</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Japanese Name NER</div>
+              <div id="nerNameVal" class="text-amber-300 font-bold text-sm mt-0.5">佐藤 (姓) + 健一 (名)</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div class="text-slate-400 text-[10px]">Production Accuracy</div>
+              <div class="text-emerald-400 font-bold text-sm mt-0.5">99.0%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tech Details Sidebar -->
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Detection Pipeline Architecture</h3>
+          <p>
+            Manual verification of signed applicant documents created large administrative backlogs. We developed an automated layout parsing and Japanese name entity extraction system:
+          </p>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-sky-400 font-bold">1. Document Layout Decomposition:</div>
+            <p class="text-slate-400 text-[10px]">Deconstructs asymmetrical property survey PDFs into dual functional domains: parsing non-grid cadastral maps (地番図) on one side and structured tabular metadata on the other using morphological kernel line extraction.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-indigo-400 font-bold">2. Signature Target Box (ROI) Localization:</div>
+            <p class="text-slate-400 text-[10px]">Identifies table cell geometries and isolates the designated signature block (氏名・自筆署名欄). Applies perspective rectification to correct document scanning skew.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-amber-400 font-bold">3. Japanese Name OCR & NER Matching:</div>
+            <p class="text-slate-400 text-[10px]">Runs character recognition coupled with a comprehensive Japanese Surname & Given Name dictionary. Specifically validates person name morphology, rejecting non-person text, empty blocks, and corporate seal imprints.</p>
+          </div>
+
+          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
+            <div class="text-emerald-400 font-bold">4. 99% Accuracy & Labor Reduction:</div>
+            <p class="text-slate-400 text-[10px]">Automates document intake triage at 99% accuracy across thousands of diverse document submissions, reducing human inspection workload by over 90%.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom Navigation -->
+    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="multimodal-search.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+        ← Previous: Multimodal Vector Search
+      </a>
+      <a href="../index.html#projects" class="px-5 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-sky-500/20">
+        Back to All Projects →
+      </a>
+    </div>
+  </main>
+
+  <script>
+    // --- Interactive Japanese Signed Document Detection Canvas Simulator ---
+    const canvas = document.getElementById('docCanvas');
+    const ctx = canvas.getContext('2d');
+    const confSlider = document.getElementById('confThreshold');
+    const confDisplay = document.getElementById('confDisplay');
+    const decisionBadge = document.getElementById('decisionBadge');
+    const sampleDesc = document.getElementById('sampleDesc');
+    const statusResultVal = document.getElementById('statusResultVal');
+    const confidenceVal = document.getElementById('confidenceVal');
+    const nerNameVal = document.getElementById('nerNameVal');
+    const sampleButtons = document.querySelectorAll('.sample-btn');
+
+    let currentSample = 'valid1';
+    let currentStage = 'doc'; // 'doc' | 'cells' | 'roi' | 'ocr'
+
+    const SAMPLES = {
+      valid1: {
+        title: 'Sample 1: Valid Japanese Kanji Signature (佐藤 健一)',
+        hasSign: true,
+        type: 'person',
+        nameKanji: '佐藤 健一',
+        nerResult: '佐藤 (姓) + 健一 (名)',
+        confidence: 0.994,
+        hasSeal: false,
+        inkDensity: 0.18
+      },
+      valid2: {
+        title: 'Sample 2: Valid Japanese Kanji + Personal Seal 印 (田中 雅子)',
+        hasSign: true,
+        type: 'person',
+        nameKanji: '田中 雅子',
+        nerResult: '田中 (姓) + 雅子 (名)',
+        confidence: 0.998,
+        hasSeal: true,
+        sealText: '田中',
+        inkDensity: 0.24
+      },
+      valid3: {
+        title: 'Sample 3: Handwritten Gyosho Signature (鈴木 隆)',
+        hasSign: true,
+        type: 'person',
+        nameKanji: '鈴木 隆',
+        nerResult: '鈴木 (姓) + 隆 (名)',
+        confidence: 0.991,
+        hasSeal: false,
+        inkDensity: 0.16
+      },
+      blank: {
+        title: 'Sample 4: Unsigned / Blank Signature Box (未記入)',
+        hasSign: false,
+        type: 'empty',
+        nameKanji: '',
+        nerResult: '未検出 (None)',
+        confidence: 0.02,
+        hasSeal: false,
+        inkDensity: 0.00
+      },
+      company: {
+        title: 'Sample 5: Corporate Stamp without Person Name (株式会社 角印)',
+        hasSign: true,
+        type: 'corporate',
+        nameKanji: '株式会社〇〇之印',
+        nerResult: '法人印 (Non-Person Corporate Seal)',
+        confidence: 0.41,
+        hasSeal: true,
+        sealText: '社印',
+        inkDensity: 0.22
+      },
+      scribble: {
+        title: 'Sample 6: Invalid Scribble / Unrecognizable Noise (判読不能)',
+        hasSign: true,
+        type: 'scribble',
+        nameKanji: '※※※',
+        nerResult: '判読不能 (Unrecognized Stroke)',
+        confidence: 0.19,
+        hasSeal: false,
+        inkDensity: 0.14
+      }
+    };
+
+    function setPipelineStage(stage) {
+      currentStage = stage;
+      ['doc', 'cells', 'roi', 'ocr'].forEach(s => {
+        const btn = document.getElementById(`stage${s.charAt(0).toUpperCase() + s.slice(1)}`);
+        if (s === stage) {
+          btn.className = 'px-2.5 py-1 rounded bg-sky-600 text-white font-bold ring-2 ring-sky-400';
+        } else {
+          btn.className = 'px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white';
+        }
+      });
+      renderDocument();
+    }
+
+    confSlider.addEventListener('input', () => {
+      confDisplay.textContent = `${Math.round(confSlider.value * 100)}%`;
+      renderDocument();
+    });
+
+    sampleButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        sampleButtons.forEach(b => {
+          b.className = 'sample-btn px-2.5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition text-center border border-slate-700';
+        });
+        btn.className = 'sample-btn px-2.5 py-2 rounded-lg bg-sky-600 text-white font-semibold transition text-center border border-sky-400 shadow-md';
+        currentSample = btn.getAttribute('data-sample');
+        sampleDesc.textContent = SAMPLES[currentSample].title;
+        renderDocument();
+      });
+    });
+
+    function renderDocument() {
+      const W = canvas.width;
+      const H = canvas.height;
+      ctx.clearRect(0, 0, W, H);
+
+      const sample = SAMPLES[currentSample];
+      const threshold = parseFloat(confSlider.value);
+      const isPass = sample.type === 'person' && sample.confidence >= threshold;
+
+      // Update Header Badges
+      if (isPass) {
+        decisionBadge.className = 'px-2.5 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold';
+        decisionBadge.textContent = '✓ VALID JAPANESE NAME DETECTED';
+        statusResultVal.textContent = 'PASS';
+        statusResultVal.className = 'text-emerald-400 font-bold text-sm mt-0.5';
+      } else if (sample.type === 'empty') {
+        decisionBadge.className = 'px-2.5 py-0.5 rounded bg-rose-500/20 border border-rose-500/40 text-rose-300 font-bold animate-pulse';
+        decisionBadge.textContent = '✗ REJECT: UNSIGNED / BLANK BOX';
+        statusResultVal.textContent = 'REJECT (EMPTY)';
+        statusResultVal.className = 'text-rose-400 font-bold text-sm mt-0.5';
+      } else if (sample.type === 'corporate') {
+        decisionBadge.className = 'px-2.5 py-0.5 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 font-bold';
+        decisionBadge.textContent = '⚠ FLAG: CORPORATE SEAL (NOT PERSON NAME)';
+        statusResultVal.textContent = 'FLAG (NON-PERSON)';
+        statusResultVal.className = 'text-amber-400 font-bold text-sm mt-0.5';
+      } else {
+        decisionBadge.className = 'px-2.5 py-0.5 rounded bg-rose-500/20 border border-rose-500/40 text-rose-300 font-bold';
+        decisionBadge.textContent = '✗ REJECT: INVALID / LOW CONFIDENCE';
+        statusResultVal.textContent = 'REJECT';
+        statusResultVal.className = 'text-rose-400 font-bold text-sm mt-0.5';
+      }
+
+      confidenceVal.textContent = `${(sample.confidence * 100).toFixed(1)}%`;
+      nerNameVal.textContent = sample.nerResult;
+
+      // --- DOCUMENT LAYOUT COORDINATES ---
+      // PDF Sheet (white/creme background with subtle shadow)
+      const docX = 25, docY = 15;
+      const docW = W - 50, docH = H - 30;
+
+      // Stage 3 (ROI zoom) alters viewport
+      if (currentStage === 'roi') {
+        renderSignatureRoiZoom(sample, isPass);
+        return;
+      }
+
+      // Draw Paper Sheet
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillRect(docX, docY, docW, docH);
+
+      // Document Outer Border
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 1.8;
+      ctx.strokeRect(docX, docY, docW, docH);
+
+      // Document Header Title Bar
+      ctx.fillStyle = '#1e293b';
+      ctx.font = 'bold 13px "Noto Sans JP", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('土地現況届出書 及び 敷地境界現況図 (Cadastral Survey & Signature Verification)', docX + docW / 2, docY + 22);
+
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(docX + 15, docY + 30);
+      ctx.lineTo(docX + docW - 15, docY + 30);
+      ctx.stroke();
+
+      // Dual Partition Layout:
+      // LEFT SIDE: Cadastral Map (地番図 / 配置図)
+      // RIGHT SIDE: Structured Form Tables & Signature Box
+      const mapW = Math.round(docW * 0.52);
+      const tableX = docX + mapW + 10;
+      const tableW = docW - mapW - 20;
+
+      // 1. LEFT SIDE: CADASTAL MAP
+      ctx.save();
+      const mapX = docX + 12;
+      const mapY = docY + 38;
+      const mapH = docH - 50;
+
+      // Map Frame
+      ctx.strokeStyle = '#64748b';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(mapX, mapY, mapW - 10, mapH);
+
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 10px "Noto Sans JP", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('【現地配置・地番図】 縮尺 1/500', mapX + 8, mapY + 16);
+
+      // North Arrow
+      ctx.strokeStyle = '#0284c7';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(mapX + mapW - 35, mapY + 25);
+      ctx.lineTo(mapX + mapW - 35, mapY + 10);
+      ctx.lineTo(mapX + mapW - 39, mapY + 16);
+      ctx.moveTo(mapX + mapW - 35, mapY + 10);
+      ctx.lineTo(mapX + mapW - 31, mapY + 16);
+      ctx.stroke();
+      ctx.fillStyle = '#0284c7';
+      ctx.font = 'bold 9px sans-serif';
+      ctx.fillText('N', mapX + mapW - 38, mapY + 34);
+
+      // Street & Land Parcels
+      ctx.fillStyle = '#f1f5f9';
+      ctx.fillRect(mapX + 20, mapY + 45, mapW - 50, mapH - 70);
+
+      // Parcel 102-1 (Subject Property)
+      ctx.fillStyle = 'rgba(56, 189, 248, 0.15)';
+      ctx.strokeStyle = '#0284c7';
+      ctx.lineWidth = 1.8;
+      ctx.strokeRect(mapX + 45, mapY + 70, 130, 110);
+      ctx.fillRect(mapX + 45, mapY + 70, 130, 110);
+
+      ctx.fillStyle = '#0369a1';
+      ctx.font = 'bold 10px "Noto Sans JP", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('申請地番: 102-1', mapX + 110, mapY + 120);
+      ctx.font = '8px sans-serif';
+      ctx.fillText('248.65 m²', mapX + 110, mapY + 135);
+
+      // Adjacent Parcel 102-2
+      ctx.strokeStyle = '#94a3b8';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(mapX + 175, mapY + 70, 90, 110);
+      ctx.fillStyle = '#64748b';
+      ctx.font = '9px sans-serif';
+      ctx.fillText('隣接地 102-2', mapX + 220, mapY + 125);
+
+      // Road (公道 幅員 6.0m)
+      ctx.strokeStyle = '#475569';
+      ctx.setLineDash([4, 4]);
+      ctx.strokeRect(mapX + 35, mapY + 195, mapW - 80, 45);
+      ctx.setLineDash([]);
+      ctx.fillStyle = '#475569';
+      ctx.font = '9px "Noto Sans JP", sans-serif';
+      ctx.fillText('前面公道 (幅員 6.00m)', mapX + 130, mapY + 222);
+
+      ctx.restore();
+
+      // 2. RIGHT SIDE: STRUCTURED FORM TABLES & SIGNATURE BOX
+      const rowH = 28;
+      let currY = docY + 38;
+
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 10px "Noto Sans JP", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('【届出者・申請情報】', tableX, currY + 14);
+      currY += 20;
+
+      // Table Row 1: Document ID & Date
+      function drawFormRow(label, value, y, h = 26, isHighlight = false) {
+        ctx.strokeStyle = isHighlight ? '#0284c7' : '#94a3b8';
+        ctx.lineWidth = isHighlight ? 2 : 1;
+        ctx.strokeRect(tableX, y, tableW, h);
+
+        const lblW = 75;
+        ctx.fillStyle = '#f1f5f9';
+        ctx.fillRect(tableX + 1, y + 1, lblW - 2, h - 2);
+
+        ctx.strokeStyle = '#cbd5e1';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(tableX + lblW, y);
+        ctx.lineTo(tableX + lblW, y + h);
+        ctx.stroke();
+
+        ctx.fillStyle = '#334155';
+        ctx.font = 'bold 9px "Noto Sans JP", sans-serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(label, tableX + 6, y + h / 2 + 3);
+
+        ctx.fillStyle = '#0f172a';
+        ctx.font = '10px "Noto Sans JP", sans-serif';
+        ctx.fillText(value, tableX + lblW + 8, y + h / 2 + 3);
+      }
+
+      drawFormRow('受付番号', 'JP-2024-8841B', currY); currY += 26;
+      drawFormRow('届出期日', '令和6年10月15日', currY); currY += 26;
+      drawFormRow('申請地番', '東京都港区麻布十番2-102-1', currY); currY += 26;
+      drawFormRow('敷地面積', '248.65 平方メートル', currY); currY += 26;
+      drawFormRow('用途地域', '第二種住居地域 (建蔽率60%)', currY); currY += 26;
+
+      currY += 8;
+      // SIGNATURE BOX HEADER & DESIGNATED TARGET BOX (ROI)
+      ctx.fillStyle = '#0f172a';
+      ctx.font = 'bold 10px "Noto Sans JP", sans-serif';
+      ctx.fillText('【署名・捺印欄】 (Target Verification Box)', tableX, currY + 14);
+      currY += 20;
+
+      const signBoxX = tableX;
+      const signBoxY = currY;
+      const signBoxW = tableW;
+      const signBoxH = 80;
+
+      // Draw Signature Box Frame
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(signBoxX, signBoxY, signBoxW, signBoxH);
+
+      ctx.strokeStyle = isPass ? '#10b981' : sample.type === 'empty' ? '#ef4444' : '#f59e0b';
+      ctx.lineWidth = 2.2;
+      ctx.strokeRect(signBoxX, signBoxY, signBoxW, signBoxH);
+
+      // Label on top of signature box
+      ctx.fillStyle = '#64748b';
+      ctx.font = '9px "Noto Sans JP", sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('氏名 / 申請者自筆署名 (Japanese Name Signature):', signBoxX + 6, signBoxY + 14);
+
+      // Draw Signature Contents (Handwriting or Seal inside the Box)
+      drawSignatureContent(sample, signBoxX + 30, signBoxY + 25, signBoxW - 60, signBoxH - 35);
+
+      // 3. PIPELINE VISUAL OVERLAYS
+      if (currentStage === 'cells') {
+        // Overlay detected table cell bounding boxes (cyan outlines)
+        ctx.strokeStyle = '#06b6d4';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([3, 3]);
+        ctx.strokeRect(mapX - 2, mapY - 2, mapW - 6, mapH + 4);
+        ctx.strokeRect(tableX - 2, docY + 45, tableW + 4, currY + signBoxH - docY - 40);
+        ctx.setLineDash([]);
+
+        // Target cell tag
+        ctx.fillStyle = '#06b6d4';
+        ctx.fillRect(signBoxX, signBoxY - 14, 120, 14);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 9px "Fira Code", monospace';
+        ctx.fillText('TARGET_CELL [ROI]', signBoxX + 4, signBoxY - 3);
+      } else if (currentStage === 'ocr') {
+        // Draw OCR Kanji bounding boxes over signature characters
+        if (sample.hasSign && sample.type === 'person') {
+          const chars = sample.nameKanji.split(' ').join('');
+          const startX = signBoxX + 40;
+          const charW = 28;
+          for (let i = 0; i < chars.length; i++) {
+            const bx = startX + i * (charW + 6);
+            ctx.strokeStyle = '#10b981';
+            ctx.lineWidth = 1.8;
+            ctx.strokeRect(bx, signBoxY + 28, charW, 36);
+
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 8px "Fira Code", monospace';
+            ctx.fillText(`${(sample.confidence * 100).toFixed(0)}%`, bx + 2, signBoxY + 25);
+          }
+        }
+      }
+    }
+
+    // Draw Signature Content inside Target Box
+    function drawSignatureContent(sample, x, y, w, h) {
+      if (sample.type === 'empty') {
+        // Empty box watermark
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.25)';
+        ctx.font = 'bold 12px "Noto Sans JP", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('[ 未署名 - 署名が存在しません ]', x + w / 2, y + h / 2 + 5);
+        return;
+      }
+
+      if (sample.type === 'person') {
+        // Kanji Signature (Fountain Pen Blue/Black)
+        ctx.fillStyle = '#0f172a';
+        ctx.font = currentSample === 'valid3' ? 'italic 26px "Noto Sans JP", serif' : 'bold 24px "Noto Sans JP", serif';
+        ctx.textAlign = 'left';
+        ctx.fillText(sample.nameKanji, x + 10, y + h / 2 + 8);
+
+        // Red Vermillion Hanko Seal (印) if applicable
+        if (sample.hasSeal) {
+          const sealX = x + w - 35;
+          const sealY = y + h / 2;
+          ctx.strokeStyle = '#dc2626';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.arc(sealX, sealY, 15, 0, Math.PI * 2);
+          ctx.stroke();
+
+          ctx.fillStyle = '#dc2626';
+          ctx.font = 'bold 11px "Noto Sans JP", serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('田中', sealX, sealY - 1);
+          ctx.fillText('印', sealX, sealY + 10);
+        }
+      } else if (sample.type === 'corporate') {
+        // Corporate Square Seal (株式会社〇〇印)
+        const sealX = x + w / 2 - 22;
+        const sealY = y + 5;
+        ctx.strokeStyle = '#dc2626';
+        ctx.lineWidth = 2.5;
+        ctx.strokeRect(sealX, sealY, 44, 44);
+
+        ctx.fillStyle = '#dc2626';
+        ctx.font = 'bold 9px "Noto Sans JP", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('株式', sealX + 22, sealY + 14);
+        ctx.fillText('会社', sealX + 22, sealY + 26);
+        ctx.fillText('之印', sealX + 22, sealY + 38);
+      } else if (sample.type === 'scribble') {
+        // Random illegible scribble
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(x + 15, y + h / 2);
+        ctx.bezierCurveTo(x + 35, y + 10, x + 60, y + h - 5, x + 90, y + h / 2);
+        ctx.bezierCurveTo(x + 110, y + 15, x + 130, y + h, x + 160, y + h / 2 - 10);
+        ctx.stroke();
+      }
+    }
+
+    // Stage 3 Zoomed-in ROI View
+    function renderSignatureRoiZoom(sample, isPass) {
+      const W = canvas.width;
+      const H = canvas.height;
+
+      ctx.fillStyle = '#090d16';
+      ctx.fillRect(0, 0, W, H);
+
+      // Frame
+      const bx = 60, by = 50, bw = W - 120, bh = H - 100;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(bx, by, bw, bh);
+
+      ctx.strokeStyle = isPass ? '#10b981' : '#ef4444';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(bx, by, bw, bh);
+
+      // Grid overlay
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.3)';
+      ctx.lineWidth = 1;
+      for (let x = bx; x < bx + bw; x += 30) {
+        ctx.beginPath(); ctx.moveTo(x, by); ctx.lineTo(x, by + bh); ctx.stroke();
+      }
+      for (let y = by; y < by + bh; y += 30) {
+        ctx.beginPath(); ctx.moveTo(bx, y); ctx.lineTo(bx + bw, y); ctx.stroke();
+      }
+
+      // Title badge
+      ctx.fillStyle = '#0284c7';
+      ctx.fillRect(bx, by - 24, 210, 24);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 11px "Fira Code", monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText('CROPPED SIGNATURE BOX [ROI]', bx + 8, by - 8);
+
+      // Signature Content scaled up
+      if (sample.type === 'empty') {
+        ctx.fillStyle = '#ef4444';
+        ctx.font = 'bold 20px "Noto Sans JP", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('【未記入】 署名インク検出なし (Density: 0.00%)', W / 2, H / 2);
+      } else if (sample.type === 'person') {
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 44px "Noto Sans JP", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText(sample.nameKanji, W / 2 - (sample.hasSeal ? 40 : 0), H / 2 + 15);
+
+        if (sample.hasSeal) {
+          const sealX = W / 2 + 150;
+          const sealY = H / 2 + 5;
+          ctx.strokeStyle = '#dc2626';
+          ctx.lineWidth = 3.5;
+          ctx.beginPath();
+          ctx.arc(sealX, sealY, 32, 0, Math.PI * 2);
+          ctx.stroke();
+
+          ctx.fillStyle = '#dc2626';
+          ctx.font = 'bold 18px "Noto Sans JP", serif';
+          ctx.fillText('田中', sealX, sealY - 2);
+          ctx.fillText('印', sealX, sealY + 20);
+        }
+      } else if (sample.type === 'corporate') {
+        const sealX = W / 2 - 40;
+        const sealY = H / 2 - 40;
+        ctx.strokeStyle = '#dc2626';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(sealX, sealY, 80, 80);
+
+        ctx.fillStyle = '#dc2626';
+        ctx.font = 'bold 16px "Noto Sans JP", serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('株式会社', sealX + 40, sealY + 30);
+        ctx.fillText('之印', sealX + 40, sealY + 55);
+      } else if (sample.type === 'scribble') {
+        ctx.strokeStyle = '#334155';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(bx + 60, H / 2);
+        ctx.bezierCurveTo(bx + 120, by + 30, bx + 220, by + bh - 20, bx + 320, H / 2);
+        ctx.bezierCurveTo(bx + 380, by + 40, bx + 420, by + bh - 10, bx + 480, H / 2);
+        ctx.stroke();
+      }
+    }
+
+    renderDocument();
+  </script>
+</body>
+</html>

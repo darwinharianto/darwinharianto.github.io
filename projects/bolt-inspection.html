@@ -64,7 +64,7 @@
         iOS On-Device AI: Automated <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Bolt Safety Check & 3D Angle Metrology</span>
       </h1>
       <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
-        Developed a real-time, on-device iOS safety inspection system. Performs bolt detection, color segmentation of torque seal marks, monocular 3D depth projection, and 3D angle calculation entirely on a single iPhone image using quantized CoreML model ensembles.
+        Developed an on-device iOS safety inspection system. Performs bolt detection, color segmentation of torque seal marks, monocular 3D depth projection, and 3D angle calculation directly on captured iPhone images using quantized CoreML model ensembles.
       </p>
     </section>
 
@@ -97,7 +97,7 @@
                 ✓ SAFETY PASS (ALIGNED)
               </span>
             </div>
-            <span class="text-slate-400">Apple Neural Engine: 18ms</span>
+            <span class="text-slate-400">Captured High-Res Inspection</span>
           </div>
 
           <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
@@ -125,8 +125,8 @@
               <div class="text-cyan-400 font-bold text-sm mt-0.5">INT8 CoreML (14MB)</div>
             </div>
             <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">On-Device Latency</div>
-              <div class="text-teal-400 font-bold text-sm mt-0.5">18 ms (55 FPS)</div>
+              <div class="text-slate-400 text-[10px]">Processing Type</div>
+              <div class="text-teal-400 font-bold text-sm mt-0.5">On-Device Single Image</div>
             </div>
             <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
               <div class="text-slate-400 text-[10px]">Tolerance Limit</div>
@@ -159,7 +159,7 @@
 
           <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
             <div class="text-purple-400 font-bold">4. CoreML INT8 Quantization:</div>
-            <p class="text-slate-400 text-[10px]">Compressed the ensemble network by 75% for zero-latency execution on the Apple Neural Engine without heating the mobile device.</p>
+            <p class="text-slate-400 text-[10px]">Compressed the ensemble network by 75% enabling deep multi-stage inference (detection, segmentation, depth) to execute entirely offline on-device without cloud dependence.</p>
           </div>
         </div>
       </div>

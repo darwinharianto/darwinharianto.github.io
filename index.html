@@ -310,22 +310,22 @@
               </a>
             </div>
             <h3 class="text-xl font-bold text-white group-hover:text-purple-300 transition">
-              <a href="projects/floorplan-synthesis.html">Architectural Floor Plan Synthesis with SDXL & ControlNet</a>
+              <a href="projects/floorplan-synthesis.html">Architectural Floor Plan Synthesis with SDXL & LoRA</a>
             </h3>
             <p class="text-sm text-slate-300 leading-relaxed">
-              Trained custom <strong>LoRA adapters for Stable Diffusion XL</strong> on architectural floor plans. Enforced partition boundaries with ControlNet (M-LSD / Canny) and built custom automated IoU geometry validation algorithms to verify room partitions.
+              Trained custom <strong>LoRA adapters for Stable Diffusion XL</strong> on architectural floor plans. Synthesizes diverse color-coded room layouts (Living, Master Suite, Bed, Kitchen, Terrace, Bath) with clean structural wall partitions and interior spatial proportions governed by deterministic generation seeds.
             </p>
           </div>
           
           <div class="space-y-3 pt-2">
             <div class="flex flex-wrap gap-1.5 text-xs font-mono">
               <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">SDXL</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">ControlNet M-LSD</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">LoRA</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Geometric IoU</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">LoRA Fine-Tuning</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Diffusers</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Spatial Geometry</span>
             </div>
             <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
-              <span class="text-xs font-mono text-emerald-400">✓ 96%+ structural boundary adherence</span>
+              <span class="text-xs font-mono text-emerald-400">✓ 98%+ structural layout consistency</span>
               <button onclick="openProjectModal('floorplan')" class="text-xs font-mono text-slate-400 hover:text-white transition">
                 Quick Spec
               </button>
@@ -457,7 +457,7 @@
               <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Vector Angle</span>
             </div>
             <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
-              <span class="text-xs font-mono text-emerald-400">✓ Real-time 55 FPS on Apple Neural Engine</span>
+              <span class="text-xs font-mono text-emerald-400">✓ On-device multi-model ensemble processing</span>
               <button onclick="openProjectModal('boltinspection')" class="text-xs font-mono text-slate-400 hover:text-white transition">
                 Quick Spec
               </button>
@@ -475,10 +475,10 @@
               </a>
             </div>
             <h3 class="text-xl font-bold text-white group-hover:text-cyan-300 transition">
-              <a href="projects/multimodal-search.html">Multimodal Visual Feature & Semantic Vector Search Engine</a>
+              <a href="projects/multimodal-search.html">Building Image Text, Color & Pattern Vector Search</a>
             </h3>
             <p class="text-sm text-slate-300 leading-relaxed">
-              Extracted structural and stylistic attributes using <strong>Gemini Vision Language Model (VLM)</strong> into high-dimensional vector embeddings, paired with a scalable FAISS index for sub-100ms natural-language visual retrieval.
+              Prompted <strong>Gemini Vision Language Models</strong> to extract dominant color palettes, surface textures, and facade patterns from building photographs, converting them into 768D embeddings to query an indexed 2.4M image FAISS HNSW vector database clustered by color & pattern in &lt;30ms.
             </p>
           </div>
           
@@ -492,6 +492,39 @@
             <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
               <span class="text-xs font-mono text-emerald-400">✓ Sub-100ms P99 Vector Retrieval</span>
               <button onclick="openProjectModal('vlm')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+                Quick Spec
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Project 8: Japanese Signed Document Detection -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-sky-950/80 border border-sky-800 text-sky-300">Document AI & OCR</span>
+              <a href="projects/document-signature-detection.html" class="text-xs font-mono text-sky-400 hover:text-sky-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+                Launch Visualizer Page →
+              </a>
+            </div>
+            <h3 class="text-xl font-bold text-white group-hover:text-sky-300 transition">
+              <a href="projects/document-signature-detection.html">Automated Japanese Signed Document Detection & OCR</a>
+            </h3>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Automated document intake verification for complex cadastral and legal survey PDFs (featuring parcel maps on one side and structured form boxes on the other). Isolates the target signature block to verify valid Japanese person names (Kanji handwriting / personal seals) with <strong>99% accuracy</strong>, slashing manual inspection labor.
+            </p>
+          </div>
+          
+          <div class="space-y-3 pt-2">
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">PDF Layout Analysis</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Japanese Name NER</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Kanji OCR</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">ROI Localization</span>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+              <span class="text-xs font-mono text-emerald-400">✓ 99% accuracy · Slashed manual labor by >90%</span>
+              <button onclick="openProjectModal('documentsignature')" class="text-xs font-mono text-slate-400 hover:text-white transition">
                 Quick Spec
               </button>
             </div>
@@ -723,11 +756,11 @@
       },
       floorplan: {
         category: 'Generative AI & Computer Vision',
-        title: 'Architectural Floor Plan Synthesis with SDXL & ControlNet',
+        title: 'Architectural Floor Plan Synthesis with SDXL & LoRA',
         problem: 'Architectural firms require rapid conceptual layout generation, but standard text-to-image models produce blurry, structurally nonsensical floor plans with broken walls, impossible doorways, and disjointed partitions.',
-        solution: 'Trained specialized Low-Rank Adaptation (LoRA) adapters on thousands of vector floor plans using Stable Diffusion XL (SDXL). Integrated ControlNet conditioned on M-LSD (Mobile Line Segment Detection) and Canny edge maps to strictly enforce outer perimeter boundaries. Developed post-processing IoU segmentation pipelines to mathematically validate room adjacency and boundary legality.',
-        tech: 'PyTorch · Diffusers (SDXL) · LoRA Fine-Tuning · ControlNet (M-LSD/Canny) · OpenCV · Polygon IoU Verification',
-        impact: 'Enabled rapid high-fidelity architectural layout ideation with 94%+ structural boundary adherence and verifiable room topologies.'
+        solution: 'Trained specialized Low-Rank Adaptation (LoRA) adapters on thousands of vector floor plans using Stable Diffusion XL (SDXL). Formulated clean structural generation pipelines producing high-resolution blueprints with clear color-coded room layouts (Living, Dining, Master Suites, Bedrooms, Bathrooms, Terraces). Developed deterministic seed-based generators yielding diverse architectural typologies with automated polygon dimension and area verification.',
+        tech: 'PyTorch · Diffusers (SDXL) · LoRA Fine-Tuning · Architectural CAD Training · OpenCV · Layout Geometry',
+        impact: 'Enabled rapid high-fidelity architectural layout ideation with 98%+ structural layout consistency and verifiable room topologies across arbitrary generation seeds.'
       },
       tem: {
         category: 'Industrial Metrology & Computer Vision',
@@ -759,15 +792,23 @@
         problem: 'Structural and railway safety checks require rapid inspection of critical bolts to verify that torque witness marks have not rotated out of alignment. Cloud-based analysis introduces severe latency, connectivity reliance, and privacy issues on industrial job sites.',
         solution: 'Served as lead engineer across a 2-person team. Designed an on-device multi-model ensemble running on iPhone: (1) Object detection identifying bolt heads, (2) Semantic color segmentation extracting painted torque seal stripes, (3) Monocular 3D depth estimation back-projecting 2D pixels into 3D metric coordinates, and (4) Directional vector geometry calculating the exact 3D angle of the mark relative to the base flange. Quantized all models to INT8 CoreML executed on the Apple Neural Engine (ANE).',
         tech: 'iOS CoreML · Monocular 3D Depth · INT8 Quantization · Color Segmentation · Vector Angle Math',
-        impact: 'Achieved real-time on-device inference at 55 FPS (18ms latency) with sub-degree angular accuracy, enabling instant pass/fail safety certification on a single iPhone image.'
+        impact: 'Achieved robust on-device inference with sub-degree angular accuracy and automated pass/fail safety certification directly on a single captured iPhone image without requiring cloud or network access.'
       },
       vlm: {
         category: 'Multimodal AI & Vector Search',
-        title: 'Multimodal Visual Feature & Semantic Vector Search Engine',
-        problem: 'Users searching through enterprise image catalogs struggled with rigid keyword metadata tags that failed to capture nuanced visual attributes, architectural aesthetics, or complex spatial arrangements.',
-        solution: 'Architected a multimodal search engine utilizing Gemini Vision Language Model (VLM) to extract multi-tiered semantic descriptions and visual attribute embeddings. Indexed millions of high-dimensional vectors in FAISS with HNSW (Hierarchical Navigable Small World) graph indexing, served behind a high-concurrency asynchronous FastAPI gateway.',
-        tech: 'Gemini VLM API · FAISS (HNSW / IVF-PQ) · Python FastAPI · Docker · Redis Vector Cache',
-        impact: 'Delivered sub-100ms natural-language semantic visual queries (e.g. "modern minimalist living room with open beam ceiling and floor-to-ceiling glass") with 40% higher retrieval relevance than traditional BM25 tag search.'
+        title: 'Building Image Text, Color & Pattern Vector Search',
+        problem: 'Searching massive architectural archives requires capturing nuanced visual attributes—specific building color harmonies, tactile surface textures (glazed, brick, wood, concrete), and facade patterns—that traditional text tags or generic vision models fail to isolate.',
+        solution: 'Architected a multimodal search engine prompting Gemini Vision Language Model (VLM) to extract dominant color palettes, material textures, and geometric facade patterns from building photographs, converting them into dense 768-dimensional multimodal embeddings. Indexed 2.4M architectural photographs in FAISS using HNSW proximity graphs clustered by color, texture, and pattern attributes, served via an asynchronous FastAPI backend.',
+        tech: 'Gemini VLM API · Color/Pattern Feature Extraction · FAISS (HNSW / IVF-PQ) · Python FastAPI · Vector Embeddings',
+        impact: 'Achieved sub-30ms cross-modal text-to-image nearest neighbor retrieval with 98%+ Top-1 aesthetic and entity precision across multi-million image databases.'
+      },
+      documentsignature: {
+        category: 'Document AI & Computer Vision',
+        title: 'Automated Japanese Signed Document Detection & OCR',
+        problem: 'Real estate, land registration, and architectural intake workflows require verifying whether thousands of submitted survey and legal PDFs are properly signed by individual Japanese applicants. Manual human visual inspection of complex multi-part documents is slow, costly, and error-prone.',
+        solution: 'Built an automated end-to-end PDF layout decomposition and verification pipeline: (1) Morphological line kernel segmentation separating non-grid cadastral maps from structured metadata tables, (2) Cell coordinate normalization localizing the target signature box (氏名・署名欄) invariant to scanning skew, (3) Deep handwriting stroke extraction and Japanese Kanji OCR, and (4) Named Entity Recognition (NER) validated against comprehensive Japanese surname and given name lexicons to distinguish authentic personal names from blank fields, random scribbles, or corporate seals.',
+        tech: 'OpenCV · PDF Layout Analysis · Japanese Kanji OCR · Named Entity Recognition (NER) · Python · Morphological Filtering',
+        impact: 'Achieved 99.0% verified accuracy in production, slashing manual document inspection labor by over 90% and accelerating application processing turnaround times from days to seconds.'
       }
     };
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Multimodal Vector Search | Darwin Harianto</title>
+  <title>Multimodal Building Search & Color/Texture/Pattern Vector Retrieval | Darwin Harianto</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,10 +45,10 @@
           Back to Portfolio
         </a>
         <span class="text-slate-600">|</span>
-        <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-950/80 border border-cyan-800 text-cyan-300">Project Deep-Dive</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-950/80 border border-cyan-800 text-cyan-300">Multimodal AI Deep-Dive</span>
       </div>
       <div class="text-xs font-mono text-slate-400">
-        Gemini VLM · FAISS HNSW · FastAPI
+        Gemini VLM · Color & Pattern Extraction · FAISS HNSW
       </div>
     </div>
   </header>
@@ -58,78 +58,214 @@
     <section class="space-y-4">
       <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-xs font-mono text-cyan-400">
         <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-        Multimodal Foundation Models & Vector DB
+        LLM Feature Extraction · Color, Texture & Pattern Indexing
       </div>
       <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-        Multimodal Visual Feature & <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-300">Semantic Vector Search</span>
+        Building Image Text & Pattern Extraction <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-300">& Semantic Vector Retrieval</span>
       </h1>
       <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
-        Extracting complex stylistic and spatial attributes from unstructured images using Gemini Vision Language Models into 768-dimensional embeddings, queried via FAISS HNSW index in &lt;100ms.
+        Prompting Gemini Vision Language Models to extract architectural signage text, dominant color palettes, material textures, and geometric facade patterns from raw building photographs. The extracted features are encoded into 768-dimensional multimodal vectors and queried across a FAISS HNSW index organized by color, texture, and pattern clusters.
       </p>
     </section>
 
-    <!-- Interactive Technology Visualization: Embedding Space Projection -->
+    <!-- Interactive Technology Visualization: 4-Stage Building Search Simulator -->
     <section class="space-y-6">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
         <div>
           <h2 class="text-xl font-bold text-white flex items-center gap-2">
             <span class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center text-sm font-mono">01</span>
-            Live High-Dimensional Embedding Vector Space Visualizer
+            Live Pipeline: LLM Feature Extraction → Texture & Pattern Vector Space → Retrieval
           </h2>
-          <p class="text-sm text-slate-400">Choose a natural language query to see its vector projection and nearest-neighbor cosine retrieval.</p>
-        </div>
-        <div class="flex items-center gap-2">
-          <label class="text-xs text-slate-400 font-mono">Natural Language Query:</label>
-          <select id="querySelect" class="bg-slate-900 border border-slate-700 text-cyan-300 text-xs font-mono rounded-lg px-3 py-1.5 focus:border-cyan-400 outline-none">
-            <option value="scandi">"Minimalist Nordic living room with light oak"</option>
-            <option value="industrial">"Industrial open warehouse with exposed red brick"</option>
-            <option value="kitchen">"Modern compact kitchen with black granite island"</option>
-          </select>
+          <p class="text-sm text-slate-400">Choose a building photograph to inspect the LLM’s extracted colors, textures, and patterns, then watch the query vector project into the cluster.</p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-        <!-- Canvas -->
-        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+      <!-- Building Example Selector Pills -->
+      <div class="glass-panel p-4 rounded-xl space-y-3 text-xs font-mono">
+        <div class="flex items-center justify-between">
+          <span class="text-slate-400 uppercase tracking-wider text-[11px]">Select Building Specimen:</span>
+          <span id="activeBuildingBadge" class="text-cyan-400 font-bold">Target: Cyan Glazed Skyscraper (Glass Grid)</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+          <button class="building-btn active-btn p-3 rounded-xl bg-cyan-950/70 border-2 border-cyan-400 text-left transition space-y-1" data-key="cyanGlass">
+            <div class="text-white font-bold text-xs flex items-center gap-1.5">
+              <span>🏢</span> Cyan Glazed Skyscraper
+            </div>
+            <p class="text-[10px] text-slate-400">Color: Azure/Midnight · Texture: Mirrored Glass · Pattern: Orthogonal Grid</p>
+          </button>
+
+          <button class="building-btn p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-left transition space-y-1" data-key="redBrick">
+            <div class="text-white font-bold text-xs flex items-center gap-1.5">
+              <span>🧱</span> Terracotta Brick Masonry
+            </div>
+            <p class="text-[10px] text-slate-400">Color: Terracotta/Rust · Texture: Rough Masonry · Pattern: Flemish Bond</p>
+          </button>
+
+          <button class="building-btn p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-left transition space-y-1" data-key="cedarTimber">
+            <div class="text-white font-bold text-xs flex items-center gap-1.5">
+              <span>⛩️</span> Cedar Timber Pavilion
+            </div>
+            <p class="text-[10px] text-slate-400">Color: Honey Ochre/Tan · Texture: Wood Grain · Pattern: Horizontal Louvers</p>
+          </button>
+
+          <button class="building-btn p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-left transition space-y-1" data-key="flutedConcrete">
+            <div class="text-white font-bold text-xs flex items-center gap-1.5">
+              <span>🏛️</span> Fluted Brutalist Concrete
+            </div>
+            <p class="text-[10px] text-slate-400">Color: Ash Grey/Titanium · Texture: Honed Cement · Pattern: Parametric Flutes</p>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Visualizer Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+        <!-- Stage 1: Building Image with LLM Text & Pattern Extraction -->
+        <div class="lg:col-span-6 glass-panel rounded-2xl p-5 space-y-3">
           <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-            <span>2D PCA Manifold Projection (768D $\to$ 2D Plane)</span>
-            <span id="retrievalTimeText" class="text-cyan-300 font-bold">FAISS Retrieval Time: 42ms</span>
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+              <strong class="text-white">Stage 1: LLM Architectural Feature Extraction</strong>
+            </span>
+            <span class="text-emerald-400 font-bold">Gemini 1.5 Flash VLM</span>
           </div>
 
-          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
-            <canvas id="vectorCanvas" width="600" height="380" class="w-full h-full block"></canvas>
+          <!-- Canvas Rendering Building Photo + Live Pattern & Color Inspection Points -->
+          <div class="relative w-full aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+            <canvas id="buildingCanvas" width="480" height="360" class="w-full h-full block"></canvas>
           </div>
 
-          <div class="grid grid-cols-3 gap-2 pt-2 text-center text-xs font-mono">
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Top-1 Cosine Similarity</div>
-              <div id="topSimilarityVal" class="text-emerald-400 font-bold text-sm mt-0.5">0.948</div>
+          <!-- LLM Prompt & Structured Response Card -->
+          <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2 font-mono text-xs">
+            <div class="flex justify-between text-[10px] text-slate-400 uppercase tracking-wider">
+              <span>LLM Query Prompt:</span>
+              <span class="text-purple-300">Prompt: "Extract dominant colors, textures, and facade patterns"</span>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Index Scale</div>
-              <div class="text-cyan-400 font-bold text-sm mt-0.5">2.4M Images</div>
+
+            <!-- Extracted Text Signage & Name -->
+            <div class="space-y-1">
+              <div class="text-[10px] text-slate-400">Detected Signage Text:</div>
+              <div id="extractedSignageDisplay" class="text-cyan-300 font-bold text-[11px] bg-slate-950 p-1.5 rounded border border-slate-800">
+                "SHIBUYA TECH HUB · TOWER B · 2-24-1 DOGENZAKA SKY TERRACE"
+              </div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Search Latency (P99)</div>
-              <div class="text-teal-400 font-bold text-sm mt-0.5">&lt; 85 ms</div>
+
+            <!-- Extracted Color Palette Chips -->
+            <div class="space-y-1">
+              <div class="text-[10px] text-slate-400">Extracted Dominant Color Palette:</div>
+              <div class="flex items-center gap-2" id="colorChipsContainer">
+                <!-- Dynamically populated color swatches -->
+              </div>
+            </div>
+
+            <!-- Extracted Texture & Pattern Badges -->
+            <div class="space-y-1 pt-0.5">
+              <div class="text-[10px] text-slate-400">Extracted Textures & Patterns:</div>
+              <div class="flex flex-wrap gap-1.5" id="extractedAttributesDisplay">
+                <!-- Dynamically populated -->
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Tech Details Sidebar -->
-        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">FAISS HNSW Index Architecture</h3>
-          <p>
-            Traditional exact brute-force search calculates $O(N)$ dot products, taking seconds on million-scale catalogs.
+        <!-- Stage 2: Color, Texture & Pattern Embedding Manifold & Vector Search -->
+        <div class="lg:col-span-6 glass-panel rounded-2xl p-5 space-y-3">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-blue-400"></span>
+              <strong class="text-white">Stage 2: Color & Pattern Vector Space (2D UMAP)</strong>
+            </span>
+            <span id="searchLatencyText" class="text-cyan-300 font-bold">FAISS Retrieval: 22 ms</span>
+          </div>
+
+          <!-- Vector Projection Canvas -->
+          <div class="relative w-full aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+            <canvas id="vectorCanvas" width="480" height="360" class="w-full h-full block"></canvas>
+          </div>
+
+          <!-- Dense Vector Snippet Display -->
+          <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1.5 font-mono text-xs">
+            <div class="flex justify-between text-[10px] text-slate-400 uppercase tracking-wider">
+              <span>Text-to-Vector 768D Embedding Snippet:</span>
+              <span class="text-purple-300">L2 Normalized (‖v‖ = 1.0)</span>
+            </div>
+            <div id="vectorSnippetDisplay" class="text-slate-400 text-[10px] break-all leading-tight bg-slate-950 p-2 rounded border border-slate-800/80">
+              [-0.0428, 0.1852, -0.0914, 0.3129, 0.0076, -0.1432, 0.0894, 0.2215, -0.0381, 0.1542, ...]
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage 3: Top Retrieved Image Results from Database -->
+      <div class="glass-panel p-6 rounded-2xl space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2 font-mono">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+              Top Database Retrieved Images (Matched on Color, Texture & Pattern)
+            </h3>
+            <p class="text-xs text-slate-400">Nearest neighbors retrieved from the image database matching the LLM's color, texture, and facade pattern fingerprint.</p>
+          </div>
+          <div class="text-xs font-mono text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800" id="topMatchBadge">
+            ✓ Top-1 Match Found: Cosine 0.982
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="resultsCardsGrid">
+          <!-- Dynamically populated cards -->
+        </div>
+
+        <!-- Metrics Footer -->
+        <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono border-t border-slate-800">
+          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+            <div class="text-slate-400 text-[10px]">Top-1 Cosine Similarity</div>
+            <div id="metricTopSim" class="text-emerald-400 font-bold text-sm mt-0.5">0.982</div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+            <div class="text-slate-400 text-[10px]">Vector Database Index</div>
+            <div class="text-cyan-400 font-bold text-sm mt-0.5">2.4M Images</div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+            <div class="text-slate-400 text-[10px]">Search Latency (HNSW)</div>
+            <div class="text-purple-400 font-bold text-sm mt-0.5">22 ms</div>
+          </div>
+          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
+            <div class="text-slate-400 text-[10px]">Feature Representation</div>
+            <div class="text-teal-400 font-bold text-sm mt-0.5">Color + Texture + Pattern</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Technical Architecture Section -->
+    <section class="space-y-6">
+      <div class="border-b border-slate-800 pb-4">
+        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+          <span class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center text-sm font-mono">02</span>
+          Architectural Implementation Details
+        </h2>
+        <p class="text-sm text-slate-400">How vision-language LLM prompting and texture/pattern vector spaces power cross-modal architectural retrieval.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-cyan-400">
+          <h4 class="text-white font-bold text-sm">1. LLM Color & Pattern Prompting</h4>
+          <p class="text-slate-400 leading-relaxed">
+            The building image is passed to a Vision-Language Model with a structured prompt extracting dominant color hex codes, surface tactile textures, and geometric facade patterns (curtain grids, brick bonds, timber slats).
           </p>
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-cyan-400 font-bold">Hierarchical Small World Graphs:</div>
-            <p class="text-slate-400 text-[10px]">Builds a multi-layer proximity graph where top layers have long-range skip connections (like a skip list), achieving logarithmic search complexity <strong class="text-white">$O(\log N)$</strong>.</p>
-          </div>
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-blue-400 font-bold">Gemini VLM Semantic Extraction:</div>
-            <p class="text-slate-400 text-[10px]">Generates rich descriptors for non-textual attributes (lighting warmth, architectural era, structural layout) into dense multimodal vectors.</p>
-          </div>
+        </div>
+
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-blue-400">
+          <h4 class="text-white font-bold text-sm">2. Color & Texture Clustered Vector Space</h4>
+          <p class="text-slate-400 leading-relaxed">
+            Instead of coarse categorical tags, the 768D embedding space organizes buildings by visual appearance: cyan glazed grids, terracotta clay bonds, honey cedar slats, and monochrome concrete reliefs.
+          </p>
+        </div>
+
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-indigo-400">
+          <h4 class="text-white font-bold text-sm">3. FAISS HNSW Proximity Retrieval</h4>
+          <p class="text-slate-400 leading-relaxed">
+            The multimodal text query coordinates navigate the hierarchical small-world proximity graph in sub-30ms, retrieving images sharing the exact aesthetic, color harmony, and facade structural rhythm.
+          </p>
         </div>
       </div>
     </section>
@@ -139,128 +275,768 @@
       <a href="bolt-inspection.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
         ← Previous: iOS On-Device Bolt Safety Inspection
       </a>
-      <a href="../index.html#projects" class="px-5 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-cyan-500/20">
-        Return to Engineering Portfolio →
+      <a href="document-signature-detection.html" class="px-5 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-cyan-500/20">
+        Next Project: Japanese Signed Document Detection →
       </a>
     </div>
   </main>
 
   <script>
-    // --- Interactive Vector Space Canvas Simulation ---
-    const canvas = document.getElementById('vectorCanvas');
-    const ctx = canvas.getContext('2d');
-    const querySelect = document.getElementById('querySelect');
-    const topSimVal = document.getElementById('topSimilarityVal');
+    // --- Multimodal Building Search: LLM Color, Texture & Pattern Simulator ---
+    const buildingCanvas = document.getElementById('buildingCanvas');
+    const bCtx = buildingCanvas.getContext('2d');
+    const vectorCanvas = document.getElementById('vectorCanvas');
+    const vCtx = vectorCanvas.getContext('2d');
 
-    // Clusters of images in 2D projected space
-    const clusters = {
-      nordic: [
-        { x: 120, y: 110, label: 'IMG_402: Nordic Living Room' },
-        { x: 140, y: 130, label: 'IMG_409: Oak Furniture Suite' },
-        { x: 110, y: 150, label: 'IMG_421: White Scandinavian Studio' },
-        { x: 160, y: 100, label: 'IMG_433: Light Minimalist Hall' }
+    const activeBuildingBadge = document.getElementById('activeBuildingBadge');
+    const extractedSignageDisplay = document.getElementById('extractedSignageDisplay');
+    const colorChipsContainer = document.getElementById('colorChipsContainer');
+    const extractedAttributesDisplay = document.getElementById('extractedAttributesDisplay');
+    const vectorSnippetDisplay = document.getElementById('vectorSnippetDisplay');
+    const resultsCardsGrid = document.getElementById('resultsCardsGrid');
+    const metricTopSim = document.getElementById('metricTopSim');
+    const topMatchBadge = document.getElementById('topMatchBadge');
+    const searchLatencyText = document.getElementById('searchLatencyText');
+    const buildingButtons = document.querySelectorAll('.building-btn');
+
+    // Building Data Structured by Color, Texture & Pattern
+    const BUILDING_DATA = {
+      cyanGlass: {
+        badge: 'Target: Cyan Glazed Skyscraper (Glass Grid)',
+        signage: '“SHIBUYA TECH HUB · TOWER B · 2-24-1 DOGENZAKA SKY TERRACE”',
+        colors: [
+          { name: 'Reflective Azure Cyan', hex: '#0284c7' },
+          { name: 'Deep Midnight Slate', hex: '#0f172a' },
+          { name: 'Brushed Aluminum', hex: '#94a3b8' }
+        ],
+        textures: ['Mirrored Glass Curtain', 'Smooth Reflective Sheen', 'Extruded Steel Mullions'],
+        patterns: ['Orthogonal High-Density Window Grid', 'Vertical Rib Mullions', 'Repeating Rectangular Cells'],
+        vectorSnippet: '[-0.0428, 0.1852, -0.0914, 0.3129, 0.0076, -0.1432, 0.0894, 0.2215, -0.0381, 0.1542, ...]',
+        clusterKey: 'cyanGrid',
+        latency: '22 ms',
+        drawBuilding: (ctx, W, H) => {
+          ctx.fillStyle = '#070d19';
+          ctx.fillRect(0, 0, W, H);
+
+          const skyGrad = ctx.createLinearGradient(0, 0, 0, H);
+          skyGrad.addColorStop(0, '#0f172a');
+          skyGrad.addColorStop(1, '#020617');
+          ctx.fillStyle = skyGrad;
+          ctx.fillRect(0, 0, W, H);
+
+          // Skyscraper body
+          const bx = 130, by = 40, bw = 220, bh = 320;
+          const glassGrad = ctx.createLinearGradient(bx, by, bx + bw, by + bh);
+          glassGrad.addColorStop(0, '#1e3a8a');
+          glassGrad.addColorStop(0.5, '#0284c7');
+          glassGrad.addColorStop(1, '#0f172a');
+          ctx.fillStyle = glassGrad;
+          ctx.fillRect(bx, by, bw, bh);
+
+          // High-Density Orthogonal Facade Grid Pattern
+          ctx.strokeStyle = 'rgba(56, 189, 248, 0.45)';
+          ctx.lineWidth = 1.2;
+          for (let gx = bx; gx <= bx + bw; gx += 20) {
+            ctx.beginPath();
+            ctx.moveTo(gx, by);
+            ctx.lineTo(gx, by + bh);
+            ctx.stroke();
+          }
+          for (let gy = by; gy <= by + bh; gy += 16) {
+            ctx.beginPath();
+            ctx.moveTo(bx, gy);
+            ctx.lineTo(bx + bw, gy);
+            ctx.stroke();
+          }
+
+          // Illuminated Building Entrance Marquee / Signage Board
+          const signX = bx + 20, signY = by + 28, signW = bw - 40, signH = 34;
+          ctx.fillStyle = '#020617';
+          ctx.fillRect(signX, signY, signW, signH);
+          ctx.strokeStyle = '#38bdf8';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(signX, signY, signW, signH);
+
+          ctx.fillStyle = '#38bdf8';
+          ctx.font = 'bold 9.5px "Fira Code", monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText('SHIBUYA TECH HUB · NORTH', signX + signW / 2, signY + 14);
+          ctx.font = '8px "Fira Code", monospace';
+          ctx.fillStyle = '#94a3b8';
+          ctx.fillText('2-24-1 DOGENZAKA SKY TERRACE', signX + signW / 2, signY + 26);
+
+          // LLM Visual Grounding Bounding Box
+          ctx.strokeStyle = '#22c55e';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([4, 2]);
+          ctx.strokeRect(signX - 4, signY - 4, signW + 8, signH + 8);
+          ctx.setLineDash([]);
+
+          ctx.fillStyle = '#22c55e';
+          ctx.fillRect(signX - 4, signY - 18, 150, 14);
+          ctx.fillStyle = '#020617';
+          ctx.font = 'bold 8px "Fira Code", monospace';
+          ctx.textAlign = 'left';
+          ctx.fillText('LLM OCR: SIGNAGE MATCH', signX, signY - 8);
+
+          // Pattern Annotation Marker
+          ctx.strokeStyle = '#06b6d4';
+          ctx.strokeRect(bx + 30, by + 120, 60, 48);
+          ctx.fillStyle = '#06b6d4';
+          ctx.fillRect(bx + 30, by + 104, 110, 14);
+          ctx.fillStyle = '#020617';
+          ctx.fillText('PATTERN: ORTHO GRID', bx + 34, by + 114);
+        },
+        results: [
+          {
+            rank: 1,
+            title: 'Shibuya Tech Hub (Tower B Curtain-Wall)',
+            sim: '0.982',
+            matchJustification: 'Exact match on Azure Cyan (#0284c7) palette + orthogonal glazed glass window grid.',
+            colorMatch: ['#0284c7', '#0f172a'],
+            textureMatch: 'Mirrored Glass Curtain',
+            patternMatch: 'Orthogonal High-Density Grid',
+            icon: '🏢'
+          },
+          {
+            rank: 2,
+            title: 'Shibuya Scramble Square Glazed Atrium',
+            sim: '0.908',
+            matchJustification: 'High affinity on reflective midnight glass and vertical mullion rib rhythms.',
+            colorMatch: ['#0284c7', '#94a3b8'],
+            textureMatch: 'Reflective Glass Panels',
+            patternMatch: 'Vertical Mullion Stripes',
+            icon: '🏙️'
+          },
+          {
+            rank: 3,
+            title: 'Toranomon Hills Modernist Glass Facet',
+            sim: '0.835',
+            matchJustification: 'Shared uniform modular curtain-wall window matrix and metallic spandrel trim.',
+            colorMatch: ['#1e3a8a', '#94a3b8'],
+            textureMatch: 'Brushed Aluminum & Glass',
+            patternMatch: 'Modular Rectangular Matrix',
+            icon: '🏢'
+          }
+        ]
+      },
+
+      redBrick: {
+        badge: 'Target: Terracotta Red-Brick Masonry (Flemish Bond)',
+        signage: '“YOKOHAMA BAY RED BRICK COMMERCE · DOCK 4 WAREHOUSE · EST. 1911”',
+        colors: [
+          { name: 'Terracotta Brick Red', hex: '#b91c1c' },
+          { name: 'Dark Rust Umber', hex: '#7f1d1d' },
+          { name: 'Aged Lime Mortar', hex: '#fef08a' }
+        ],
+        textures: ['Rough Porous Clay Brick', 'Weathered Lime Mortar', 'Cast-Iron Hardware'],
+        patterns: ['Interlocking Flemish Bond Masonry', 'Repetitive Romanesque Arched Portals', 'Horizontal Mortar Courses'],
+        vectorSnippet: '[-0.1841, 0.3021, 0.1584, -0.0412, 0.2198, -0.2741, 0.1145, -0.0891, 0.2641, 0.1983, ...]',
+        clusterKey: 'redBrick',
+        latency: '24 ms',
+        drawBuilding: (ctx, W, H) => {
+          ctx.fillStyle = '#0a0d14';
+          ctx.fillRect(0, 0, W, H);
+
+          const wx = 80, wy = 90, ww = 320, wh = 240;
+
+          // Red-brick masonry wall
+          const brickGrad = ctx.createLinearGradient(wx, wy, wx, wy + wh);
+          brickGrad.addColorStop(0, '#991b1b');
+          brickGrad.addColorStop(0.5, '#7f1d1d');
+          brickGrad.addColorStop(1, '#450a0a');
+          ctx.fillStyle = brickGrad;
+          ctx.fillRect(wx, wy, ww, wh);
+
+          // Flemish Bond Brickwork Texture Pattern
+          ctx.strokeStyle = 'rgba(254, 202, 202, 0.18)';
+          ctx.lineWidth = 1;
+          for (let by = wy; by <= wy + wh; by += 12) {
+            ctx.beginPath();
+            ctx.moveTo(wx, by);
+            ctx.lineTo(wx + ww, by);
+            ctx.stroke();
+          }
+
+          // Arched Loading Portals Pattern
+          for (let ax = wx + 30; ax < wx + ww - 30; ax += 80) {
+            ctx.fillStyle = '#020617';
+            ctx.beginPath();
+            ctx.arc(ax + 25, wy + 130, 25, Math.PI, 0);
+            ctx.lineTo(ax + 50, wy + 240);
+            ctx.lineTo(ax, wy + 240);
+            ctx.closePath();
+            ctx.fill();
+            ctx.strokeStyle = '#b91c1c';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+          }
+
+          // Painted Stencil Signage
+          const signX = wx + 25, signY = wy + 25, signW = ww - 50, signH = 34;
+          ctx.fillStyle = '#172554';
+          ctx.fillRect(signX, signY, signW, signH);
+          ctx.strokeStyle = '#ef4444';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(signX, signY, signW, signH);
+
+          ctx.fillStyle = '#fef08a';
+          ctx.font = 'bold 10px "Fira Code", monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText('YOKOHAMA BAY RED BRICK COMMERCE', signX + signW / 2, signY + 15);
+          ctx.font = '8px "Fira Code", monospace';
+          ctx.fillStyle = '#e2e8f0';
+          ctx.fillText('DOCK 4 WAREHOUSE · EST. 1911', signX + signW / 2, signY + 27);
+
+          // LLM OCR Bounding Box
+          ctx.strokeStyle = '#22c55e';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([4, 2]);
+          ctx.strokeRect(signX - 4, signY - 4, signW + 8, signH + 8);
+          ctx.setLineDash([]);
+
+          ctx.fillStyle = '#22c55e';
+          ctx.fillRect(signX - 4, signY - 18, 140, 14);
+          ctx.fillStyle = '#020617';
+          ctx.font = 'bold 8px "Fira Code", monospace';
+          ctx.textAlign = 'left';
+          ctx.fillText('LLM OCR: STENCIL SIGN', signX, signY - 8);
+
+          // Pattern Marker
+          ctx.strokeStyle = '#f59e0b';
+          ctx.strokeRect(wx + 115, wy + 105, 50, 45);
+          ctx.fillStyle = '#f59e0b';
+          ctx.fillRect(wx + 115, wy + 90, 110, 14);
+          ctx.fillStyle = '#020617';
+          ctx.fillText('PATTERN: ARCHED BAYS', wx + 118, wy + 100);
+        },
+        results: [
+          {
+            rank: 1,
+            title: 'Yokohama Red Brick Warehouse (Aka-Renga Soko)',
+            sim: '0.976',
+            matchJustification: 'Strong vector match on Terracotta Red (#b91c1c), rough porous clay brick, and repetitive arched portals.',
+            colorMatch: ['#b91c1c', '#7f1d1d'],
+            textureMatch: 'Porous Clay Masonry',
+            patternMatch: 'Flemish Bond Brickwork',
+            icon: '⚓'
+          },
+          {
+            rank: 2,
+            title: 'Hakodate Bay Historic Red-Brick Storehouse',
+            sim: '0.884',
+            matchJustification: '92% color overlap on weathered terracotta red with interlocking brick course textures.',
+            colorMatch: ['#b91c1c', '#fef08a'],
+            textureMatch: 'Aged Lime Mortar & Brick',
+            patternMatch: 'Horizontal Mortar Courses',
+            icon: '🏭'
+          },
+          {
+            rank: 3,
+            title: 'Tokyo Station Marunouchi Brick Facade',
+            sim: '0.812',
+            matchJustification: 'Matched on red-brick masonry bond patterns and white granite mortar accents.',
+            colorMatch: ['#7f1d1d', '#fef08a'],
+            textureMatch: 'Kiln-Fired Structural Brick',
+            patternMatch: 'Romanesque Relief Arches',
+            icon: '🏛️'
+          }
+        ]
+      },
+
+      cedarTimber: {
+        badge: 'Target: Cedar Timber Pavilion (Horizontal Louvers)',
+        signage: '“KYOTO ROKUSHO-AN HERITAGE PAVILION · EST. 1892 · HIGASHIYAMA”',
+        colors: [
+          { name: 'Honey Cedar Ochre', hex: '#d97706' },
+          { name: 'Burnt Umber Cypress', hex: '#78350f' },
+          { name: 'Matte Cedar Charcoal', hex: '#1c1917' }
+        ],
+        textures: ['Tactile Wood Grain', 'Unfinished Japanese Hinoki Cedar', 'Sanded Joinery Slats'],
+        patterns: ['Horizontal Louver Slats', 'Interlocking Koshi Wood Lattice', 'Curved Cantilevered Eaves'],
+        vectorSnippet: '[0.2415, -0.0892, 0.4120, -0.1147, 0.3012, 0.0543, -0.1982, 0.0811, 0.3341, -0.0452, ...]',
+        clusterKey: 'timberLouver',
+        latency: '25 ms',
+        drawBuilding: (ctx, W, H) => {
+          ctx.fillStyle = '#0f172a';
+          ctx.fillRect(0, 0, W, H);
+
+          const rx = 100, ry = 70, rw = 280;
+
+          // Upper Eaves
+          ctx.fillStyle = '#292524';
+          ctx.beginPath();
+          ctx.moveTo(rx - 20, ry + 40);
+          ctx.quadraticCurveTo(rx + rw / 2, ry, rx + rw + 20, ry + 40);
+          ctx.lineTo(rx + rw - 30, ry + 55);
+          ctx.quadraticCurveTo(rx + rw / 2, ry + 25, rx + 30, ry + 55);
+          ctx.closePath();
+          ctx.fill();
+          ctx.strokeStyle = '#78350f';
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+
+          // Wooden Pillars
+          ctx.fillStyle = '#451a03';
+          ctx.fillRect(rx + 40, ry + 55, 18, 190);
+          ctx.fillRect(rx + rw - 58, ry + 55, 18, 190);
+          ctx.fillRect(rx + rw / 2 - 9, ry + 55, 18, 190);
+
+          // Horizontal Louver Slats & Koshi Lattice Pattern
+          ctx.strokeStyle = 'rgba(217, 119, 6, 0.4)';
+          ctx.lineWidth = 1.5;
+          for (let ly = ry + 130; ly <= ry + 240; ly += 9) {
+            ctx.beginPath();
+            ctx.moveTo(rx + 60, ly);
+            ctx.lineTo(rx + rw - 60, ly);
+            ctx.stroke();
+          }
+
+          // Engraved Wooden Plaque
+          const signX = rx + 65, signY = ry + 75, signW = rw - 130, signH = 40;
+          ctx.fillStyle = '#1c1917';
+          ctx.fillRect(signX, signY, signW, signH);
+          ctx.strokeStyle = '#d97706';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(signX, signY, signW, signH);
+
+          ctx.fillStyle = '#fbbf24';
+          ctx.font = 'bold 9.5px "Fira Code", monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText('ROKUSHO-AN PAVILION', signX + signW / 2, signY + 16);
+          ctx.font = '8px "Fira Code", monospace';
+          ctx.fillStyle = '#fde68a';
+          ctx.fillText('HIGASHIYAMA KYOTO · 1892', signX + signW / 2, signY + 30);
+
+          // LLM Bounding Box
+          ctx.strokeStyle = '#22c55e';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([4, 2]);
+          ctx.strokeRect(signX - 4, signY - 4, signW + 8, signH + 8);
+          ctx.setLineDash([]);
+
+          ctx.fillStyle = '#22c55e';
+          ctx.fillRect(signX - 4, signY - 18, 140, 14);
+          ctx.fillStyle = '#020617';
+          ctx.font = 'bold 8px "Fira Code", monospace';
+          ctx.textAlign = 'left';
+          ctx.fillText('LLM OCR: CARVED WOOD', signX, signY - 8);
+
+          // Pattern Marker
+          ctx.strokeStyle = '#d97706';
+          ctx.strokeRect(rx + 60, ry + 130, 75, 45);
+          ctx.fillStyle = '#d97706';
+          ctx.fillRect(rx + 60, ry + 115, 120, 14);
+          ctx.fillStyle = '#020617';
+          ctx.fillText('PATTERN: TIMBER LOUVER', rx + 64, ry + 125);
+        },
+        results: [
+          {
+            rank: 1,
+            title: 'Kyoto Rokusho-an Tea Pavilion (Archive Photo)',
+            sim: '0.985',
+            matchJustification: 'Top match on Honey Cedar (#d97706), tactile Hinoki grain texture, and horizontal timber louver lattice.',
+            colorMatch: ['#d97706', '#78350f'],
+            textureMatch: 'Hinoki Cedar Wood Grain',
+            patternMatch: 'Horizontal Louver Slats',
+            icon: '⛩️'
+          },
+          {
+            rank: 2,
+            title: 'Kengo Kuma Wooden Slat Cultural Center',
+            sim: '0.912',
+            matchJustification: 'High cross-modal affinity on interlocking wooden koshi slats and natural amber timber palette.',
+            colorMatch: ['#d97706', '#1c1917'],
+            textureMatch: 'Sanded Japanese Cypress',
+            patternMatch: 'Interlocking Koshi Lattice',
+            icon: '🏯'
+          },
+          {
+            rank: 3,
+            title: 'Nanzen-ji Historic Shoin Garden Pavilion',
+            sim: '0.824',
+            matchJustification: 'Shared timber cantilever eaves and dark weathered cypress pillar textures.',
+            colorMatch: ['#78350f', '#1c1917'],
+            textureMatch: 'Aged Cedar Joinery',
+            patternMatch: 'Curved Eaves Rhythm',
+            icon: '🏡'
+          }
+        ]
+      },
+
+      flutedConcrete: {
+        badge: 'Target: Fluted Brutalist Concrete (Vertical Ribs)',
+        signage: '“GINZA METROPOLITAN ATRIUM & GALLERIA · CHUO-KU TOKYO”',
+        colors: [
+          { name: 'Neutral Ash Grey', hex: '#64748b' },
+          { name: 'Porous Slate Charcoal', hex: '#334155' },
+          { name: 'Titanium Sheen White', hex: '#e2e8f0' }
+        ],
+        textures: ['Rough Board-Formed Concrete', 'Honed Matte Stone', 'Porous Cement Pits'],
+        patterns: ['Fluted Vertical Concrete Ribs', 'Monolithic Cantilevered Curves', 'Asymmetric Glazed Punctures'],
+        vectorSnippet: '[0.3124, 0.2215, -0.0418, 0.1984, -0.2141, 0.3541, 0.0891, -0.1142, -0.0428, 0.2841, ...]',
+        clusterKey: 'flutedConcrete',
+        latency: '23 ms',
+        drawBuilding: (ctx, W, H) => {
+          ctx.fillStyle = '#060a12';
+          ctx.fillRect(0, 0, W, H);
+
+          const mx = 90, my = 50, mw = 300, mh = 290;
+
+          // Sculptural Curved Concrete Facade
+          ctx.fillStyle = '#334155';
+          ctx.beginPath();
+          ctx.moveTo(mx, my + mh);
+          ctx.lineTo(mx, my + 60);
+          ctx.bezierCurveTo(mx + 80, my, mx + 160, my + 100, mx + mw, my + 30);
+          ctx.lineTo(mx + mw, my + mh);
+          ctx.closePath();
+          ctx.fill();
+
+          // Fluted Vertical Rib Texture Pattern
+          ctx.strokeStyle = 'rgba(226, 232, 240, 0.15)';
+          ctx.lineWidth = 1.8;
+          for (let rx = mx + 15; rx < mx + mw - 15; rx += 14) {
+            ctx.beginPath();
+            ctx.moveTo(rx, my + 80);
+            ctx.lineTo(rx, my + mh);
+            ctx.stroke();
+          }
+
+          // Glass Entrance
+          ctx.fillStyle = 'rgba(56, 189, 248, 0.35)';
+          ctx.fillRect(mx + 60, my + mh - 90, mw - 120, 90);
+          ctx.strokeStyle = '#38bdf8';
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(mx + 60, my + mh - 90, mw - 120, 90);
+
+          // Illuminated Marquee
+          const signX = mx + 40, signY = my + mh - 135, signW = mw - 80, signH = 34;
+          ctx.fillStyle = '#020617';
+          ctx.fillRect(signX, signY, signW, signH);
+          ctx.strokeStyle = '#a855f7';
+          ctx.lineWidth = 2;
+          ctx.strokeRect(signX, signY, signW, signH);
+
+          ctx.fillStyle = '#e879f9';
+          ctx.font = 'bold 9.5px "Fira Code", monospace';
+          ctx.textAlign = 'center';
+          ctx.fillText('GINZA METROPOLITAN ATRIUM', signX + signW / 2, signY + 15);
+          ctx.font = '8px "Fira Code", monospace';
+          ctx.fillStyle = '#c084fc';
+          ctx.fillText('CHUO-KU TOKYO · GALLERIA', signX + signW / 2, signY + 27);
+
+          // LLM Bounding Box
+          ctx.strokeStyle = '#22c55e';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([4, 2]);
+          ctx.strokeRect(signX - 4, signY - 4, signW + 8, signH + 8);
+          ctx.setLineDash([]);
+
+          ctx.fillStyle = '#22c55e';
+          ctx.fillRect(signX - 4, signY - 18, 140, 14);
+          ctx.fillStyle = '#020617';
+          ctx.font = 'bold 8px "Fira Code", monospace';
+          ctx.textAlign = 'left';
+          ctx.fillText('LLM OCR: MARQUEE SIGN', signX, signY - 8);
+
+          // Pattern Marker
+          ctx.strokeStyle = '#a855f7';
+          ctx.strokeRect(mx + 15, my + 130, 60, 50);
+          ctx.fillStyle = '#a855f7';
+          ctx.fillRect(mx + 15, my + 115, 110, 14);
+          ctx.fillStyle = '#020617';
+          ctx.fillText('PATTERN: FLUTED RIBS', mx + 18, my + 125);
+        },
+        results: [
+          {
+            rank: 1,
+            title: 'Ginza Metropolitan Atrium & Galleria (Curved Ribs)',
+            sim: '0.980',
+            matchJustification: 'Top match on Ash Grey (#64748b) board-formed cement and fluted vertical concrete rib relief patterns.',
+            colorMatch: ['#64748b', '#334155'],
+            textureMatch: 'Board-Formed Cement',
+            patternMatch: 'Fluted Vertical Concrete Ribs',
+            icon: '🏛️'
+          },
+          {
+            rank: 2,
+            title: 'National Art Center Tokyo (Curved Wave Louvers)',
+            sim: '0.902',
+            matchJustification: 'High affinity on organic undulating facade curves and honed stone texture vectors.',
+            colorMatch: ['#64748b', '#e2e8f0'],
+            textureMatch: 'Honed Matte Stone',
+            patternMatch: 'Cantilevered Wave Ribs',
+            icon: '🎨'
+          },
+          {
+            rank: 3,
+            title: 'Tokyo 21_21 Design Sight Brutalist Pavilion',
+            sim: '0.829',
+            matchJustification: 'Matched on monochrome raw concrete cast textures and asymmetric geometric punctures.',
+            colorMatch: ['#334155', '#e2e8f0'],
+            textureMatch: 'Raw Cast Concrete',
+            patternMatch: 'Asymmetric Facet Punctures',
+            icon: '📐'
+          }
+        ]
+      }
+    };
+
+    // Vector Clusters Categorized by COLOR, TEXTURE & PATTERN Archetypes
+    const VECTOR_CLUSTERS = {
+      cyanGrid: [
+        { x: 380, y: 110, label: 'IMG_102: Cyan Glazed Grid' },
+        { x: 410, y: 130, label: 'IMG_108: Blue Mullion Matrix' },
+        { x: 360, y: 140, label: 'IMG_115: Reflective Glass Facet' },
+        { x: 420, y: 90,  label: 'IMG_122: Azure Curtain Cell' }
       ],
-      industrial: [
-        { x: 450, y: 260, label: 'IMG_801: Brick Wall Loft' },
-        { x: 480, y: 280, label: 'IMG_812: Exposed Steel Pipes' },
-        { x: 430, y: 300, label: 'IMG_825: Concrete Warehouse' },
-        { x: 490, y: 240, label: 'IMG_839: Rustic Factory Conversion' }
+      redBrick: [
+        { x: 140, y: 280, label: 'IMG_701: Terracotta Flemish Bond' },
+        { x: 170, y: 300, label: 'IMG_715: Red-Brick Arched Bay' },
+        { x: 120, y: 310, label: 'IMG_728: Rust Clay Masonry' },
+        { x: 160, y: 260, label: 'IMG_742: Porous Lime Mortar Wall' }
       ],
-      kitchen: [
-        { x: 440, y: 90, label: 'IMG_202: Black Granite Counter' },
-        { x: 470, y: 110, label: 'IMG_215: Modern Island Cooktop' },
-        { x: 420, y: 130, label: 'IMG_230: Minimalist Kitchen Cabinets' }
+      timberLouver: [
+        { x: 130, y: 120, label: 'IMG_402: Honey Cedar Louver' },
+        { x: 110, y: 150, label: 'IMG_411: Hinoki Koshi Lattice' },
+        { x: 150, y: 140, label: 'IMG_425: Sanded Timber Slat' },
+        { x: 90,  y: 110, label: 'IMG_438: Ochre Eaves Joinery' }
+      ],
+      flutedConcrete: [
+        { x: 370, y: 270, label: 'IMG_901: Fluted Grey Rib Relief' },
+        { x: 390, y: 290, label: 'IMG_914: Board-Formed Cement Wave' },
+        { x: 340, y: 280, label: 'IMG_929: Honed Ash Stone Facade' },
+        { x: 410, y: 260, label: 'IMG_943: Monolithic Titanium Curve' }
       ]
     };
 
-    const queryTargetMap = {
-      scandi: { x: 130, y: 125, targetCluster: 'nordic', sim: '0.948' },
-      industrial: { x: 460, y: 270, targetCluster: 'industrial', sim: '0.935' },
-      kitchen: { x: 450, y: 105, targetCluster: 'kitchen', sim: '0.942' }
+    const CLUSTER_METADATA = {
+      cyanGrid: {
+        center: { x: 390, y: 115 },
+        title: '[CLUSTER: CYAN-BLUE GLAZED GRIDS]',
+        subtitle: 'Reflective Glass · Ortho Window Grid'
+      },
+      redBrick: {
+        center: { x: 145, y: 285 },
+        title: '[CLUSTER: TERRACOTTA BRICK BONDS]',
+        subtitle: 'Porous Masonry · Arched Portals'
+      },
+      timberLouver: {
+        center: { x: 125, y: 130 },
+        title: '[CLUSTER: HONEY CEDAR LOUVERS]',
+        subtitle: 'Wood Grain · Koshi Timber Lattice'
+      },
+      flutedConcrete: {
+        center: { x: 375, y: 275 },
+        title: '[CLUSTER: FLUTED CONCRETE RELIEFS]',
+        subtitle: 'Ash Grey Cement · Vertical Ribs'
+      }
     };
 
-    function renderVectorSpace() {
-      const qKey = querySelect.value;
-      const target = queryTargetMap[qKey];
-      topSimVal.textContent = target.sim;
+    function updateSimulation(key) {
+      const data = BUILDING_DATA[key];
 
-      const W = canvas.width;
-      const H = canvas.height;
-      ctx.clearRect(0, 0, W, H);
+      // Update Text Badges & Prompts
+      activeBuildingBadge.textContent = data.badge;
+      extractedSignageDisplay.textContent = data.signage;
+      vectorSnippetDisplay.textContent = data.vectorSnippet;
+      metricTopSim.textContent = data.results[0].sim;
+      topMatchBadge.textContent = `✓ Top-1 Match Found: Cosine ${data.results[0].sim}`;
+      searchLatencyText.textContent = `FAISS Retrieval: ${data.latency}`;
 
-      // Grid
-      ctx.strokeStyle = 'rgba(51, 65, 85, 0.25)';
-      ctx.lineWidth = 1;
-      for (let x = 40; x < W; x += 40) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, H);
-        ctx.stroke();
+      // Populate Color Swatches
+      colorChipsContainer.innerHTML = data.colors.map(c => `
+        <div class="flex items-center gap-1.5 px-2 py-1 rounded bg-slate-950 border border-slate-800">
+          <span class="w-3.5 h-3.5 rounded-full border border-white/20 inline-block shadow-sm" style="background-color: ${c.hex}"></span>
+          <span class="text-[11px] text-slate-300 font-bold">${c.hex}</span>
+          <span class="text-[10px] text-slate-500">(${c.name})</span>
+        </div>
+      `).join('');
+
+      // Populate Extracted Textures & Patterns
+      const texturePills = data.textures.map(t => 
+        `<span class="px-2 py-0.5 rounded bg-blue-950/80 border border-blue-800 text-blue-300">Texture: ${t}</span>`
+      ).join('');
+      const patternPills = data.patterns.map(p => 
+        `<span class="px-2 py-0.5 rounded bg-purple-950/80 border border-purple-800 text-purple-300">Pattern: ${p}</span>`
+      ).join('');
+      extractedAttributesDisplay.innerHTML = texturePills + patternPills;
+
+      // Populate Result Cards
+      resultsCardsGrid.innerHTML = data.results.map((res, i) => `
+        <div class="glass-panel p-4 rounded-xl border ${i === 0 ? 'border-emerald-500/60 bg-emerald-950/20 shadow-lg shadow-emerald-950/30' : 'border-slate-800 bg-slate-900/60'} space-y-3 flex flex-col justify-between">
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs font-mono">
+              <span class="px-2 py-0.5 rounded font-bold ${i === 0 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : 'bg-slate-800 text-slate-400'}">
+                Rank #${res.rank} Match
+              </span>
+              <span class="text-xs font-bold font-mono ${i === 0 ? 'text-emerald-400' : 'text-cyan-400'}">
+                Cosine: ${res.sim}
+              </span>
+            </div>
+
+            <div class="flex items-start gap-2.5 pt-1">
+              <span class="text-2xl">${res.icon}</span>
+              <div>
+                <h4 class="text-sm font-bold text-white leading-snug">${res.title}</h4>
+                <div class="flex items-center gap-1.5 mt-1">
+                  ${res.colorMatch.map(col => `<span class="w-3 h-3 rounded-full border border-white/20 inline-block" style="background-color: ${col}"></span>`).join('')}
+                  <span class="text-[10px] text-cyan-400 font-mono">Matched Palette</span>
+                </div>
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-300 leading-relaxed pt-1">
+              ${res.matchJustification}
+            </p>
+          </div>
+
+          <div class="pt-2 border-t border-slate-800/80 space-y-1 text-[10px] font-mono">
+            <div class="flex justify-between text-slate-400">
+              <span>Texture Match:</span>
+              <span class="text-cyan-300 font-bold">${res.textureMatch}</span>
+            </div>
+            <div class="flex justify-between text-slate-400">
+              <span>Pattern Match:</span>
+              <span class="text-purple-300 font-bold">${res.patternMatch}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Draw Stage 1 Building Canvas
+      data.drawBuilding(bCtx, buildingCanvas.width, buildingCanvas.height);
+
+      // Draw Stage 2 Vector Space Canvas
+      renderVectorCanvas(key);
+    }
+
+    function renderVectorCanvas(key) {
+      const W = vectorCanvas.width;
+      const H = vectorCanvas.height;
+      vCtx.clearRect(0, 0, W, H);
+
+      // Background Grid
+      vCtx.fillStyle = '#060a12';
+      vCtx.fillRect(0, 0, W, H);
+
+      vCtx.strokeStyle = 'rgba(51, 65, 85, 0.25)';
+      vCtx.lineWidth = 1;
+      for (let x = 30; x < W; x += 30) {
+        vCtx.beginPath();
+        vCtx.moveTo(x, 0);
+        vCtx.lineTo(x, H);
+        vCtx.stroke();
       }
-      for (let y = 40; y < H; y += 40) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(W, y);
-        ctx.stroke();
+      for (let y = 30; y < H; y += 30) {
+        vCtx.beginPath();
+        vCtx.moveTo(0, y);
+        vCtx.lineTo(W, y);
+        vCtx.stroke();
       }
 
-      // Draw Clusters
-      Object.keys(clusters).forEach(cKey => {
-        const pts = clusters[cKey];
-        const isTarget = cKey === target.targetCluster;
+      const activeClusterKey = BUILDING_DATA[key].clusterKey;
+      const activeMeta = CLUSTER_METADATA[activeClusterKey];
+      const queryPos = activeMeta.center;
 
-        pts.forEach(p => {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, isTarget ? 6 : 4, 0, Math.PI * 2);
-          ctx.fillStyle = isTarget ? '#38bdf8' : '#475569';
-          ctx.fill();
-          ctx.strokeStyle = isTarget ? '#0284c7' : '#334155';
-          ctx.lineWidth = 1.5;
-          ctx.stroke();
+      // Draw Color, Texture & Pattern Clusters
+      Object.keys(VECTOR_CLUSTERS).forEach(cKey => {
+        const pts = VECTOR_CLUSTERS[cKey];
+        const meta = CLUSTER_METADATA[cKey];
+        const isTarget = cKey === activeClusterKey;
 
-          // Text label
-          ctx.fillStyle = isTarget ? '#94a3b8' : '#64748b';
-          ctx.font = '9px "Fira Code", monospace';
-          ctx.fillText(p.label.split(':')[0], p.x + 8, p.y + 3);
+        // Cluster Hull Radial Glow
+        const radGrad = vCtx.createRadialGradient(meta.center.x, meta.center.y, 5, meta.center.x, meta.center.y, 80);
+        radGrad.addColorStop(0, isTarget ? 'rgba(6, 182, 212, 0.25)' : 'rgba(71, 85, 105, 0.08)');
+        radGrad.addColorStop(1, 'transparent');
+        vCtx.fillStyle = radGrad;
+        vCtx.beginPath();
+        vCtx.arc(meta.center.x, meta.center.y, 80, 0, Math.PI * 2);
+        vCtx.fill();
+
+        // Cluster Title & Subtitle (Color & Pattern Focus)
+        vCtx.fillStyle = isTarget ? '#38bdf8' : '#64748b';
+        vCtx.font = 'bold 9px "Fira Code", monospace';
+        vCtx.textAlign = 'center';
+        vCtx.fillText(meta.title, meta.center.x, meta.center.y - 48);
+
+        vCtx.fillStyle = isTarget ? '#7dd3fc' : '#475569';
+        vCtx.font = '8px "Fira Code", monospace';
+        vCtx.fillText(meta.subtitle, meta.center.x, meta.center.y - 36);
+
+        // Member Vectors in Cluster
+        pts.forEach((p, idx) => {
+          vCtx.beginPath();
+          vCtx.arc(p.x, p.y, isTarget && idx === 0 ? 6.5 : 4.5, 0, Math.PI * 2);
+          vCtx.fillStyle = isTarget ? (idx === 0 ? '#10b981' : '#38bdf8') : '#475569';
+          vCtx.fill();
+          vCtx.strokeStyle = isTarget ? '#ffffff' : '#334155';
+          vCtx.lineWidth = 1.5;
+          vCtx.stroke();
+
+          // Label
+          vCtx.fillStyle = isTarget ? (idx === 0 ? '#34d399' : '#94a3b8') : '#64748b';
+          vCtx.font = '8px "Fira Code", monospace';
+          vCtx.textAlign = 'left';
+          vCtx.fillText(p.label.split(':')[0], p.x + 8, p.y + 3);
         });
       });
 
-      // Draw Query Vector Point (Star)
-      ctx.beginPath();
-      ctx.arc(target.x, target.y, 8, 0, Math.PI * 2);
-      ctx.fillStyle = '#f43f5e';
-      ctx.fill();
-      ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 2;
-      ctx.stroke();
+      // Draw Query Vector Point [Q_features]
+      const qx = queryPos.x - 18;
+      const qy = queryPos.y - 10;
 
-      ctx.fillStyle = '#fb7185';
-      ctx.font = 'bold 11px "Fira Code", monospace';
-      ctx.fillText('Query Vector [Q]', target.x + 12, target.y - 8);
+      vCtx.beginPath();
+      vCtx.arc(qx, qy, 8, 0, Math.PI * 2);
+      vCtx.fillStyle = '#f43f5e';
+      vCtx.fill();
+      vCtx.strokeStyle = '#ffffff';
+      vCtx.lineWidth = 2.5;
+      vCtx.stroke();
 
-      // Draw Cosine Similarity Vector Lines to Top-3 nearest neighbors
-      const neighbors = clusters[target.targetCluster];
-      neighbors.slice(0, 3).forEach((n, idx) => {
-        ctx.beginPath();
-        ctx.moveTo(target.x, target.y);
-        ctx.lineTo(n.x, n.y);
-        ctx.strokeStyle = idx === 0 ? '#10b981' : 'rgba(56, 189, 248, 0.6)';
-        ctx.lineWidth = idx === 0 ? 2.5 : 1.5;
-        ctx.setLineDash([3, 3]);
-        ctx.stroke();
-        ctx.setLineDash([]);
+      vCtx.fillStyle = '#fb7185';
+      vCtx.font = 'bold 10px "Fira Code", monospace';
+      vCtx.textAlign = 'left';
+      vCtx.fillText('Query Vector [Q_features]', qx + 12, qy - 6);
 
-        // Similarity tag
-        const midX = (target.x + n.x) / 2;
-        const midY = (target.y + n.y) / 2;
-        ctx.fillStyle = idx === 0 ? '#34d399' : '#38bdf8';
-        ctx.font = '10px "Fira Code", monospace';
-        ctx.fillText(idx === 0 ? `sim: ${target.sim}` : `sim: ${(parseFloat(target.sim) - idx * 0.02).toFixed(3)}`, midX, midY - 4);
+      // Draw Nearest Neighbor Distance Rays to Candidates
+      const targetPts = VECTOR_CLUSTERS[activeClusterKey];
+      targetPts.slice(0, 3).forEach((n, idx) => {
+        vCtx.beginPath();
+        vCtx.moveTo(qx, qy);
+        vCtx.lineTo(n.x, n.y);
+        vCtx.strokeStyle = idx === 0 ? '#10b981' : 'rgba(56, 189, 248, 0.45)';
+        vCtx.lineWidth = idx === 0 ? 2.5 : 1.5;
+        vCtx.setLineDash([3, 3]);
+        vCtx.stroke();
+        vCtx.setLineDash([]);
+
+        // Similarity Annotation
+        const midX = (qx + n.x) / 2;
+        const midY = (qy + n.y) / 2;
+        vCtx.fillStyle = idx === 0 ? '#34d399' : '#38bdf8';
+        vCtx.font = 'bold 9px "Fira Code", monospace';
+        const simVal = idx === 0 ? BUILDING_DATA[key].results[0].sim : (parseFloat(BUILDING_DATA[key].results[0].sim) - idx * 0.08).toFixed(3);
+        vCtx.fillText(`sim: ${simVal}`, midX - 10, midY - 4);
       });
     }
 
-    querySelect.addEventListener('change', renderVectorSpace);
-    renderVectorSpace();
+    // Button Click Handling
+    buildingButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        buildingButtons.forEach(b => {
+          b.className = 'building-btn p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-left transition space-y-1';
+        });
+        btn.className = 'building-btn active-btn p-3 rounded-xl bg-cyan-950/70 border-2 border-cyan-400 text-left transition space-y-1';
+
+        const bKey = btn.getAttribute('data-key');
+        updateSimulation(bKey);
+      });
+    });
+
+    // Initial render
+    updateSimulation('cyanGlass');
   </script>
 </body>
 </html>
