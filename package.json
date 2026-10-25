@@ -1,0 +1,17 @@
+{
+  "name": "darwin-portfolio",
+  "version": "1.0.0",
+  "description": "Portfolio of Darwin Harianto - Senior AI Engineer & Systems Architect",
+  "private": true,
+  "scripts": {
+    "test": "node scripts/test-ui.js"
+  },
+  "keywords": [
+    "portfolio",
+    "ai",
+    "computer-vision",
+    "robotics"
+  ],
+  "author": "Darwin Harianto",
+  "license": "MIT"
+}

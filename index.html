@@ -907,8 +907,198 @@
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') closeProjectModal();
+      if (e.key === 'Escape') {
+        closeProjectModal();
+        const chatWidget = document.getElementById('chatWidget');
+        if (chatWidget && !chatWidget.classList.contains('hidden')) {
+          toggleChatWidget();
+        }
+      }
     });
+
+    // --- Darwin AI Agent Chat Controller ---
+    const chatHistory = [];
+
+    function toggleChatWidget() {
+      const widget = document.getElementById('chatWidget');
+      const isHidden = widget.classList.contains('hidden');
+      if (isHidden) {
+        widget.classList.remove('hidden');
+        document.getElementById('chatInput').focus();
+      } else {
+        widget.classList.add('hidden');
+      }
+    }
+
+    function sendQuickPrompt(promptText) {
+      document.getElementById('chatInput').value = promptText;
+      handleChatSubmit(new Event('submit'));
+    }
+
+    async function handleChatSubmit(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('chatInput');
+      const message = input.value.trim();
+      if (!message) return;
+
+      const messagesContainer = document.getElementById('chatMessages');
+      const quickPrompts = document.getElementById('quickPrompts');
+      if (quickPrompts) quickPrompts.remove();
+
+      // Append User Message
+      const userBubble = document.createElement('div');
+      userBubble.className = 'flex items-start justify-end gap-2';
+      userBubble.innerHTML = `
+        <div class="bg-cyan-600 text-white p-2.5 rounded-xl rounded-tr-none text-xs max-w-[85%] leading-relaxed shadow-sm">
+          ${escapeHtml(message)}
+        </div>
+      `;
+      messagesContainer.appendChild(userBubble);
+      input.value = '';
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+      // Append Typing Indicator
+      const typingId = 'typing-' + Date.now();
+      const typingIndicator = document.createElement('div');
+      typingIndicator.id = typingId;
+      typingIndicator.className = 'flex items-start gap-2';
+      typingIndicator.innerHTML = `
+        <div class="w-5 h-5 rounded-md bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">AI</div>
+        <div class="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl rounded-tl-none text-slate-400 text-xs flex items-center gap-1.5">
+          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span>Thinking with Gemini...</span>
+        </div>
+      `;
+      messagesContainer.appendChild(typingIndicator);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+      chatHistory.push({ role: 'user', text: message });
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, history: chatHistory })
+        });
+
+        const typingElem = document.getElementById(typingId);
+        if (typingElem) typingElem.remove();
+
+        let replyText = '';
+        if (res.ok) {
+          const data = await res.json();
+          replyText = data.reply;
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          if (res.status === 404 || res.status === 500) {
+            replyText = (errData.error || 'Serverless endpoint /api/chat not yet active. Once deployed to Vercel with your GEMINI_API_KEY environment variable, Gemini will answer live!') + '\\n\\nFeel free to connect directly with Darwin at darwinharianto@gmail.com.';
+          } else {
+            replyText = 'Error connecting to AI service. Please try again or email darwinharianto@gmail.com.';
+          }
+        }
+
+        chatHistory.push({ role: 'model', text: replyText });
+
+        // Append Assistant Bubble
+        const assistantBubble = document.createElement('div');
+        assistantBubble.className = 'flex items-start gap-2';
+        assistantBubble.innerHTML = `
+          <div class="w-5 h-5 rounded-md bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">AI</div>
+          <div class="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl rounded-tl-none text-slate-200 text-xs leading-relaxed max-w-[85%] whitespace-pre-line">
+            ${escapeHtml(replyText)}
+          </div>
+        `;
+        messagesContainer.appendChild(assistantBubble);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      } catch (err) {
+        const typingElem = document.getElementById(typingId);
+        if (typingElem) typingElem.remove();
+
+        const errorBubble = document.createElement('div');
+        errorBubble.className = 'flex items-start gap-2';
+        errorBubble.innerHTML = `
+          <div class="w-5 h-5 rounded-md bg-rose-600/30 text-rose-400 border border-rose-500/30 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">!</div>
+          <div class="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl rounded-tl-none text-slate-300 text-xs">
+            Connect your repository to Vercel and add <code class="text-cyan-400 font-mono">GEMINI_API_KEY</code> in Vercel Project Settings to activate live Gemini responses!
+          </div>
+        `;
+        messagesContainer.appendChild(errorBubble);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
   </script>
+
+  <!-- Floating AI Assistant Chat Widget -->
+  <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <!-- Chat Window (initially hidden) -->
+    <div id="chatWidget" class="hidden w-[92vw] sm:w-96 h-[500px] glass-panel rounded-2xl flex flex-col overflow-hidden shadow-2xl border border-slate-700/80 mb-3 transition-all duration-300">
+      <!-- Chat Header -->
+      <div class="p-3.5 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-cyan-500/20">
+            ✦
+          </div>
+          <div>
+            <div class="text-xs font-bold text-white flex items-center gap-1.5">
+              Darwin AI Assistant
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            </div>
+            <div class="text-[10px] font-mono text-cyan-400">Powered by Google Gemini</div>
+          </div>
+        </div>
+        <button onclick="toggleChatWidget()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition text-sm">
+          ✕
+        </button>
+      </div>
+
+      <!-- Messages Thread -->
+      <div id="chatMessages" class="flex-1 p-3.5 overflow-y-auto space-y-3 text-xs leading-relaxed">
+        <!-- Assistant Welcome Message -->
+        <div class="flex items-start gap-2">
+          <div class="w-5 h-5 rounded-md bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">AI</div>
+          <div class="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl rounded-tl-none text-slate-300">
+            Hello! I am Darwin's AI agent. Ask me anything about Darwin's 8+ years of engineering experience, projects (6D Pose, Excavators, LoRA, CoreML), or technical stack.
+          </div>
+        </div>
+
+        <!-- Quick Prompts -->
+        <div id="quickPrompts" class="space-y-1.5 pt-1">
+          <div class="text-[10px] font-mono text-slate-500 uppercase tracking-wider">Suggested Questions:</div>
+          <div class="flex flex-col gap-1">
+            <button onclick="sendQuickPrompt('Tell me about your 6D robot pose estimation project in hospital corridors.')" class="text-left p-2 rounded-lg bg-slate-900/70 hover:bg-slate-800 text-slate-300 border border-slate-800/80 hover:border-cyan-500/40 text-[11px] transition">
+              🤖 Hospital AMR 6D Pose Estimation
+            </button>
+            <button onclick="sendQuickPrompt('How did you achieve 99% accuracy on Japanese signed document detection?')" class="text-left p-2 rounded-lg bg-slate-900/70 hover:bg-slate-800 text-slate-300 border border-slate-800/80 hover:border-cyan-500/40 text-[11px] transition">
+              📄 Japanese Signed Document OCR
+            </button>
+            <button onclick="sendQuickPrompt('What models have you trained with SDXL and LoRA?')" class="text-left p-2 rounded-lg bg-slate-900/70 hover:bg-slate-800 text-slate-300 border border-slate-800/80 hover:border-cyan-500/40 text-[11px] transition">
+              🎨 SDXL & LoRA Floor Plan Synthesis
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat Input Bar -->
+      <form id="chatForm" onsubmit="handleChatSubmit(event)" class="p-2.5 bg-slate-900/95 border-t border-slate-800 flex items-center gap-1.5">
+        <input type="text" id="chatInput" placeholder="Ask about Darwin's projects, tech..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-sans" autocomplete="off" />
+        <button type="submit" id="chatSendBtn" class="px-3 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs transition flex items-center justify-center shrink-0 shadow-md shadow-cyan-600/20">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- Floating Chat Trigger Button -->
+    <button id="chatToggleBtn" onclick="toggleChatWidget()" class="px-4 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-medium text-xs shadow-xl shadow-cyan-500/20 flex items-center gap-2 transition hover:scale-105 group border border-cyan-400/30">
+      <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <span class="font-bold">Ask Darwin AI</span>
+      <svg class="w-4 h-4 transform group-hover:rotate-12 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
+    </button>
+  </div>
 </body>
 </html>
