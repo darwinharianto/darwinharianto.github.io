@@ -84,6 +84,10 @@
       </nav>
 
       <div class="flex items-center gap-3">
+        <a href="mailto:darwinharianto@gmail.com?subject=Resume%20Request%20-%20Darwin%20Harianto" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-700 hover:border-slate-500 text-xs font-semibold text-slate-300 hover:text-white transition">
+          <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          <span>CV / Resume</span>
+        </a>
         <a href="#contact" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white shadow-lg shadow-blue-500/20 transition">
           Contact
         </a>
@@ -117,6 +121,10 @@
         <a href="#learn-ml" class="px-6 py-3.5 rounded-xl border border-slate-700 bg-slate-900/80 hover:bg-slate-800 font-semibold text-slate-200 transition flex items-center gap-2 group">
           <span class="text-cyan-400 group-hover:scale-110 transition">⚡</span>
           <span>Explore Interactive ML Hub</span>
+        </a>
+        <a href="mailto:darwinharianto@gmail.com?subject=Resume%20Request%20-%20Darwin%20Harianto" class="px-5 py-3.5 rounded-xl border border-slate-700/80 hover:border-slate-500 bg-slate-900/50 hover:bg-slate-800 text-slate-300 hover:text-white font-semibold transition flex items-center gap-2">
+          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+          <span>Request CV (PDF)</span>
         </a>
       </div>
 
@@ -251,7 +259,7 @@
     </section>
 
     <!-- Featured Projects Grid -->
-    <section id="projects" class="space-y-8 scroll-mt-24">
+    <section id="projects" class="space-y-6 scroll-mt-24">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div class="flex items-center gap-3">
           <div class="h-6 w-1 bg-cyan-400 rounded-full"></div>
@@ -265,10 +273,29 @@
         </span>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Category Filter Pills -->
+      <div class="flex flex-wrap items-center gap-2 pt-1 pb-2 border-b border-slate-800/60" id="projectFilterBar">
+        <button onclick="filterProjects('all')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-cyan-500 text-slate-950 border border-cyan-400 shadow-md shadow-cyan-500/20" data-filter="all">
+          All Projects (8)
+        </button>
+        <button onclick="filterProjects('robotics')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800" data-filter="robotics">
+          Robotics & 3D (2)
+        </button>
+        <button onclick="filterProjects('vision')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800" data-filter="vision">
+          Computer Vision & Metrology (3)
+        </button>
+        <button onclick="filterProjects('genai')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800" data-filter="genai">
+          Generative AI & Multimodal (2)
+        </button>
+        <button onclick="filterProjects('optimization')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800" data-filter="optimization">
+          Mathematical Optimization (1)
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="projectsContainer">
 
         <!-- Project 1: CAD 2D Nesting -->
-        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="optimization">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <span class="text-xs font-mono px-2.5 py-1 rounded bg-blue-950/80 border border-blue-800 text-blue-300">Mathematical Optimization</span>
@@ -292,7 +319,10 @@
               <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">NFP Geometry</span>
             </div>
             <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
-              <span class="text-xs font-mono text-emerald-400">✓ Slashed sheet waste by 18-24%</span>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-emerald-400">✓ Slashed sheet waste by 18-24%</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="Proprietary IP — Algorithms & synthetic visualizer reproduced for public demonstration">· Proprietary IP</span>
+              </div>
               <button onclick="openProjectModal('nesting')" class="text-xs font-mono text-slate-400 hover:text-white transition">
                 Quick Spec
               </button>
@@ -301,7 +331,7 @@
         </div>
 
         <!-- Project 2: Floor Plan Synthesis -->
-        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="genai">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-950/80 border border-purple-800 text-purple-300">Generative AI & Architecture</span>
@@ -325,7 +355,10 @@
               <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Spatial Geometry</span>
             </div>
             <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
-              <span class="text-xs font-mono text-emerald-400">✓ 98%+ structural layout consistency</span>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-emerald-400">✓ 98%+ structural layout consistency</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="GenAI Architecture Blueprint Research">· GenAI Research</span>
+              </div>
               <button onclick="openProjectModal('floorplan')" class="text-xs font-mono text-slate-400 hover:text-white transition">
                 Quick Spec
               </button>
@@ -334,7 +367,7 @@
         </div>
 
         <!-- Project 3: TEM Semiconductor CV -->
-        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="vision">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-300">Industrial Computer Vision</span>
@@ -358,7 +391,10 @@
               <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Noise Filtering</span>
             </div>
             <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
-              <span class="text-xs font-mono text-emerald-400">✓ 99.4% Gauge R&R Repeatability</span>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-emerald-400">✓ 99.4% Gauge R&R Repeatability</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="Proprietary Fab IP — Algorithms & synthetic visualizer reproduced for public demonstration">· Proprietary Fab IP</span>
+              </div>
               <button onclick="openProjectModal('tem')" class="text-xs font-mono text-slate-400 hover:text-white transition">
                 Quick Spec
               </button>
@@ -367,7 +403,7 @@
         </div>
 
         <!-- Project 4: Robot 6D Pose Estimation -->
-        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="robotics">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <span class="text-xs font-mono px-2.5 py-1 rounded bg-blue-950/80 border border-blue-800 text-blue-300">Robotics 6D Vision</span>
@@ -391,7 +427,10 @@
               <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">3D CAD Synthetic</span>
             </div>
             <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
-              <span class="text-xs font-mono text-emerald-400">✓ Error &lt; 5.0 cm & 38 FPS Throughput</span>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-emerald-400">✓ Error &lt; 5.0 cm & 38 FPS</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="Healthcare Robotics IP — Synthetic corridor demo reproduced for public demonstration">· Robotics IP</span>
+              </div>
               <button onclick="openProjectModal('robotpose')" class="text-xs font-mono text-slate-400 hover:text-white transition">
                 Quick Spec
               </button>
@@ -400,7 +439,7 @@
         </div>
 
         <!-- Project 5: Autonomous Excavator & Digital Twin -->
-        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="robotics">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <span class="text-xs font-mono px-2.5 py-1 rounded bg-amber-950/80 border border-amber-800 text-amber-300">Robotics & Digital Twins</span>
@@ -424,7 +463,10 @@
               <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">ML Excavation</span>
             </div>
             <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
-              <span class="text-xs font-mono text-emerald-400">✓ Real-time closed-loop machine control</span>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-emerald-400">✓ Closed-loop machine control</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="Heavy Machinery Automation IP — Digital twin visualizer reproduced for public demonstration">· Automation IP</span>
+              </div>
               <button onclick="openProjectModal('excavator')" class="text-xs font-mono text-slate-400 hover:text-white transition">
                 Quick Spec
               </button>
@@ -433,7 +475,7 @@
         </div>
 
         <!-- Project 6: iOS On-Device Bolt Safety Inspection -->
-        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="vision">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-300">iOS On-Device Edge AI</span>
@@ -457,7 +499,10 @@
               <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Vector Angle</span>
             </div>
             <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
-              <span class="text-xs font-mono text-emerald-400">✓ On-device multi-model ensemble processing</span>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-emerald-400">✓ On-device ensemble processing</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="Infrastructure Safety IP — CoreML model pipeline reproduced for public demonstration">· Edge AI IP</span>
+              </div>
               <button onclick="openProjectModal('boltinspection')" class="text-xs font-mono text-slate-400 hover:text-white transition">
                 Quick Spec
               </button>
@@ -466,7 +511,7 @@
         </div>
 
         <!-- Project 7: Multimodal Search -->
-        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="genai">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-950/80 border border-cyan-800 text-cyan-300">Multimodal Foundation Models</span>
@@ -490,7 +535,10 @@
               <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Vector Embeddings</span>
             </div>
             <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
-              <span class="text-xs font-mono text-emerald-400">✓ Sub-100ms P99 Vector Retrieval</span>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-emerald-400">✓ Sub-100ms P99 Vector Retrieval</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="VLM Vector Search Architecture">· VLM Retrieval</span>
+              </div>
               <button onclick="openProjectModal('vlm')" class="text-xs font-mono text-slate-400 hover:text-white transition">
                 Quick Spec
               </button>
@@ -499,7 +547,7 @@
         </div>
 
         <!-- Project 8: Japanese Signed Document Detection -->
-        <div class="glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group">
+        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="vision">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
               <span class="text-xs font-mono px-2.5 py-1 rounded bg-sky-950/80 border border-sky-800 text-sky-300">Document AI & OCR</span>
@@ -523,7 +571,10 @@
               <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">ROI Localization</span>
             </div>
             <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
-              <span class="text-xs font-mono text-emerald-400">✓ 99% accuracy · Slashed manual labor by >90%</span>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-emerald-400">✓ 99% accuracy · Slashed labor by >90%</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="Legal & Survey Document Intake IP">· Production IP</span>
+              </div>
               <button onclick="openProjectModal('documentsignature')" class="text-xs font-mono text-slate-400 hover:text-white transition">
                 Quick Spec
               </button>
@@ -811,6 +862,27 @@
         impact: 'Achieved 99.0% verified accuracy in production, slashing manual document inspection labor by over 90% and accelerating application processing turnaround times from days to seconds.'
       }
     };
+
+    function filterProjects(category) {
+      const cards = document.querySelectorAll('.project-card');
+      const pills = document.querySelectorAll('.filter-pill');
+
+      pills.forEach(pill => {
+        if (pill.getAttribute('data-filter') === category) {
+          pill.className = 'filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-cyan-500 text-slate-950 border border-cyan-400 shadow-md shadow-cyan-500/20';
+        } else {
+          pill.className = 'filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800';
+        }
+      });
+
+      cards.forEach(card => {
+        if (category === 'all' || card.getAttribute('data-category') === category) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
 
     function openProjectModal(key) {
       const data = modalData[key];
