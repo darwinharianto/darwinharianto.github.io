@@ -32,7 +32,7 @@ Guidelines for your responses:
 - Keep responses concise (typically 2-4 sentences or a clean bullet list).
 `;
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   // CORS configuration to allow requests from GitHub Pages or localhost
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -91,30 +91,45 @@ export default async function handler(req, res) {
       parts: [{ text: message }]
     });
 
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+    const candidateModels = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-2.0-flash'];
+    let lastErrorText = '';
+    let replyText = null;
 
-    const geminiRes = await fetch(geminiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents,
-        generationConfig: {
-          temperature: 0.4,
-          maxOutputTokens: 600
-        }
-      })
-    });
-
-    if (!geminiRes.ok) {
-      const errData = await geminiRes.text();
-      console.error('Gemini API Error:', errData);
-      return res.status(geminiRes.status).json({
-        error: `Gemini API responded with status ${geminiRes.status}: ${errData}`
+    for (const model of candidateModels) {
+      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+      const geminiRes = await fetch(geminiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents,
+          generationConfig: {
+            temperature: 0.4,
+            maxOutputTokens: 600
+          }
+        })
       });
+
+      if (geminiRes.ok) {
+        const data = await geminiRes.json();
+        replyText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (replyText) break;
+      } else {
+        lastErrorText = await geminiRes.text();
+        console.warn(`Gemini model ${model} failed with status ${geminiRes.status}:`, lastErrorText);
+        // Continue to fallback if 404 (model not found)
+        if (geminiRes.status !== 404) {
+          return res.status(geminiRes.status).json({
+            error: `Gemini API responded with status ${geminiRes.status}: ${lastErrorText}`
+          });
+        }
+      }
     }
 
-    const data = await geminiRes.json();
-    const replyText = data?.candidates?.[0]?.content?.parts?.[0]?.text || 'I apologize, but I could not formulate a response at this moment. Please feel free to reach out to Darwin directly at darwinharianto@gmail.com.';
+    if (!replyText) {
+      return res.status(502).json({
+        error: `Could not reach active Gemini model. Last error: ${lastErrorText}`
+      });
+    }
 
     return res.status(200).json({ reply: replyText });
   } catch (error) {

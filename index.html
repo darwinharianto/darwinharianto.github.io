@@ -916,7 +916,38 @@
       }
     });
 
-    // --- Darwin AI Agent Chat Controller ---
+    // --- Darwin AI Agent Chat Controller (Dual-Mode: Vercel Serverless + Direct Browser API Key) ---
+    const DARWIN_SYSTEM_PROMPT = `You are the official AI Assistant representing Darwin Harianto, a Senior AI Engineer and Systems Architect with 8+ years of experience across Japan and international engineering teams.
+Your goal is to answer questions from recruiters, hiring managers, and clients about Darwin's professional background, skills, project implementations, and architectural decisions.
+
+Key Facts about Darwin:
+- Roles: Senior AI Engineer, Computer Vision Specialist, Robotics & Generative AI Systems Architect.
+- Experience: 8+ years in production machine learning, industrial computer vision, edge deployment, and robotics.
+- Languages: English (TOEIC 960, Fluent professional), Japanese (JLPT N2, Fluent in Japanese technical environments).
+- Key Strengths:
+  1. Bridging cutting-edge ML research into real-world physical and industrial production systems.
+  2. Full-stack 3D Spatial Intelligence & Computer Vision (6D Pose estimation, monocular depth projection, LiDAR terrain mapping, sub-pixel nanometrology).
+  3. High-performance Edge AI & Mobile Deployment (CoreML INT8 quantization, ONNX Runtime).
+  4. Generative AI Fine-Tuning (SDXL + LoRA architectural blueprint synthesis, prompt conditioning).
+  5. Mathematical Optimization (No-Fit Polygon 2D irregular CAD nesting with Google OR-Tools).
+  6. Document AI & OCR (Asymmetric PDF layout analysis, Japanese Name NER with 99% accuracy).
+
+Featured Projects:
+1. Hospital Corridor AMR 6D Pose Estimation: Detectron2 + custom PVNet pixel vector-field voting head, camera calibration (K, [R|t]), and SolvePnP (< 5 cm error, 38 FPS).
+2. Autonomous Excavator (バックホウ) Automation: 3D LiDAR point-cloud terrain mapping, Unity digital twin, Python gRPC machine controllers, and autonomous ML dirt excavation.
+3. iOS On-Device Bolt Safety Inspection: CoreML INT8 quantized ensemble performing bolt detection, torque seal color segmentation, monocular 3D depth projection, and vector angle calculation on captured single images.
+4. Architectural Floor Plan Synthesis (SDXL + LoRA): Fine-tuned custom LoRA adapters on vector floor plans to generate diverse color-coded residential layouts governed by deterministic seeds.
+5. Multimodal Building Image & Pattern Search: Gemini VLM feature extraction for dominant colors, surface textures, and facade patterns, embedded into 768D vectors and indexed in 2.4M image FAISS HNSW graph (< 30ms latency).
+6. Automated Japanese Signed Document Detection: PDF layout analysis separating cadastral maps from structured form boxes, localizing the signature box, and validating Japanese Kanji names (99% accuracy).
+7. TEM Semiconductor Metrology: Sub-nanometer boundary detection & thickness metrology on atomic micrographs with 99.4% Gauge R&R repeatability.
+8. CAD 2D Nesting Engine: Irregular polygon packing using No-Fit Polygons (NFP) and Google OR-Tools constraint programming, slashing material scrap by 18-24%.
+
+Guidelines:
+- Be polite, professional, articulate, and technically precise.
+- Answer in English or Japanese matching the user's language.
+- Keep responses concise (typically 2-4 sentences or a clean bullet list).
+- Invite direct contact: darwinharianto@gmail.com | GitHub: https://github.com/darwinharianto.`;
+
     const chatHistory = [];
 
     function toggleChatWidget() {
@@ -925,8 +956,68 @@
       if (isHidden) {
         widget.classList.remove('hidden');
         document.getElementById('chatInput').focus();
+        updateApiKeyStatusUI();
       } else {
         widget.classList.add('hidden');
+      }
+    }
+
+    function toggleSettingsModal() {
+      const modal = document.getElementById('chatSettingsModal');
+      modal.classList.toggle('hidden');
+      if (!modal.classList.contains('hidden')) {
+        document.getElementById('apiKeyInput').value = localStorage.getItem('gemini_api_key') || '';
+        document.getElementById('vercelUrlInput').value = localStorage.getItem('vercel_backend_url') || '';
+      }
+    }
+
+    function saveSettings() {
+      const key = document.getElementById('apiKeyInput').value.trim();
+      const vercelUrl = document.getElementById('vercelUrlInput').value.trim();
+      if (key) {
+        localStorage.setItem('gemini_api_key', key);
+      } else {
+        localStorage.removeItem('gemini_api_key');
+      }
+      if (vercelUrl) {
+        localStorage.setItem('vercel_backend_url', vercelUrl);
+      } else {
+        localStorage.removeItem('vercel_backend_url');
+      }
+      toggleSettingsModal();
+      updateApiKeyStatusUI();
+      appendBotMessage('Settings saved! I am ready to answer your questions.');
+    }
+
+    function saveInlineApiKey() {
+      const input = document.getElementById('inlineApiKeyInput');
+      const key = input ? input.value.trim() : '';
+      if (key) {
+        localStorage.setItem('gemini_api_key', key);
+        updateApiKeyStatusUI();
+        appendBotMessage('✓ Gemini API Key saved securely to your browser! Answering your question now...');
+        const lastUserMsg = chatHistory.filter(h => h.role === 'user').pop();
+        if (lastUserMsg) {
+          executeChatQuery(lastUserMsg.text);
+        }
+      }
+    }
+
+    function updateApiKeyStatusUI() {
+      const key = localStorage.getItem('gemini_api_key');
+      const vercel = localStorage.getItem('vercel_backend_url');
+      const indicator = document.getElementById('keyStatusIndicator');
+      if (indicator) {
+        if (key) {
+          indicator.textContent = '● Key Active (Browser)';
+          indicator.className = 'text-[9px] font-mono text-emerald-400';
+        } else if (vercel) {
+          indicator.textContent = '● Vercel URL Active';
+          indicator.className = 'text-[9px] font-mono text-cyan-400';
+        } else {
+          indicator.textContent = '○ Key Not Set';
+          indicator.className = 'text-[9px] font-mono text-slate-500';
+        }
       }
     }
 
@@ -941,11 +1032,19 @@
       const message = input.value.trim();
       if (!message) return;
 
-      const messagesContainer = document.getElementById('chatMessages');
       const quickPrompts = document.getElementById('quickPrompts');
       if (quickPrompts) quickPrompts.remove();
 
       // Append User Message
+      appendUserMessage(message);
+      input.value = '';
+      chatHistory.push({ role: 'user', text: message });
+
+      await executeChatQuery(message);
+    }
+
+    function appendUserMessage(message) {
+      const messagesContainer = document.getElementById('chatMessages');
       const userBubble = document.createElement('div');
       userBubble.className = 'flex items-start justify-end gap-2';
       userBubble.innerHTML = `
@@ -954,10 +1053,25 @@
         </div>
       `;
       messagesContainer.appendChild(userBubble);
-      input.value = '';
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
 
-      // Append Typing Indicator
+    function appendBotMessage(htmlContent) {
+      const messagesContainer = document.getElementById('chatMessages');
+      const assistantBubble = document.createElement('div');
+      assistantBubble.className = 'flex items-start gap-2';
+      assistantBubble.innerHTML = `
+        <div class="w-5 h-5 rounded-md bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">AI</div>
+        <div class="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl rounded-tl-none text-slate-200 text-xs leading-relaxed max-w-[88%] whitespace-pre-line">
+          ${htmlContent}
+        </div>
+      `;
+      messagesContainer.appendChild(assistantBubble);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    }
+
+    async function executeChatQuery(message) {
+      const messagesContainer = document.getElementById('chatMessages');
       const typingId = 'typing-' + Date.now();
       const typingIndicator = document.createElement('div');
       typingIndicator.id = typingId;
@@ -972,10 +1086,36 @@
       messagesContainer.appendChild(typingIndicator);
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
-      chatHistory.push({ role: 'user', text: message });
+      const localApiKey = localStorage.getItem('gemini_api_key');
+      const customVercelUrl = localStorage.getItem('vercel_backend_url');
+
+      // MODE 1: Direct in-browser Gemini API call (instant & works directly on GitHub Pages!)
+      if (localApiKey) {
+        try {
+          const replyText = await callGeminiDirectly(localApiKey, message);
+          const typingElem = document.getElementById(typingId);
+          if (typingElem) typingElem.remove();
+
+          chatHistory.push({ role: 'model', text: replyText });
+          appendBotMessage(escapeHtml(replyText));
+          return;
+        } catch (err) {
+          console.error('Direct Gemini Call Failed:', err);
+          const typingElem = document.getElementById(typingId);
+          if (typingElem) typingElem.remove();
+
+          appendBotMessage(`⚠️ Gemini API Error: ${escapeHtml(err.message)}.\\n\\nPlease check your API key in Settings (⚙) or email darwinharianto@gmail.com.`);
+          return;
+        }
+      }
+
+      // MODE 2: Vercel Serverless Function (/api/chat or Custom Vercel URL)
+      const targetEndpoint = customVercelUrl
+        ? `${customVercelUrl.replace(/\/+$/, '')}/api/chat`
+        : '/api/chat';
 
       try {
-        const res = await fetch('/api/chat', {
+        const res = await fetch(targetEndpoint, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ message, history: chatHistory })
@@ -984,47 +1124,104 @@
         const typingElem = document.getElementById(typingId);
         if (typingElem) typingElem.remove();
 
-        let replyText = '';
         if (res.ok) {
           const data = await res.json();
-          replyText = data.reply;
+          chatHistory.push({ role: 'model', text: data.reply });
+          appendBotMessage(escapeHtml(data.reply));
         } else {
-          const errData = await res.json().catch(() => ({}));
-          if (res.status === 404 || res.status === 500) {
-            replyText = (errData.error || 'Serverless endpoint /api/chat not yet active. Once deployed to Vercel with your GEMINI_API_KEY environment variable, Gemini will answer live!') + '\\n\\nFeel free to connect directly with Darwin at darwinharianto@gmail.com.';
-          } else {
-            replyText = 'Error connecting to AI service. Please try again or email darwinharianto@gmail.com.';
-          }
+          showConfigurationPrompt();
         }
-
-        chatHistory.push({ role: 'model', text: replyText });
-
-        // Append Assistant Bubble
-        const assistantBubble = document.createElement('div');
-        assistantBubble.className = 'flex items-start gap-2';
-        assistantBubble.innerHTML = `
-          <div class="w-5 h-5 rounded-md bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">AI</div>
-          <div class="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl rounded-tl-none text-slate-200 text-xs leading-relaxed max-w-[85%] whitespace-pre-line">
-            ${escapeHtml(replyText)}
-          </div>
-        `;
-        messagesContainer.appendChild(assistantBubble);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
       } catch (err) {
         const typingElem = document.getElementById(typingId);
         if (typingElem) typingElem.remove();
-
-        const errorBubble = document.createElement('div');
-        errorBubble.className = 'flex items-start gap-2';
-        errorBubble.innerHTML = `
-          <div class="w-5 h-5 rounded-md bg-rose-600/30 text-rose-400 border border-rose-500/30 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">!</div>
-          <div class="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl rounded-tl-none text-slate-300 text-xs">
-            Connect your repository to Vercel and add <code class="text-cyan-400 font-mono">GEMINI_API_KEY</code> in Vercel Project Settings to activate live Gemini responses!
-          </div>
-        `;
-        messagesContainer.appendChild(errorBubble);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        showConfigurationPrompt();
       }
+    }
+
+    async function callGeminiDirectly(apiKey, message) {
+      const contents = [];
+      contents.push({
+        role: 'user',
+        parts: [{ text: `System Instruction:\n${DARWIN_SYSTEM_PROMPT}\n\nPlease acknowledge your role briefly.` }]
+      });
+      contents.push({
+        role: 'model',
+        parts: [{ text: 'Understood. I am Darwin Harianto\'s AI Assistant, ready to accurately and professionally answer questions about Darwin\'s technical skills, projects, and career.' }]
+      });
+
+      for (const h of chatHistory.slice(-6)) {
+        if (h.role && h.text) {
+          contents.push({
+            role: h.role === 'user' ? 'user' : 'model',
+            parts: [{ text: h.text }]
+          });
+        }
+      }
+
+      contents.push({
+        role: 'user',
+        parts: [{ text: message }]
+      });
+
+      const candidateModels = ['gemini-3.8-flash', 'gemini-2.5-flash', 'gemini-2.0-flash'];
+      let lastErrMsg = '';
+
+      for (const model of candidateModels) {
+        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        const res = await fetch(geminiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents,
+            generationConfig: {
+              temperature: 0.4,
+              maxOutputTokens: 600
+            }
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          const text = data?.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (text) return text;
+        } else {
+          const err = await res.json().catch(() => ({}));
+          lastErrMsg = err.error?.message || `Status ${res.status}`;
+          if (res.status !== 404) {
+            throw new Error(lastErrMsg);
+          }
+        }
+      }
+
+      throw new Error(lastErrMsg || 'Unable to connect to supported Gemini models.');
+    }
+
+    function showConfigurationPrompt() {
+      const messagesContainer = document.getElementById('chatMessages');
+      const setupBubble = document.createElement('div');
+      setupBubble.className = 'flex items-start gap-2';
+      setupBubble.innerHTML = `
+        <div class="w-5 h-5 rounded-md bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">⚙</div>
+        <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl rounded-tl-none text-slate-200 text-xs space-y-2.5 max-w-[92%]">
+          <div class="font-bold text-cyan-400 flex items-center gap-1.5">
+            <span>Activate Gemini AI Chat</span>
+          </div>
+          <p class="text-slate-400 text-[11px] leading-relaxed">
+            You are browsing on GitHub Pages. To enable instant live responses, paste your Gemini API key below (stored safely only in your browser's localStorage):
+          </p>
+          <div class="flex items-center gap-1.5">
+            <input type="password" id="inlineApiKeyInput" placeholder="Paste Gemini API Key (AIzaSy...)" class="flex-1 bg-slate-950 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-400 font-mono" />
+            <button onclick="saveInlineApiKey()" class="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-semibold text-xs shadow-md shadow-cyan-600/20 shrink-0">
+              Save & Ask
+            </button>
+          </div>
+          <p class="text-[10px] text-slate-500">
+            Or configure your Vercel deployment URL via the <strong>⚙ Key</strong> button in the top right.
+          </p>
+        </div>
+      `;
+      messagesContainer.appendChild(setupBubble);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
     function escapeHtml(text) {
@@ -1037,9 +1234,9 @@
   <!-- Floating AI Assistant Chat Widget -->
   <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
     <!-- Chat Window (initially hidden) -->
-    <div id="chatWidget" class="hidden w-[92vw] sm:w-96 h-[500px] glass-panel rounded-2xl flex flex-col overflow-hidden shadow-2xl border border-slate-700/80 mb-3 transition-all duration-300">
+    <div id="chatWidget" class="hidden w-[92vw] sm:w-96 h-[520px] glass-panel rounded-2xl flex flex-col overflow-hidden shadow-2xl border border-slate-700/80 mb-3 transition-all duration-300 relative">
       <!-- Chat Header -->
-      <div class="p-3.5 bg-slate-900/90 border-b border-slate-800 flex items-center justify-between">
+      <div class="p-3.5 bg-slate-900/95 border-b border-slate-800 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
           <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-cyan-500/20">
             ✦
@@ -1049,12 +1246,48 @@
               Darwin AI Assistant
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
             </div>
-            <div class="text-[10px] font-mono text-cyan-400">Powered by Google Gemini</div>
+            <div class="flex items-center gap-2">
+              <span class="text-[10px] font-mono text-cyan-400">Google Gemini</span>
+              <span id="keyStatusIndicator" class="text-[9px] font-mono text-slate-500">○ Key Not Set</span>
+            </div>
           </div>
         </div>
-        <button onclick="toggleChatWidget()" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-slate-800 transition text-sm">
-          ✕
-        </button>
+        <div class="flex items-center gap-1">
+          <button onclick="toggleSettingsModal()" title="API Key & Backend Settings" class="text-slate-400 hover:text-cyan-400 p-1.5 rounded-lg hover:bg-slate-800 transition text-xs font-mono flex items-center gap-1">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+            <span class="text-[10px]">⚙ Key</span>
+          </button>
+          <button onclick="toggleChatWidget()" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition text-sm">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Settings Overlay Modal -->
+      <div id="chatSettingsModal" class="hidden absolute inset-0 z-20 bg-slate-950/95 p-4 flex flex-col justify-between backdrop-blur-md">
+        <div class="space-y-4">
+          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+            <h4 class="text-xs font-bold text-white uppercase tracking-wider font-mono">Gemini AI Settings</h4>
+            <button onclick="toggleSettingsModal()" class="text-slate-400 hover:text-white text-xs">✕</button>
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="text-[11px] text-slate-300 font-semibold block">Option 1: Gemini API Key (Direct Browser Mode)</label>
+            <p class="text-[10px] text-slate-400">Enables live Gemini chat directly on GitHub Pages. Stored only in your local browser storage:</p>
+            <input type="password" id="apiKeyInput" placeholder="Paste AIzaSy..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono" />
+          </div>
+
+          <div class="space-y-1.5">
+            <label class="text-[11px] text-slate-300 font-semibold block">Option 2: Vercel Backend URL (Optional)</label>
+            <p class="text-[10px] text-slate-400">If you deployed to Vercel, enter your project URL (e.g. <code>https://darwinharianto.vercel.app</code>):</p>
+            <input type="text" id="vercelUrlInput" placeholder="https://your-app.vercel.app" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono" />
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
+          <button onclick="toggleSettingsModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">Cancel</button>
+          <button onclick="saveSettings()" class="px-4 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs shadow-md shadow-cyan-600/20">Save & Apply</button>
+        </div>
       </div>
 
       <!-- Messages Thread -->
@@ -1071,6 +1304,9 @@
         <div id="quickPrompts" class="space-y-1.5 pt-1">
           <div class="text-[10px] font-mono text-slate-500 uppercase tracking-wider">Suggested Questions:</div>
           <div class="flex flex-col gap-1">
+            <button onclick="sendQuickPrompt('What are Darwin\'s key strengths and technical expertise?')" class="text-left p-2 rounded-lg bg-slate-900/70 hover:bg-slate-800 text-slate-300 border border-slate-800/80 hover:border-cyan-500/40 text-[11px] transition">
+              ⭐ What are Darwin's key strengths?
+            </button>
             <button onclick="sendQuickPrompt('Tell me about your 6D robot pose estimation project in hospital corridors.')" class="text-left p-2 rounded-lg bg-slate-900/70 hover:bg-slate-800 text-slate-300 border border-slate-800/80 hover:border-cyan-500/40 text-[11px] transition">
               🤖 Hospital AMR 6D Pose Estimation
             </button>
