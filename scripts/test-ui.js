@@ -178,7 +178,7 @@ while ((catMatch = cardCategoryRegex.exec(indexContent)) !== null) {
   cardCount++;
 }
 
-assert(cardCount === 8, `Exactly 8 featured project cards exist in index.html (found ${cardCount})`);
+assert(cardCount === 9, `Exactly 9 featured project cards exist in index.html (found ${cardCount})`);
 cardCategories.forEach(cat => {
   assert(filterPills.has(cat), `Project card category '${cat}' has a corresponding filter pill`);
 });

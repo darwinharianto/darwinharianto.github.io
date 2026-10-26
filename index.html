@@ -582,6 +582,43 @@
           </div>
         </div>
 
+        <!-- Project 9: Flow Free Constraint Programming Solver -->
+        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="optimization">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-300">Open-Source Optimization</span>
+              <a href="projects/flow-free-solver.html" class="text-xs font-mono text-emerald-400 hover:text-emerald-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+                Launch Visualizer Page →
+              </a>
+            </div>
+            <h3 class="text-xl font-bold text-white group-hover:text-emerald-300 transition">
+              <a href="projects/flow-free-solver.html">Flow Free Constraint Programming Solver (Google OR-Tools)</a>
+            </h3>
+            <p class="text-sm text-slate-300 leading-relaxed">
+              Engineered an optimal CP-SAT solver for Flow Free grid games that routes non-intersecting paths on arbitrary grid dimensions while <strong>minimizing path turns</strong> and maximizing board coverage around obstacles. Open-sourced on GitHub with 100% test coverage.
+            </p>
+          </div>
+          
+          <div class="space-y-3 pt-2">
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Google OR-Tools</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">CP-SAT Solver</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Turn Minimization</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Python 3.10+</span>
+              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Codecov 100%</span>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono text-emerald-400">✓ Globally optimal min turns · Sub-15ms</span>
+                <a href="https://github.com/darwinharianto/flow" target="_blank" rel="noopener noreferrer" class="hidden sm:inline text-[10px] font-mono text-cyan-400 hover:underline">· github.com/darwinharianto/flow ↗</a>
+              </div>
+              <button onclick="openProjectModal('flowsolver')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+                Quick Spec
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -860,6 +897,14 @@
         solution: 'Built an automated end-to-end PDF layout decomposition and verification pipeline: (1) Morphological line kernel segmentation separating non-grid cadastral maps from structured metadata tables, (2) Cell coordinate normalization localizing the target signature box (氏名・署名欄) invariant to scanning skew, (3) Deep handwriting stroke extraction and Japanese Kanji OCR, and (4) Named Entity Recognition (NER) validated against comprehensive Japanese surname and given name lexicons to distinguish authentic personal names from blank fields, random scribbles, or corporate seals.',
         tech: 'OpenCV · PDF Layout Analysis · Japanese Kanji OCR · Named Entity Recognition (NER) · Python · Morphological Filtering',
         impact: 'Achieved 99.0% verified accuracy in production, slashing manual document inspection labor by over 90% and accelerating application processing turnaround times from days to seconds.'
+      },
+      flowsolver: {
+        category: 'Discrete Optimization & Constraint Programming',
+        title: 'Flow Free Constraint Programming Solver & Turn Minimizer',
+        problem: 'Routing multi-colored non-intersecting paths across arbitrary 2D grid dimensions while strictly avoiding obstacles and minimizing directional turns is an NP-hard combinatorial problem where standard pathfinding (A*, Dijkstra) fails due to global non-overlapping path dependencies.',
+        solution: 'Engineered an open-source Python solver leveraging Google OR-Tools CP-SAT. Formulated the board as a directed graph where Boolean variables govern 4-connected arc traversal, enforcing Kirchhoff node conservation (in-degree = out-degree = 1 for transit cells, source out-degree = 1, sink in-degree = 1). Introduced turn-penalty indicator variables penalizing orthogonal vector directional changes and enforced 100% board fill constraint.',
+        tech: 'Google OR-Tools CP-SAT · Python 3.10-3.12 · Boolean Satisfiability · Directed Graph Flow · Codecov 100%',
+        impact: 'Open-sourced on GitHub (darwinharianto/flow) with 100% test coverage; solves complex arbitrary grids with walls in sub-15ms with guaranteed global minimum turn counts.'
       }
     };
 
@@ -941,6 +986,7 @@ Featured Projects:
 6. Automated Japanese Signed Document Detection: PDF layout analysis separating cadastral maps from structured form boxes, localizing the signature box, and validating Japanese Kanji names (99% accuracy).
 7. TEM Semiconductor Metrology: Sub-nanometer boundary detection & thickness metrology on atomic micrographs with 99.4% Gauge R&R repeatability.
 8. CAD 2D Nesting Engine: Irregular polygon packing using No-Fit Polygons (NFP) and Google OR-Tools constraint programming, slashing material scrap by 18-24%.
+9. Flow Free Constraint Programming Solver: Open-source Python solver leveraging Google OR-Tools CP-SAT to route non-overlapping paths on arbitrary grids with wall obstacles while strictly minimizing path turns (github.com/darwinharianto/flow, 100% Codecov).
 
 STRICT SCOPE & GUARDRAIL RULES (MANDATORY):
 1. SOLE AUTHORIZED TOPIC: You are ONLY permitted to answer questions concerning Darwin Harianto—his professional background, engineering skills, robotics/AI projects, technical stack, career experience in Japan/globally, and collaboration or hiring opportunities.
