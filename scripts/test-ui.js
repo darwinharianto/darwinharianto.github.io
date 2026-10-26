@@ -76,13 +76,16 @@ htmlFiles.forEach(file => {
   const content = fs.readFileSync(file, 'utf8');
   const fileDir = path.dirname(file);
 
+  // Strip <script> and <style> tags so dynamic template strings aren't parsed as static page links
+  const contentForLinks = content.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
+
   // Match href="path" (excluding mailto, https, #anchor, tel)
   const linkRegex = /href=["']([^"']+)["']/g;
   let match;
 
-  while ((match = linkRegex.exec(content)) !== null) {
+  while ((match = linkRegex.exec(contentForLinks)) !== null) {
     const href = match[1];
-    if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:') || href.startsWith('tel:')) {
+    if (href.startsWith('http://') || href.startsWith('https://') || href.startsWith('mailto:') || href.startsWith('tel:') || href.includes('$')) {
       continue;
     }
 
