@@ -26,32 +26,48 @@
   </script>
   <style>
     .glass-panel {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(51, 65, 85, 0.6);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(226, 232, 240, 0.85);
     }
-    .attn-glow {
-      box-shadow: 0 0 20px -3px rgba(168, 85, 247, 0.35);
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.98);
+      border-color: rgba(203, 213, 225, 1);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-purple-500 selection:text-white min-h-screen">
+<body class="bg-[#faf9f5] text-slate-800 font-sans antialiased selection:bg-purple-500 selection:text-white min-h-screen relative overflow-x-hidden">
+
+  <!-- Ambient Light Pulse Background Glows -->
+  <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-purple-200/40 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute top-1/3 -right-40 w-96 h-96 bg-pink-200/35 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-20 left-1/4 w-96 h-96 bg-indigo-200/35 rounded-full blur-3xl animate-pulse" style="animation-delay: 4s;"></div>
+  </div>
 
   <!-- Header / Navigation -->
-  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-200/80">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-4">
-        <a href="../index.html" class="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 font-medium transition group">
+        <a href="../index.html" class="flex items-center gap-2 text-sm text-purple-700 hover:text-purple-800 font-medium transition group">
           <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
           </svg>
           Back to Portfolio
         </a>
-        <span class="text-slate-600">|</span>
-        <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-950/80 border border-purple-800 text-purple-300">Part 03 · Visual Interactive</span>
+        <span class="text-slate-300">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-purple-50 border border-purple-200 text-purple-800 font-medium">Part 03 · Visual Interactive</span>
       </div>
       <div class="flex items-center gap-3 text-xs font-mono">
-        <span class="text-slate-400">ML Concept Lab</span>
+        <span class="text-slate-500">ML Concept Lab</span>
       </div>
     </div>
   </header>
@@ -59,31 +75,31 @@
   <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
     <!-- Intro Header -->
     <section class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/60 border border-purple-500/30 text-xs font-mono text-purple-400">
-        <span class="w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50 border border-purple-200 text-xs font-mono text-purple-800">
+        <span class="w-2 h-2 rounded-full bg-purple-500 animate-ping"></span>
         Interactive Deep Dive: Attention & Modern Foundation Models
       </div>
-      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-        Attention Mechanisms & The <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-400">Transformer Revolution</span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
+        Attention Mechanisms & The <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600">Transformer Revolution</span>
       </h1>
-      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+      <p class="text-slate-600 text-base sm:text-lg max-w-3xl leading-relaxed">
         Visualizing Scaled Dot-Product Attention, Query-Key retrieval intuition, Multi-Head disentangled representations, and Cross-Attention in Latent Diffusion (SDXL).
       </p>
     </section>
 
     <!-- Visualizer 1: Interactive Self-Attention Matrix -->
     <section class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
         <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center text-sm font-mono">01</span>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 border border-purple-200 flex items-center justify-center text-sm font-mono font-bold">01</span>
             Interactive Self-Attention & Co-Reference Visualizer
           </h2>
-          <p class="text-sm text-slate-400">Select a prompt sentence or click on individual tokens to inspect pairwise attention weights.</p>
+          <p class="text-sm text-slate-500">Select a prompt sentence or click on individual tokens to inspect pairwise attention weights.</p>
         </div>
         <div class="flex items-center gap-2">
-          <label class="text-xs text-slate-400 font-mono">Sentence:</label>
-          <select id="sentenceSelect" class="bg-slate-900 border border-slate-700 text-purple-300 text-xs font-mono rounded-lg px-3 py-1.5 focus:border-purple-400 outline-none">
+          <label class="text-xs text-slate-500 font-mono">Sentence:</label>
+          <select id="sentenceSelect" class="bg-white border border-slate-200 text-purple-800 text-xs font-mono rounded-lg px-3 py-1.5 focus:border-purple-400 outline-none shadow-xs font-semibold cursor-pointer">
             <option value="coref">"The robot crossed the street because it was autonomous"</option>
             <option value="vision">"Detecting semiconductor defects in TEM electron imagery"</option>
             <option value="diffusion">"Synthesizing architectural floor plans with LoRA and ControlNet"</option>
@@ -93,58 +109,58 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <!-- Interactive Attention Heatmap & Token Connector -->
-        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-6">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-            <span>Token Interaction Ribbon:</span>
-            <span class="text-purple-400">Click a token to query its attention vector</span>
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-6 shadow-sm">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-500">
+            <span class="font-medium">Token Interaction Ribbon:</span>
+            <span class="text-purple-700 font-bold">Click a token to query its attention vector</span>
           </div>
 
           <!-- Token Buttons Ribbon -->
           <div id="tokensRibbon" class="flex flex-wrap gap-2 pt-1"></div>
 
           <!-- Attention Heatmap Matrix -->
-          <div class="space-y-3 pt-3 border-t border-slate-800">
+          <div class="space-y-3 pt-3 border-t border-slate-200">
             <div class="flex items-center justify-between text-xs font-mono">
-              <span class="text-slate-300">Attention Weight Matrix: $\text{Softmax}(Q K^T / \sqrt{d_k})$</span>
-              <span class="text-purple-400 font-bold" id="selectedTokenLabel">Query Token: [it]</span>
+              <span class="text-slate-800 font-bold">Attention Weight Matrix: $\text{Softmax}(Q K^T / \sqrt{d_k})$</span>
+              <span class="text-purple-700 font-bold" id="selectedTokenLabel">Query Token: [it]</span>
             </div>
             
             <div class="overflow-x-auto pb-2">
-              <div id="heatmapContainer" class="inline-block min-w-full bg-slate-900/90 p-4 rounded-xl border border-slate-800"></div>
+              <div id="heatmapContainer" class="inline-block min-w-full bg-slate-50 p-4 rounded-xl border border-slate-200 shadow-xs"></div>
             </div>
           </div>
 
           <!-- Formula Step Visualizer -->
-          <div class="p-4 rounded-xl bg-slate-900/90 border border-slate-800 font-mono text-xs space-y-2">
-            <div class="text-purple-400 font-bold flex justify-between">
+          <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs space-y-2 shadow-xs">
+            <div class="text-purple-800 font-bold flex justify-between">
               <span>Mathematical Flow for Token [q]:</span>
               <span class="text-slate-500">d_k = 64 (scaling factor = 1/8)</span>
             </div>
-            <div class="text-slate-300 text-xs leading-relaxed space-y-1">
-              <div>1. <span class="text-purple-300">Similarity Scores:</span> $S_{i,j} = \frac{q_i \cdot k_j}{\sqrt{d_k}}$</div>
-              <div>2. <span class="text-pink-300">Softmax Normalization:</span> $\alpha_{i,j} = \frac{\exp(S_{i,j})}{\sum_m \exp(S_{i,m})}$</div>
-              <div>3. <span class="text-emerald-300">Context Output:</span> $z_i = \sum_j \alpha_{i,j} v_j$</div>
+            <div class="text-slate-700 text-xs leading-relaxed space-y-1">
+              <div>1. <span class="text-purple-700 font-semibold">Similarity Scores:</span> $S_{i,j} = \frac{q_i \cdot k_j}{\sqrt{d_k}}$</div>
+              <div>2. <span class="text-pink-700 font-semibold">Softmax Normalization:</span> $\alpha_{i,j} = \frac{\exp(S_{i,j})}{\sum_m \exp(S_{i,m})}$</div>
+              <div>3. <span class="text-emerald-700 font-semibold">Context Output:</span> $z_i = \sum_j \alpha_{i,j} v_j$</div>
             </div>
           </div>
         </div>
 
         <!-- Sidebar: Why Transformers Replaced RNNs -->
-        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs leading-relaxed text-slate-300">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Why Attention Beat RNNs</h3>
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs leading-relaxed text-slate-600 shadow-sm">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900 font-mono">Why Attention Beat RNNs</h3>
           
-          <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1.5">
-            <div class="text-purple-400 font-bold font-mono">1. O(1) Path Length</div>
-            <p class="text-slate-400">RNNs must step sequentially through $N$ tokens, causing early information to degrade (vanishing gradient across time). Attention computes direct relationships between any two tokens in a single step.</p>
+          <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1.5 shadow-xs">
+            <div class="text-purple-700 font-bold font-mono">1. O(1) Path Length</div>
+            <p class="text-slate-600">RNNs must step sequentially through $N$ tokens, causing early information to degrade (vanishing gradient across time). Attention computes direct relationships between any two tokens in a single step.</p>
           </div>
 
-          <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1.5">
-            <div class="text-pink-400 font-bold font-mono">2. Massive Parallelization</div>
-            <p class="text-slate-400">Because tokens do not wait for previous hidden states $h_{t-1}$, the entire sequence is computed simultaneously via matrix multiplications on modern GPU tensor cores.</p>
+          <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1.5 shadow-xs">
+            <div class="text-pink-700 font-bold font-mono">2. Massive Parallelization</div>
+            <p class="text-slate-600">Because tokens do not wait for previous hidden states $h_{t-1}$, the entire sequence is computed simultaneously via matrix multiplications on modern GPU tensor cores.</p>
           </div>
 
-          <div class="p-3 bg-slate-900 rounded-lg border border-slate-800 space-y-1.5">
-            <div class="text-indigo-400 font-bold font-mono">3. Dynamic Context Routing</div>
-            <p class="text-slate-400">Unlike fixed convolutional kernels, attention weights are input-dependent: the network dynamically re-routes focus based on semantic relevance.</p>
+          <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 space-y-1.5 shadow-xs">
+            <div class="text-indigo-700 font-bold font-mono">3. Dynamic Context Routing</div>
+            <p class="text-slate-600">Unlike fixed convolutional kernels, attention weights are input-dependent: the network dynamically re-routes focus based on semantic relevance.</p>
           </div>
         </div>
       </div>
@@ -152,22 +168,22 @@
 
     <!-- Visualizer 2: Multi-Head Attention Heads Switcher -->
     <section class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
         <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-pink-500/10 text-pink-400 border border-pink-500/20 flex items-center justify-center text-sm font-mono">02</span>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-pink-50 text-pink-700 border border-pink-200 flex items-center justify-center text-sm font-mono font-bold">02</span>
             Multi-Head Attention (MHA): Subspace Token Routing Graph
           </h2>
-          <p class="text-sm text-slate-400">Toggle distinct attention heads to observe how each head specializes in different semantic subspaces.</p>
+          <p class="text-sm text-slate-500">Toggle distinct attention heads to observe how each head specializes in different semantic subspaces.</p>
         </div>
         <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
-          <button id="headBtn1" class="px-3 py-1.5 rounded-lg bg-purple-600 text-white font-bold ring-2 ring-purple-400 transition" onclick="selectHead(1)">
+          <button id="headBtn1" class="px-3 py-1.5 rounded-lg bg-purple-600 text-white font-bold ring-2 ring-purple-300 transition shadow-xs" onclick="selectHead(1)">
             Head 1: Syntactic (Subject-Verb)
           </button>
-          <button id="headBtn2" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white transition" onclick="selectHead(2)">
+          <button id="headBtn2" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-slate-900 transition shadow-xs" onclick="selectHead(2)">
             Head 2: Co-reference (it → robot)
           </button>
-          <button id="headBtn3" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white transition" onclick="selectHead(3)">
+          <button id="headBtn3" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-slate-900 transition shadow-xs" onclick="selectHead(3)">
             Head 3: Positional Proximity
           </button>
         </div>
@@ -175,26 +191,26 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         <!-- Interactive Multi-Head Graph Canvas -->
-        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-            <span>Inter-Token Attention Arc Graph</span>
-            <span id="headDescLabel" class="text-purple-300 font-bold">Head 1: Tracking subject "robot" to predicate "crossed"</span>
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4 shadow-sm">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-500">
+            <span class="font-medium">Inter-Token Attention Arc Graph</span>
+            <span id="headDescLabel" class="text-purple-700 font-bold">Head 1: Tracking subject "robot" to predicate "crossed"</span>
           </div>
-          <div class="relative w-full aspect-[16/8] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+          <div class="relative w-full aspect-[16/8] bg-slate-900 rounded-xl overflow-hidden border border-slate-300 shadow-inner flex items-center justify-center">
             <canvas id="mhaCanvas" width="620" height="280" class="w-full h-full block"></canvas>
           </div>
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400 pt-2 border-t border-slate-800">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-500 pt-2 border-t border-slate-200">
             <span>$\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h) W^O$</span>
-            <span class="text-pink-400">Line thickness = Attention weight</span>
+            <span class="text-pink-700 font-semibold">Line thickness = Attention weight</span>
           </div>
         </div>
 
-        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Subspace Specialization</h3>
+        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-600 leading-relaxed shadow-sm">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900 font-mono">Subspace Specialization</h3>
           <p>
             Instead of performing a single attention function with $d_{\text{model}}$-dimensional keys, queries and values, linearly projecting the queries, keys, and values $h$ times allows the model to jointly attend to information from different representation subspaces.
           </p>
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1 text-slate-400 font-mono text-[11px]">
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1 text-slate-600 font-mono text-[11px] shadow-xs">
             <div>• $d_{\text{model}} = 512, h = 8 \text{ heads}$</div>
             <div>• $d_k = d_v = d_{\text{model}} / h = 64$</div>
             <div>• Total compute remains identical to single-head attention!</div>
@@ -205,80 +221,81 @@
 
     <!-- Visualizer 3: Cross-Attention in Generative Diffusion & Vision Transformers -->
     <section class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
         <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 flex items-center justify-center text-sm font-mono">03</span>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center justify-center text-sm font-mono font-bold">03</span>
             Interactive Diffusion Cross-Attention Spatial Heatmap
           </h2>
-          <p class="text-sm text-slate-400">Click a text prompt token to visualize where it injects latent features on the spatial floor plan grid.</p>
+          <p class="text-sm text-slate-500">Click a text prompt token to visualize where it injects latent features on the spatial floor plan grid.</p>
         </div>
         <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
-          <span class="text-slate-400">Select Prompt Token:</span>
-          <button id="crossToken1" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-bold" onclick="selectCrossToken(0)">[structural walls]</button>
-          <button id="crossToken2" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="selectCrossToken(1)">[living room]</button>
-          <button id="crossToken3" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="selectCrossToken(2)">[wooden floor]</button>
-          <button id="crossToken4" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="selectCrossToken(3)">[open balcony]</button>
+          <span class="text-slate-500 font-medium">Select Prompt Token:</span>
+          <button id="crossToken1" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-bold shadow-xs" onclick="selectCrossToken(0)">[structural walls]</button>
+          <button id="crossToken2" class="px-2.5 py-1 rounded bg-white text-slate-700 hover:text-slate-900 border border-slate-200 shadow-xs" onclick="selectCrossToken(1)">[living room]</button>
+          <button id="crossToken3" class="px-2.5 py-1 rounded bg-white text-slate-700 hover:text-slate-900 border border-slate-200 shadow-xs" onclick="selectCrossToken(2)">[wooden floor]</button>
+          <button id="crossToken4" class="px-2.5 py-1 rounded bg-white text-slate-700 hover:text-slate-900 border border-slate-200 shadow-xs" onclick="selectCrossToken(3)">[open balcony]</button>
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         <!-- Interactive Cross-Attention Canvas -->
-        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4 shadow-sm">
           <div class="flex items-center justify-between text-xs font-mono">
-            <span class="text-slate-400">Spatial Latent Attention Map (64×64 UNet Feature Resolution)</span>
-            <span id="crossTokenStatus" class="text-indigo-300 font-bold">Query: Spatial Pixels $\leftrightarrow$ Key: "[structural walls]"</span>
+            <span class="text-slate-500 font-medium">Spatial Latent Attention Map (64×64 UNet Feature Resolution)</span>
+            <span id="crossTokenStatus" class="text-indigo-700 font-bold">Query: Spatial Pixels $\leftrightarrow$ Key: "[structural walls]"</span>
           </div>
 
-          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+          <div class="relative w-full aspect-[16/10] bg-slate-900 rounded-xl overflow-hidden border border-slate-300 shadow-inner flex items-center justify-center">
             <canvas id="crossAttnCanvas" width="560" height="340" class="w-full h-full block"></canvas>
           </div>
 
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400 pt-2 border-t border-slate-800">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-500 pt-2 border-t border-slate-200">
             <span>$A_{\text{cross}} = \text{Softmax}\left(\frac{Q_{\text{spatial}} K_{\text{text}}^T}{\sqrt{d}}\right) \cdot V_{\text{text}}$</span>
-            <span class="text-indigo-400">Bright glow = High spatial alignment</span>
+            <span class="text-indigo-700 font-semibold">Bright glow = High spatial alignment</span>
           </div>
         </div>
 
+        <div class="lg:col-span-4 space-y-4">
           <div class="space-y-4">
             <!-- Latent Image Tokens -->
-            <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1.5">
-              <div class="text-xs font-mono text-cyan-400 font-bold">Query Matrix Q: Spatial Latents (UNet Feature Map)</div>
-              <p class="text-[11px] text-slate-400">Each spatial pixel position $(h, w)$ acts as a Query asking: <em>"What architectural element should exist here?"</em></p>
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 shadow-xs">
+              <div class="text-xs font-mono text-cyan-800 font-bold">Query Matrix Q: Spatial Latents (UNet Feature Map)</div>
+              <p class="text-[11px] text-slate-600">Each spatial pixel position $(h, w)$ acts as a Query asking: <em>"What architectural element should exist here?"</em></p>
             </div>
 
             <!-- Flow Arrow -->
             <div class="flex justify-center">
-              <span class="text-purple-400 text-xs font-mono flex items-center gap-2 px-3 py-1 bg-purple-950/60 rounded-full border border-purple-800">
+              <span class="text-purple-800 text-xs font-mono flex items-center gap-2 px-3 py-1 bg-purple-50 rounded-full border border-purple-200 font-medium">
                 Cross-Attention Interaction: Softmax(Q · Kᵀ / √d) · V
               </span>
             </div>
 
             <!-- Text CLIP Tokens -->
-            <div class="p-3.5 rounded-xl bg-slate-900/90 border border-slate-800 space-y-1.5">
-              <div class="text-xs font-mono text-pink-400 font-bold">Key (K) & Value (V): Text Embeddings (CLIP / OpenCLIP)</div>
-              <p class="text-[11px] text-slate-400">Tokens like <code>"living room"</code>, <code>"wooden floor"</code>, <code>"open balcony"</code> provide Keys for matching and Values for spatial feature injection.</p>
+            <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1.5 shadow-xs">
+              <div class="text-xs font-mono text-pink-800 font-bold">Key (K) & Value (V): Text Embeddings (CLIP / OpenCLIP)</div>
+              <p class="text-[11px] text-slate-600">Tokens like <code>"living room"</code>, <code>"wooden floor"</code>, <code>"open balcony"</code> provide Keys for matching and Values for spatial feature injection.</p>
             </div>
           </div>
 
-          <div class="p-3 bg-purple-950/30 rounded-xl border border-purple-800/40 text-xs text-purple-200">
+          <div class="p-3 bg-purple-50 rounded-xl border border-purple-200 text-xs text-purple-900 shadow-xs">
             <strong>Darwin's Engineering Integration:</strong> By pairing SDXL cross-attention with ControlNet zero-convolutions, the generation strictly respects structural boundary polylines extracted from CAD / DXF drawings!
           </div>
         </div>
 
         <!-- Vision Transformer ViT Diagram -->
-        <div class="lg:col-span-5 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Vision Transformers (ViT)</h3>
+        <div class="lg:col-span-5 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-600 leading-relaxed shadow-sm">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-900 font-mono">Vision Transformers (ViT)</h3>
           <p>
             ViT discards convolutions entirely by cutting an image into non-overlapping patches (e.g., 16×16 pixels), flattening them, and projecting them linearly into standard 1D token embeddings.
           </p>
-          <div class="space-y-2 font-mono text-[11px] text-slate-400 bg-slate-900 p-3 rounded-xl border border-slate-800">
+          <div class="space-y-2 font-mono text-[11px] text-slate-600 bg-slate-50 p-3 rounded-xl border border-slate-200 shadow-xs">
             <div>• Image Resolution: 224 × 224</div>
             <div>• Patch Size: 16 × 16 → 196 Patches</div>
             <div>• Patch Tokens + [CLS] Token + 1D Positional Embeddings</div>
             <div>• Fed through standard Transformer Encoder blocks</div>
           </div>
-          <p class="text-slate-400">
+          <p class="text-slate-600">
             Unlike CNNs with fixed local inductive biases, ViTs learn both fine textures and global scene topology from scratch, scaling effectively with massive dataset sizes.
           </p>
         </div>
@@ -286,11 +303,11 @@
     </section>
 
     <!-- Bottom Navigation -->
-    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <a href="vision.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+    <div class="pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="vision.html" class="text-sm text-slate-600 hover:text-slate-900 transition flex items-center gap-2 font-medium">
         ← Previous: Computer Vision & Convolutions
       </a>
-      <a href="../index.html" class="px-5 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-purple-500/20">
+      <a href="../index.html" class="px-5 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-semibold text-sm transition flex items-center gap-2 shadow-sm">
         Return to Engineering Portfolio →
       </a>
     </div>
@@ -369,13 +386,13 @@
         
         btn.className = `px-3 py-1.5 rounded-lg text-xs font-mono transition-all flex items-center gap-1.5 ${
           isSelected 
-            ? 'bg-purple-600 text-white font-bold ring-2 ring-purple-300 scale-105' 
-            : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700'
+            ? 'bg-purple-600 text-white font-bold ring-2 ring-purple-300 scale-105 shadow-sm' 
+            : 'bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-xs'
         }`;
         
         btn.innerHTML = `
           <span>${tok}</span>
-          <span class="text-[10px] px-1 py-0.2 rounded ${isSelected ? 'bg-purple-800 text-purple-200' : 'bg-slate-800 text-purple-400'}">
+          <span class="text-[10px] px-1 py-0.2 rounded ${isSelected ? 'bg-purple-800 text-purple-200' : 'bg-purple-50 text-purple-700 font-semibold'}">
             ${(attnWeight * 100).toFixed(0)}%
           </span>
         `;
@@ -395,10 +412,10 @@
       // Header row
       const thead = document.createElement('thead');
       const headRow = document.createElement('tr');
-      headRow.innerHTML = `<th class="p-2 text-slate-500 font-normal border-b border-slate-800 text-left">Query \\ Key</th>`;
+      headRow.innerHTML = `<th class="p-2 text-slate-500 font-medium border-b border-slate-200 text-left">Query \\ Key</th>`;
       tokens.forEach((tok) => {
         const th = document.createElement('th');
-        th.className = 'p-2 text-slate-400 font-medium border-b border-slate-800';
+        th.className = 'p-2 text-slate-600 font-semibold border-b border-slate-200';
         th.textContent = tok;
         headRow.appendChild(th);
       });
@@ -411,11 +428,11 @@
         const tr = document.createElement('tr');
         const isRowActive = qIdx === selectedTokenIdx;
         if (isRowActive) {
-          tr.className = 'bg-purple-950/40 ring-1 ring-purple-500/40';
+          tr.className = 'bg-purple-50/70 ring-1 ring-purple-300';
         }
 
         const labelCell = document.createElement('td');
-        labelCell.className = `p-2 font-medium text-left border-b border-slate-800/60 ${isRowActive ? 'text-purple-300 font-bold' : 'text-slate-400'}`;
+        labelCell.className = `p-2 font-medium text-left border-b border-slate-200 ${isRowActive ? 'text-purple-800 font-bold' : 'text-slate-600'}`;
         labelCell.textContent = qTok;
         labelCell.addEventListener('click', () => {
           selectedTokenIdx = qIdx;
@@ -427,12 +444,12 @@
         tokens.forEach((kTok, kIdx) => {
           const td = document.createElement('td');
           const weight = matrix[qIdx][kIdx];
-          td.className = 'p-2 border-b border-slate-800/60 transition-colors cursor-pointer';
+          td.className = 'p-2 border-b border-slate-200 transition-colors cursor-pointer font-medium';
 
           // Color scale based on weight
           const alpha = Math.min(0.9, Math.max(0.08, weight * 1.5));
           td.style.backgroundColor = `rgba(168, 85, 247, ${alpha})`;
-          td.style.color = weight > 0.25 ? '#ffffff' : '#cbd5e1';
+          td.style.color = weight > 0.25 ? '#ffffff' : '#334155';
           td.textContent = weight.toFixed(2);
 
           td.addEventListener('click', () => {
@@ -506,9 +523,9 @@
       for (let i = 1; i <= 3; i++) {
         const btn = document.getElementById(`headBtn${i}`);
         if (i === headId) {
-          btn.className = 'px-3 py-1.5 rounded-lg bg-purple-600 text-white font-bold ring-2 ring-purple-400 transition';
+          btn.className = 'px-3 py-1.5 rounded-lg bg-purple-600 text-white font-bold ring-2 ring-purple-300 transition shadow-xs';
         } else {
-          btn.className = 'px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white transition';
+          btn.className = 'px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:text-slate-900 transition shadow-xs';
         }
       }
       renderMhaGraph();
@@ -586,9 +603,9 @@
       for (let i = 0; i < 4; i++) {
         const btn = document.getElementById(`crossToken${i + 1}`);
         if (i === idx) {
-          btn.className = 'px-2.5 py-1 rounded bg-indigo-600 text-white font-bold';
+          btn.className = 'px-2.5 py-1 rounded bg-indigo-600 text-white font-bold shadow-xs';
         } else {
-          btn.className = 'px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white';
+          btn.className = 'px-2.5 py-1 rounded bg-white text-slate-700 hover:text-slate-900 border border-slate-200 shadow-xs';
         }
       }
       renderCrossAttention();

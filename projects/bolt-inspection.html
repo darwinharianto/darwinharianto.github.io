@@ -19,6 +19,15 @@
           colors: {
             brand: '#10b981',
             accent: '#06b6d4',
+            pastel: {
+              canvas: '#faf9f5',
+              card: 'rgba(255, 255, 255, 0.92)',
+              border: 'rgba(226, 232, 240, 0.85)',
+              emerald: '#dcfce7',
+              sky: '#e0f2fe',
+              rose: '#ffe4e6',
+              amber: '#fef3c7',
+            }
           }
         }
       }
@@ -26,28 +35,54 @@
   </script>
   <style>
     .glass-panel {
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 4px 20px -2px rgba(100, 116, 139, 0.05);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(51, 65, 85, 0.6);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      box-shadow: 0 4px 20px -4px rgba(148, 163, 184, 0.12);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(16, 185, 129, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px -8px rgba(16, 185, 129, 0.12);
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.45; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(1.04); }
+    }
+    .pulse-glow {
+      animation: pulseGlow 6s ease-in-out infinite;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-white min-h-screen">
+<body class="bg-[#faf9f5] text-slate-800 font-sans antialiased selection:bg-emerald-500 selection:text-white min-h-screen relative">
+
+  <!-- Ambient Pastel Glow Effects -->
+  <div class="fixed top-0 left-1/4 w-[460px] h-[460px] bg-emerald-200/50 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow"></div>
+  <div class="fixed top-1/3 right-1/4 w-[480px] h-[480px] bg-sky-200/55 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 2s;"></div>
+  <div class="fixed bottom-1/4 left-1/3 w-[420px] h-[420px] bg-teal-200/40 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 1s;"></div>
+  <div class="fixed bottom-10 right-10 w-[380px] h-[380px] bg-amber-200/40 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 3s;"></div>
 
   <!-- Header -->
-  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-200/80">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-4">
-        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-emerald-400 hover:text-emerald-300 font-medium transition group">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-emerald-700 hover:text-emerald-800 font-medium transition group">
           <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
           </svg>
           Back to Portfolio
         </a>
-        <span class="text-slate-600">|</span>
-        <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-300">iOS Edge AI</span>
+        <span class="text-slate-300">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold shadow-xs">iOS Edge AI</span>
       </div>
-      <div class="text-xs font-mono text-slate-400">
+      <div class="text-xs font-mono text-slate-500 hidden sm:block">
         CoreML · 3D Depth Projection · Quantization
       </div>
     </div>
@@ -56,121 +91,121 @@
   <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
     <!-- Project Hero Header -->
     <section class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-xs font-mono text-emerald-400">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50/90 border border-emerald-200 text-xs font-mono text-emerald-800 shadow-xs">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
         Lead Engineer · 2-Person Engineering Team
       </div>
-      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-        iOS On-Device AI: Automated <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Bolt Safety Check & 3D Angle Metrology</span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
+        iOS On-Device AI: Automated <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600">Bolt Safety Check & 3D Angle Metrology</span>
       </h1>
-      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+      <p class="text-slate-600 text-base sm:text-lg max-w-3xl leading-relaxed">
         Developed an on-device iOS safety inspection system. Performs bolt detection, color segmentation of torque seal marks, monocular 3D depth projection, and 3D angle calculation directly on captured iPhone images using quantized CoreML model ensembles.
       </p>
     </section>
 
     <!-- Interactive Technology Visualization: iPhone Inspection View Simulator -->
     <section class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
         <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-sm font-mono">01</span>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center text-sm font-mono font-bold">01</span>
             Interactive iPhone Camera View & 3D Line Inspector
           </h2>
-          <p class="text-sm text-slate-400">Adjust the bolt looseness rotation or switch pipeline stages to observe 2D-to-3D projection and safety validation.</p>
+          <p class="text-sm text-slate-500 mt-0.5">Adjust the bolt looseness rotation or switch pipeline stages to observe 2D-to-3D projection and safety validation.</p>
         </div>
         <div class="flex flex-wrap items-center gap-4 text-xs font-mono">
-          <div class="flex items-center gap-2">
-            <span class="text-slate-400">Bolt Looseness (Δθ):</span>
-            <input type="range" id="boltAngleRange" min="-45" max="45" step="1" value="0" class="accent-emerald-400 w-28">
-            <span id="boltAngleVal" class="text-emerald-400 font-bold">0.0°</span>
+          <div class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-xs">
+            <span class="text-slate-600 font-semibold">Bolt Looseness (Δθ):</span>
+            <input type="range" id="boltAngleRange" min="-45" max="45" step="1" value="0" class="accent-emerald-600 w-28 cursor-pointer">
+            <span id="boltAngleVal" class="text-emerald-700 font-bold w-12 text-right">0.0°</span>
           </div>
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         <!-- Interactive Canvas Viewport (iPhone Screen Format) -->
-        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+        <div class="lg:col-span-8 glass-card rounded-2xl p-6 space-y-4 border border-slate-200 bg-white/92">
           <div class="flex items-center justify-between text-xs font-mono">
             <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 rounded bg-slate-800 text-slate-300">iPhone 15 Pro Lens</span>
-              <span id="safetyStatusBadge" class="px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold">
+              <span class="px-2.5 py-1 rounded-md bg-slate-100 border border-slate-200 text-slate-700 font-semibold">iPhone 15 Pro Lens</span>
+              <span id="safetyStatusBadge" class="px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-300 text-emerald-800 font-bold shadow-xs">
                 ✓ SAFETY PASS (ALIGNED)
               </span>
             </div>
-            <span class="text-slate-400">Captured High-Res Inspection</span>
+            <span class="text-slate-500">Captured High-Res Inspection</span>
           </div>
 
-          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+          <div class="relative w-full aspect-[16/10] bg-slate-900 rounded-xl overflow-hidden border border-slate-300 shadow-inner flex items-center justify-center">
             <canvas id="boltCanvas" width="600" height="380" class="w-full h-full block"></canvas>
           </div>
 
           <!-- Pipeline Stage Selector -->
-          <div class="flex flex-wrap items-center justify-between gap-2 pt-1 text-xs font-mono border-t border-slate-800">
-            <span class="text-slate-400">Visual Pipeline View:</span>
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-2 text-xs font-mono border-t border-slate-200/80">
+            <span class="text-slate-500 font-semibold">Visual Pipeline View:</span>
             <div class="flex flex-wrap gap-2">
-              <button id="viewDetection" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="setBoltView('detection')">1. Bolt Detection</button>
-              <button id="viewSegment" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="setBoltView('segment')">2. Mark Segment</button>
-              <button id="viewDepth" class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white" onclick="setBoltView('depth')">3. 3D Depth Map</button>
-              <button id="viewAngle" class="px-2.5 py-1 rounded bg-emerald-600 text-white font-bold ring-2 ring-emerald-400" onclick="setBoltView('angle')">4. 3D Vector Angle</button>
+              <button id="viewDetection" class="px-2.5 py-1 rounded bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-xs transition" onclick="setBoltView('detection')">1. Bolt Detection</button>
+              <button id="viewSegment" class="px-2.5 py-1 rounded bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-xs transition" onclick="setBoltView('segment')">2. Mark Segment</button>
+              <button id="viewDepth" class="px-2.5 py-1 rounded bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-xs transition" onclick="setBoltView('depth')">3. 3D Depth Map</button>
+              <button id="viewAngle" class="px-2.5 py-1 rounded bg-emerald-600 text-white font-bold ring-2 ring-emerald-300 shadow-md shadow-emerald-600/20 transition" onclick="setBoltView('angle')">4. 3D Vector Angle</button>
             </div>
           </div>
 
-          <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono border-t border-slate-800">
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Mark 3D Deviation</div>
-              <div id="deviationMetricVal" class="text-emerald-400 font-bold text-sm mt-0.5">0.0°</div>
+          <div class="grid grid-cols-4 gap-2.5 pt-2 text-center text-xs font-mono border-t border-slate-200/80">
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Mark 3D Deviation</div>
+              <div id="deviationMetricVal" class="text-emerald-700 font-bold text-sm mt-0.5">0.0°</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Quantized Model</div>
-              <div class="text-cyan-400 font-bold text-sm mt-0.5">INT8 CoreML (14MB)</div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Quantized Model</div>
+              <div class="text-cyan-700 font-bold text-sm mt-0.5">INT8 CoreML (14MB)</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Processing Type</div>
-              <div class="text-teal-400 font-bold text-sm mt-0.5">On-Device Single Image</div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Processing Type</div>
+              <div class="text-teal-700 font-bold text-sm mt-0.5">On-Device Offline</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Tolerance Limit</div>
-              <div class="text-amber-400 font-bold text-sm mt-0.5">±3.5° Max Allowed</div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Tolerance Limit</div>
+              <div class="text-amber-700 font-bold text-sm mt-0.5">±3.5° Max Allowed</div>
             </div>
           </div>
         </div>
 
         <!-- Tech Details Sidebar -->
-        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Single-Image 3D Algorithm</h3>
+        <div class="lg:col-span-4 glass-card rounded-2xl p-6 space-y-4 text-xs text-slate-600 leading-relaxed border border-slate-200 bg-white/92">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-900 font-mono">Single-Image 3D Algorithm</h3>
           
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-emerald-400 font-bold">1. Bolt & Torque Mark Mask:</div>
-            <p class="text-slate-400 text-[10px]">Detects the hexagonal bolt head and performs color-segmented mask extraction for the witness line stripe painted across the nut and flange surface.</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-emerald-700 font-bold">1. Bolt & Torque Mark Mask:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Detects the hexagonal bolt head and performs color-segmented mask extraction for the witness line stripe painted across the nut and flange surface.</p>
           </div>
 
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-cyan-400 font-bold">2. Monocular 3D Depth Projection:</div>
-            <p class="text-slate-400 text-[10px]">Back-projects segmented 2D line pixels $(u, v)$ with predicted metric depth $Z$ using the calibrated iPhone intrinsic matrix:
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-teal-700 font-bold">2. Monocular 3D Depth Projection:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Back-projects segmented 2D line pixels $(u, v)$ with predicted metric depth $Z$ using the calibrated iPhone intrinsic matrix:
             $$X = \frac{(u - c_x) Z}{f_x}, \quad Y = \frac{(v - c_y) Z}{f_y}$$</p>
           </div>
 
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-teal-400 font-bold">3. 3D Angle Calculation:</div>
-            <p class="text-slate-400 text-[10px]">Calculates the 3D directional vector of the bolt line $\vec{v}_{\text{bolt}}$ and flange baseline $\vec{v}_{\text{base}}$:
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-sky-700 font-bold">3. 3D Angle Calculation:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Calculates the 3D directional vector of the bolt line $\vec{v}_{\text{bolt}}$ and flange baseline $\vec{v}_{\text{base}}$:
             $$\theta = \arccos\left(\frac{\vec{v}_{\text{bolt}} \cdot \vec{v}_{\text{base}}}{\|\vec{v}_{\text{bolt}}\| \|\vec{v}_{\text{base}}\|}\right)$$
             eliminating optical perspective distortion from non-perpendicular camera angles.</p>
           </div>
 
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-purple-400 font-bold">4. CoreML INT8 Quantization:</div>
-            <p class="text-slate-400 text-[10px]">Compressed the ensemble network by 75% enabling deep multi-stage inference (detection, segmentation, depth) to execute entirely offline on-device without cloud dependence.</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-purple-700 font-bold">4. CoreML INT8 Quantization:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Compressed the ensemble network by 75% enabling deep multi-stage inference (detection, segmentation, depth) to execute entirely offline on-device without cloud dependence.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Bottom Navigation -->
-    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <a href="excavator-automation.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+    <div class="pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="excavator-automation.html" class="text-sm text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
         ← Previous: Autonomous Excavator Digital Twin
       </a>
-      <a href="multimodal-search.html" class="px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-emerald-500/20">
+      <a href="multimodal-search.html" class="px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-md shadow-emerald-600/20">
         Next Project: Multimodal Vector Search →
       </a>
     </div>
@@ -191,10 +226,11 @@
       activeView = view;
       ['detection', 'segment', 'depth', 'angle'].forEach(v => {
         const btn = document.getElementById(`view${v.charAt(0).toUpperCase() + v.slice(1)}`);
+        if (!btn) return;
         if (v === view) {
-          btn.className = 'px-2.5 py-1 rounded bg-emerald-600 text-white font-bold ring-2 ring-emerald-400';
+          btn.className = 'px-2.5 py-1 rounded bg-emerald-600 text-white font-bold ring-2 ring-emerald-300 shadow-md shadow-emerald-600/20 transition';
         } else {
-          btn.className = 'px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-white';
+          btn.className = 'px-2.5 py-1 rounded bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-xs transition';
         }
       });
       renderBoltInspection();
@@ -207,10 +243,10 @@
 
       const isSafe = Math.abs(deltaAngle) <= 3.5;
       if (isSafe) {
-        safetyBadge.className = 'px-2 py-0.5 rounded bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 font-bold';
+        safetyBadge.className = 'px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-300 text-emerald-800 font-bold shadow-xs';
         safetyBadge.textContent = '✓ SAFETY PASS (ALIGNED)';
       } else {
-        safetyBadge.className = 'px-2 py-0.5 rounded bg-rose-500/20 border border-rose-500/40 text-rose-300 font-bold animate-pulse';
+        safetyBadge.className = 'px-2.5 py-1 rounded-md bg-rose-50 border border-rose-300 text-rose-700 font-bold animate-pulse shadow-xs';
         safetyBadge.textContent = '⚠ DANGER: LOOSE BOLT';
       }
 

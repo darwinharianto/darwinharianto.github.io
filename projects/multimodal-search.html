@@ -26,28 +26,47 @@
   </script>
   <style>
     .glass-panel {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(51, 65, 85, 0.6);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.98);
+      border-color: rgba(203, 213, 225, 1);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen">
+<body class="bg-[#faf9f5] text-slate-800 font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen relative overflow-x-hidden">
+
+  <!-- Ambient Light Pulse Background Glows -->
+  <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-cyan-200/40 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute top-1/3 -right-40 w-96 h-96 bg-blue-200/35 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-20 left-1/4 w-96 h-96 bg-indigo-200/35 rounded-full blur-3xl animate-pulse" style="animation-delay: 4s;"></div>
+  </div>
 
   <!-- Header -->
-  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-200/80">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-4">
-        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition group">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-cyan-700 hover:text-cyan-800 font-medium transition group">
           <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
           </svg>
           Back to Portfolio
         </a>
-        <span class="text-slate-600">|</span>
-        <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-950/80 border border-cyan-800 text-cyan-300">Multimodal AI Deep-Dive</span>
+        <span class="text-slate-300">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-800 font-medium">Multimodal AI Deep-Dive</span>
       </div>
-      <div class="text-xs font-mono text-slate-400">
+      <div class="text-xs font-mono text-slate-500">
         Gemini VLM · Color & Pattern Extraction · FAISS HNSW
       </div>
     </div>
@@ -56,63 +75,63 @@
   <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
     <!-- Project Hero Header -->
     <section class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-950/60 border border-cyan-500/30 text-xs font-mono text-cyan-400">
-        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-200 text-xs font-mono text-cyan-800">
+        <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
         LLM Feature Extraction · Color, Texture & Pattern Indexing
       </div>
-      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-        Building Image Text & Pattern Extraction <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-indigo-300">& Semantic Vector Retrieval</span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
+        Building Image Text & Pattern Extraction <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600">& Semantic Vector Retrieval</span>
       </h1>
-      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+      <p class="text-slate-600 text-base sm:text-lg max-w-3xl leading-relaxed">
         Prompting Gemini Vision Language Models to extract architectural signage text, dominant color palettes, material textures, and geometric facade patterns from raw building photographs. The extracted features are encoded into 768-dimensional multimodal vectors and queried across a FAISS HNSW index organized by color, texture, and pattern clusters.
       </p>
     </section>
 
     <!-- Interactive Technology Visualization: 4-Stage Building Search Simulator -->
     <section class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
         <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center text-sm font-mono">01</span>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-cyan-50 text-cyan-700 border border-cyan-200 flex items-center justify-center text-sm font-mono font-bold">01</span>
             Live Pipeline: LLM Feature Extraction → Texture & Pattern Vector Space → Retrieval
           </h2>
-          <p class="text-sm text-slate-400">Choose a building photograph to inspect the LLM’s extracted colors, textures, and patterns, then watch the query vector project into the cluster.</p>
+          <p class="text-sm text-slate-500">Choose a building photograph to inspect the LLM’s extracted colors, textures, and patterns, then watch the query vector project into the cluster.</p>
         </div>
       </div>
 
       <!-- Building Example Selector Pills -->
-      <div class="glass-panel p-4 rounded-xl space-y-3 text-xs font-mono">
+      <div class="glass-panel p-4 rounded-xl space-y-3 text-xs font-mono shadow-sm">
         <div class="flex items-center justify-between">
-          <span class="text-slate-400 uppercase tracking-wider text-[11px]">Select Building Specimen:</span>
-          <span id="activeBuildingBadge" class="text-cyan-400 font-bold">Target: Cyan Glazed Skyscraper (Glass Grid)</span>
+          <span class="text-slate-500 uppercase tracking-wider text-[11px] font-semibold">Select Building Specimen:</span>
+          <span id="activeBuildingBadge" class="text-cyan-700 font-bold">Target: Cyan Glazed Skyscraper (Glass Grid)</span>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-          <button class="building-btn active-btn p-3 rounded-xl bg-cyan-950/70 border-2 border-cyan-400 text-left transition space-y-1" data-key="cyanGlass">
-            <div class="text-white font-bold text-xs flex items-center gap-1.5">
+          <button class="building-btn active-btn p-3 rounded-xl bg-cyan-50/90 border-2 border-cyan-500 text-left transition space-y-1 shadow-xs" data-key="cyanGlass">
+            <div class="text-slate-900 font-bold text-xs flex items-center gap-1.5">
               <span>🏢</span> Cyan Glazed Skyscraper
             </div>
-            <p class="text-[10px] text-slate-400">Color: Azure/Midnight · Texture: Mirrored Glass · Pattern: Orthogonal Grid</p>
+            <p class="text-[10px] text-slate-500">Color: Azure/Midnight · Texture: Mirrored Glass · Pattern: Orthogonal Grid</p>
           </button>
 
-          <button class="building-btn p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-left transition space-y-1" data-key="redBrick">
-            <div class="text-white font-bold text-xs flex items-center gap-1.5">
+          <button class="building-btn p-3 rounded-xl bg-white/80 border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition space-y-1 shadow-xs" data-key="redBrick">
+            <div class="text-slate-900 font-bold text-xs flex items-center gap-1.5">
               <span>🧱</span> Terracotta Brick Masonry
             </div>
-            <p class="text-[10px] text-slate-400">Color: Terracotta/Rust · Texture: Rough Masonry · Pattern: Flemish Bond</p>
+            <p class="text-[10px] text-slate-500">Color: Terracotta/Rust · Texture: Rough Masonry · Pattern: Flemish Bond</p>
           </button>
 
-          <button class="building-btn p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-left transition space-y-1" data-key="cedarTimber">
-            <div class="text-white font-bold text-xs flex items-center gap-1.5">
+          <button class="building-btn p-3 rounded-xl bg-white/80 border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition space-y-1 shadow-xs" data-key="cedarTimber">
+            <div class="text-slate-900 font-bold text-xs flex items-center gap-1.5">
               <span>⛩️</span> Cedar Timber Pavilion
             </div>
-            <p class="text-[10px] text-slate-400">Color: Honey Ochre/Tan · Texture: Wood Grain · Pattern: Horizontal Louvers</p>
+            <p class="text-[10px] text-slate-500">Color: Honey Ochre/Tan · Texture: Wood Grain · Pattern: Horizontal Louvers</p>
           </button>
 
-          <button class="building-btn p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-left transition space-y-1" data-key="flutedConcrete">
-            <div class="text-white font-bold text-xs flex items-center gap-1.5">
+          <button class="building-btn p-3 rounded-xl bg-white/80 border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition space-y-1 shadow-xs" data-key="flutedConcrete">
+            <div class="text-slate-900 font-bold text-xs flex items-center gap-1.5">
               <span>🏛️</span> Fluted Brutalist Concrete
             </div>
-            <p class="text-[10px] text-slate-400">Color: Ash Grey/Titanium · Texture: Honed Cement · Pattern: Parametric Flutes</p>
+            <p class="text-[10px] text-slate-500">Color: Ash Grey/Titanium · Texture: Honed Cement · Pattern: Parametric Flutes</p>
           </button>
         </div>
       </div>
@@ -120,38 +139,38 @@
       <!-- Main Visualizer Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <!-- Stage 1: Building Image with LLM Text & Pattern Extraction -->
-        <div class="lg:col-span-6 glass-panel rounded-2xl p-5 space-y-3">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+        <div class="lg:col-span-6 glass-panel rounded-2xl p-5 space-y-3 shadow-sm">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-600">
             <span class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-              <strong class="text-white">Stage 1: LLM Architectural Feature Extraction</strong>
+              <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+              <strong class="text-slate-900">Stage 1: LLM Architectural Feature Extraction</strong>
             </span>
-            <span class="text-emerald-400 font-bold">Gemini 1.5 Flash VLM</span>
+            <span class="text-emerald-700 font-bold bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">Gemini 1.5 Flash VLM</span>
           </div>
 
           <!-- Canvas Rendering Building Photo + Live Pattern & Color Inspection Points -->
-          <div class="relative w-full aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+          <div class="relative w-full aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-300 shadow-inner flex items-center justify-center">
             <canvas id="buildingCanvas" width="480" height="360" class="w-full h-full block"></canvas>
           </div>
 
           <!-- LLM Prompt & Structured Response Card -->
-          <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-2 font-mono text-xs">
-            <div class="flex justify-between text-[10px] text-slate-400 uppercase tracking-wider">
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-2 font-mono text-xs shadow-xs">
+            <div class="flex justify-between text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
               <span>LLM Query Prompt:</span>
-              <span class="text-purple-300">Prompt: "Extract dominant colors, textures, and facade patterns"</span>
+              <span class="text-purple-700">Prompt: "Extract dominant colors, textures, and facade patterns"</span>
             </div>
 
             <!-- Extracted Text Signage & Name -->
             <div class="space-y-1">
-              <div class="text-[10px] text-slate-400">Detected Signage Text:</div>
-              <div id="extractedSignageDisplay" class="text-cyan-300 font-bold text-[11px] bg-slate-950 p-1.5 rounded border border-slate-800">
+              <div class="text-[10px] text-slate-500 font-medium">Detected Signage Text:</div>
+              <div id="extractedSignageDisplay" class="text-cyan-800 font-bold text-[11px] bg-white p-2 rounded border border-slate-200 shadow-xs">
                 "SHIBUYA TECH HUB · TOWER B · 2-24-1 DOGENZAKA SKY TERRACE"
               </div>
             </div>
 
             <!-- Extracted Color Palette Chips -->
             <div class="space-y-1">
-              <div class="text-[10px] text-slate-400">Extracted Dominant Color Palette:</div>
+              <div class="text-[10px] text-slate-500 font-medium">Extracted Dominant Color Palette:</div>
               <div class="flex items-center gap-2" id="colorChipsContainer">
                 <!-- Dynamically populated color swatches -->
               </div>
@@ -159,7 +178,7 @@
 
             <!-- Extracted Texture & Pattern Badges -->
             <div class="space-y-1 pt-0.5">
-              <div class="text-[10px] text-slate-400">Extracted Textures & Patterns:</div>
+              <div class="text-[10px] text-slate-500 font-medium">Extracted Textures & Patterns:</div>
               <div class="flex flex-wrap gap-1.5" id="extractedAttributesDisplay">
                 <!-- Dynamically populated -->
               </div>
@@ -168,27 +187,27 @@
         </div>
 
         <!-- Stage 2: Color, Texture & Pattern Embedding Manifold & Vector Search -->
-        <div class="lg:col-span-6 glass-panel rounded-2xl p-5 space-y-3">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+        <div class="lg:col-span-6 glass-panel rounded-2xl p-5 space-y-3 shadow-sm">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-600">
             <span class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-blue-400"></span>
-              <strong class="text-white">Stage 2: Color & Pattern Vector Space (2D UMAP)</strong>
+              <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+              <strong class="text-slate-900">Stage 2: Color & Pattern Vector Space (2D UMAP)</strong>
             </span>
-            <span id="searchLatencyText" class="text-cyan-300 font-bold">FAISS Retrieval: 22 ms</span>
+            <span id="searchLatencyText" class="text-cyan-800 font-bold bg-cyan-50 px-2.5 py-0.5 rounded-full border border-cyan-200">FAISS Retrieval: 22 ms</span>
           </div>
 
           <!-- Vector Projection Canvas -->
-          <div class="relative w-full aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+          <div class="relative w-full aspect-[4/3] bg-slate-950 rounded-xl overflow-hidden border border-slate-300 shadow-inner flex items-center justify-center">
             <canvas id="vectorCanvas" width="480" height="360" class="w-full h-full block"></canvas>
           </div>
 
           <!-- Dense Vector Snippet Display -->
-          <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800 space-y-1.5 font-mono text-xs">
-            <div class="flex justify-between text-[10px] text-slate-400 uppercase tracking-wider">
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-xs shadow-xs">
+            <div class="flex justify-between text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
               <span>Text-to-Vector 768D Embedding Snippet:</span>
-              <span class="text-purple-300">L2 Normalized (‖v‖ = 1.0)</span>
+              <span class="text-purple-700 font-medium">L2 Normalized (‖v‖ = 1.0)</span>
             </div>
-            <div id="vectorSnippetDisplay" class="text-slate-400 text-[10px] break-all leading-tight bg-slate-950 p-2 rounded border border-slate-800/80">
+            <div id="vectorSnippetDisplay" class="text-slate-600 text-[10px] break-all leading-tight bg-white p-2 rounded border border-slate-200 shadow-xs">
               [-0.0428, 0.1852, -0.0914, 0.3129, 0.0076, -0.1432, 0.0894, 0.2215, -0.0381, 0.1542, ...]
             </div>
           </div>
@@ -196,16 +215,16 @@
       </div>
 
       <!-- Stage 3: Top Retrieved Image Results from Database -->
-      <div class="glass-panel p-6 rounded-2xl space-y-4">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-800 pb-3">
+      <div class="glass-panel p-6 rounded-2xl space-y-4 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/80 pb-3">
           <div>
-            <h3 class="text-base font-bold text-white flex items-center gap-2 font-mono">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2 font-mono">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
               Top Database Retrieved Images (Matched on Color, Texture & Pattern)
             </h3>
-            <p class="text-xs text-slate-400">Nearest neighbors retrieved from the image database matching the LLM's color, texture, and facade pattern fingerprint.</p>
+            <p class="text-xs text-slate-500">Nearest neighbors retrieved from the image database matching the LLM's color, texture, and facade pattern fingerprint.</p>
           </div>
-          <div class="text-xs font-mono text-emerald-400 bg-emerald-950/60 px-3 py-1 rounded-full border border-emerald-800" id="topMatchBadge">
+          <div class="text-xs font-mono text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 font-bold" id="topMatchBadge">
             ✓ Top-1 Match Found: Cosine 0.982
           </div>
         </div>
@@ -215,22 +234,22 @@
         </div>
 
         <!-- Metrics Footer -->
-        <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono border-t border-slate-800">
-          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-            <div class="text-slate-400 text-[10px]">Top-1 Cosine Similarity</div>
-            <div id="metricTopSim" class="text-emerald-400 font-bold text-sm mt-0.5">0.982</div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2 text-center text-xs font-mono border-t border-slate-200/80">
+          <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 shadow-xs">
+            <div class="text-slate-500 text-[10px] font-medium">Top-1 Cosine Similarity</div>
+            <div id="metricTopSim" class="text-emerald-700 font-bold text-sm mt-0.5">0.982</div>
           </div>
-          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-            <div class="text-slate-400 text-[10px]">Vector Database Index</div>
-            <div class="text-cyan-400 font-bold text-sm mt-0.5">2.4M Images</div>
+          <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 shadow-xs">
+            <div class="text-slate-500 text-[10px] font-medium">Vector Database Index</div>
+            <div class="text-cyan-700 font-bold text-sm mt-0.5">2.4M Images</div>
           </div>
-          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-            <div class="text-slate-400 text-[10px]">Search Latency (HNSW)</div>
-            <div class="text-purple-400 font-bold text-sm mt-0.5">22 ms</div>
+          <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 shadow-xs">
+            <div class="text-slate-500 text-[10px] font-medium">Search Latency (HNSW)</div>
+            <div class="text-purple-700 font-bold text-sm mt-0.5">22 ms</div>
           </div>
-          <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-            <div class="text-slate-400 text-[10px]">Feature Representation</div>
-            <div class="text-teal-400 font-bold text-sm mt-0.5">Color + Texture + Pattern</div>
+          <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 shadow-xs">
+            <div class="text-slate-500 text-[10px] font-medium">Feature Representation</div>
+            <div class="text-teal-700 font-bold text-sm mt-0.5">Color + Texture + Pattern</div>
           </div>
         </div>
       </div>
@@ -238,32 +257,32 @@
 
     <!-- Technical Architecture Section -->
     <section class="space-y-6">
-      <div class="border-b border-slate-800 pb-4">
-        <h2 class="text-xl font-bold text-white flex items-center gap-2">
-          <span class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center text-sm font-mono">02</span>
+      <div class="border-b border-slate-200/80 pb-4">
+        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+          <span class="w-7 h-7 rounded-lg bg-cyan-50 text-cyan-700 border border-cyan-200 flex items-center justify-center text-sm font-mono font-bold">02</span>
           Architectural Implementation Details
         </h2>
-        <p class="text-sm text-slate-400">How vision-language LLM prompting and texture/pattern vector spaces power cross-modal architectural retrieval.</p>
+        <p class="text-sm text-slate-500">How vision-language LLM prompting and texture/pattern vector spaces power cross-modal architectural retrieval.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
-        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-cyan-400">
-          <h4 class="text-white font-bold text-sm">1. LLM Color & Pattern Prompting</h4>
-          <p class="text-slate-400 leading-relaxed">
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-cyan-500 shadow-sm">
+          <h4 class="text-slate-900 font-bold text-sm">1. LLM Color & Pattern Prompting</h4>
+          <p class="text-slate-600 leading-relaxed">
             The building image is passed to a Vision-Language Model with a structured prompt extracting dominant color hex codes, surface tactile textures, and geometric facade patterns (curtain grids, brick bonds, timber slats).
           </p>
         </div>
 
-        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-blue-400">
-          <h4 class="text-white font-bold text-sm">2. Color & Texture Clustered Vector Space</h4>
-          <p class="text-slate-400 leading-relaxed">
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-blue-500 shadow-sm">
+          <h4 class="text-slate-900 font-bold text-sm">2. Color & Texture Clustered Vector Space</h4>
+          <p class="text-slate-600 leading-relaxed">
             Instead of coarse categorical tags, the 768D embedding space organizes buildings by visual appearance: cyan glazed grids, terracotta clay bonds, honey cedar slats, and monochrome concrete reliefs.
           </p>
         </div>
 
-        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-indigo-400">
-          <h4 class="text-white font-bold text-sm">3. FAISS HNSW Proximity Retrieval</h4>
-          <p class="text-slate-400 leading-relaxed">
+        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-indigo-500 shadow-sm">
+          <h4 class="text-slate-900 font-bold text-sm">3. FAISS HNSW Proximity Retrieval</h4>
+          <p class="text-slate-600 leading-relaxed">
             The multimodal text query coordinates navigate the hierarchical small-world proximity graph in sub-30ms, retrieving images sharing the exact aesthetic, color harmony, and facade structural rhythm.
           </p>
         </div>
@@ -271,11 +290,11 @@
     </section>
 
     <!-- Bottom Navigation -->
-    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <a href="bolt-inspection.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+    <div class="pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="bolt-inspection.html" class="text-sm text-slate-600 hover:text-slate-900 transition flex items-center gap-2 font-medium">
         ← Previous: iOS On-Device Bolt Safety Inspection
       </a>
-      <a href="document-signature-detection.html" class="px-5 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-cyan-500/20">
+      <a href="document-signature-detection.html" class="px-5 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-700 text-white font-semibold text-sm transition flex items-center gap-2 shadow-sm">
         Next Project: Japanese Signed Document Detection →
       </a>
     </div>
@@ -847,31 +866,31 @@
 
       // Populate Color Swatches
       colorChipsContainer.innerHTML = data.colors.map(c => `
-        <div class="flex items-center gap-1.5 px-2 py-1 rounded bg-slate-950 border border-slate-800">
-          <span class="w-3.5 h-3.5 rounded-full border border-white/20 inline-block shadow-sm" style="background-color: ${c.hex}"></span>
-          <span class="text-[11px] text-slate-300 font-bold">${c.hex}</span>
+        <div class="flex items-center gap-1.5 px-2 py-1 rounded bg-white border border-slate-200 shadow-xs">
+          <span class="w-3.5 h-3.5 rounded-full border border-slate-200 inline-block shadow-sm" style="background-color: ${c.hex}"></span>
+          <span class="text-[11px] text-slate-800 font-bold">${c.hex}</span>
           <span class="text-[10px] text-slate-500">(${c.name})</span>
         </div>
       `).join('');
 
       // Populate Extracted Textures & Patterns
       const texturePills = data.textures.map(t => 
-        `<span class="px-2 py-0.5 rounded bg-blue-950/80 border border-blue-800 text-blue-300">Texture: ${t}</span>`
+        `<span class="px-2 py-0.5 rounded bg-blue-50 border border-blue-200 text-blue-700 font-medium">Texture: ${t}</span>`
       ).join('');
       const patternPills = data.patterns.map(p => 
-        `<span class="px-2 py-0.5 rounded bg-purple-950/80 border border-purple-800 text-purple-300">Pattern: ${p}</span>`
+        `<span class="px-2 py-0.5 rounded bg-purple-50 border border-purple-200 text-purple-700 font-medium">Pattern: ${p}</span>`
       ).join('');
       extractedAttributesDisplay.innerHTML = texturePills + patternPills;
 
       // Populate Result Cards
       resultsCardsGrid.innerHTML = data.results.map((res, i) => `
-        <div class="glass-panel p-4 rounded-xl border ${i === 0 ? 'border-emerald-500/60 bg-emerald-950/20 shadow-lg shadow-emerald-950/30' : 'border-slate-800 bg-slate-900/60'} space-y-3 flex flex-col justify-between">
+        <div class="glass-panel p-4 rounded-xl border ${i === 0 ? 'border-emerald-300 bg-emerald-50/80 shadow-md' : 'border-slate-200 bg-white/80 shadow-xs'} space-y-3 flex flex-col justify-between">
           <div class="space-y-2">
             <div class="flex items-center justify-between text-xs font-mono">
-              <span class="px-2 py-0.5 rounded font-bold ${i === 0 ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40' : 'bg-slate-800 text-slate-400'}">
+              <span class="px-2 py-0.5 rounded font-bold ${i === 0 ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-slate-100 text-slate-600 border border-slate-200'}">
                 Rank #${res.rank} Match
               </span>
-              <span class="text-xs font-bold font-mono ${i === 0 ? 'text-emerald-400' : 'text-cyan-400'}">
+              <span class="text-xs font-bold font-mono ${i === 0 ? 'text-emerald-700' : 'text-cyan-700'}">
                 Cosine: ${res.sim}
               </span>
             </div>
@@ -879,27 +898,27 @@
             <div class="flex items-start gap-2.5 pt-1">
               <span class="text-2xl">${res.icon}</span>
               <div>
-                <h4 class="text-sm font-bold text-white leading-snug">${res.title}</h4>
+                <h4 class="text-sm font-bold text-slate-900 leading-snug">${res.title}</h4>
                 <div class="flex items-center gap-1.5 mt-1">
-                  ${res.colorMatch.map(col => `<span class="w-3 h-3 rounded-full border border-white/20 inline-block" style="background-color: ${col}"></span>`).join('')}
-                  <span class="text-[10px] text-cyan-400 font-mono">Matched Palette</span>
+                  ${res.colorMatch.map(col => `<span class="w-3 h-3 rounded-full border border-slate-300 inline-block" style="background-color: ${col}"></span>`).join('')}
+                  <span class="text-[10px] text-cyan-700 font-mono font-medium">Matched Palette</span>
                 </div>
               </div>
             </div>
 
-            <p class="text-xs text-slate-300 leading-relaxed pt-1">
+            <p class="text-xs text-slate-600 leading-relaxed pt-1">
               ${res.matchJustification}
             </p>
           </div>
 
-          <div class="pt-2 border-t border-slate-800/80 space-y-1 text-[10px] font-mono">
-            <div class="flex justify-between text-slate-400">
+          <div class="pt-2 border-t border-slate-200/80 space-y-1 text-[10px] font-mono">
+            <div class="flex justify-between text-slate-500">
               <span>Texture Match:</span>
-              <span class="text-cyan-300 font-bold">${res.textureMatch}</span>
+              <span class="text-cyan-700 font-bold">${res.textureMatch}</span>
             </div>
-            <div class="flex justify-between text-slate-400">
+            <div class="flex justify-between text-slate-500">
               <span>Pattern Match:</span>
-              <span class="text-purple-300 font-bold">${res.patternMatch}</span>
+              <span class="text-purple-700 font-bold">${res.patternMatch}</span>
             </div>
           </div>
         </div>
@@ -1026,9 +1045,9 @@
     buildingButtons.forEach(btn => {
       btn.addEventListener('click', () => {
         buildingButtons.forEach(b => {
-          b.className = 'building-btn p-3 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-700 text-left transition space-y-1';
+          b.className = 'building-btn p-3 rounded-xl bg-white/80 border border-slate-200 hover:border-slate-300 hover:bg-slate-50 text-left transition space-y-1 shadow-xs';
         });
-        btn.className = 'building-btn active-btn p-3 rounded-xl bg-cyan-950/70 border-2 border-cyan-400 text-left transition space-y-1';
+        btn.className = 'building-btn active-btn p-3 rounded-xl bg-cyan-50/90 border-2 border-cyan-500 text-left transition space-y-1 shadow-xs';
 
         const bKey = btn.getAttribute('data-key');
         updateSimulation(bKey);

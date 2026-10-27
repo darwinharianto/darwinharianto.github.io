@@ -19,6 +19,14 @@
           colors: {
             brand: '#10b981',
             accent: '#06b6d4',
+            pastel: {
+              canvas: '#faf9f5',
+              card: 'rgba(255, 255, 255, 0.92)',
+              border: 'rgba(226, 232, 240, 0.85)',
+              emerald: '#dcfce7',
+              sky: '#e0f2fe',
+              amber: '#fef3c7',
+            }
           }
         }
       }
@@ -26,28 +34,54 @@
   </script>
   <style>
     .glass-panel {
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 4px 20px -2px rgba(100, 116, 139, 0.05);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(51, 65, 85, 0.6);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      box-shadow: 0 4px 20px -4px rgba(148, 163, 184, 0.12);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(16, 185, 129, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px -8px rgba(16, 185, 129, 0.12);
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.45; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(1.04); }
+    }
+    .pulse-glow {
+      animation: pulseGlow 6s ease-in-out infinite;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-emerald-500 selection:text-white min-h-screen">
+<body class="bg-[#faf9f5] text-slate-800 font-sans antialiased selection:bg-emerald-500 selection:text-white min-h-screen relative">
+
+  <!-- Ambient Pastel Glow Effects -->
+  <div class="fixed top-0 left-1/4 w-[460px] h-[460px] bg-emerald-200/50 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow"></div>
+  <div class="fixed top-1/3 right-1/4 w-[480px] h-[480px] bg-teal-200/45 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 2s;"></div>
+  <div class="fixed bottom-1/4 left-1/3 w-[420px] h-[420px] bg-sky-200/40 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 1s;"></div>
+  <div class="fixed bottom-10 right-10 w-[380px] h-[380px] bg-amber-200/40 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 3s;"></div>
 
   <!-- Header -->
-  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-200/80">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-4">
-        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-emerald-400 hover:text-emerald-300 font-medium transition group">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-emerald-700 hover:text-emerald-800 font-medium transition group">
           <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
           </svg>
           Back to Portfolio
         </a>
-        <span class="text-slate-600">|</span>
-        <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-300">Project Deep-Dive</span>
+        <span class="text-slate-300">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold shadow-xs">Project Deep-Dive</span>
       </div>
-      <div class="text-xs font-mono text-slate-400">
+      <div class="text-xs font-mono text-slate-500 hidden sm:block">
         Industrial Computer Vision · Sub-nanometer Metrology
       </div>
     </div>
@@ -56,36 +90,36 @@
   <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
     <!-- Project Hero Header -->
     <section class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-xs font-mono text-emerald-400">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50/90 border border-emerald-200 text-xs font-mono text-emerald-800 shadow-xs">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
         Semiconductor Fab Nanometrology
       </div>
-      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-        TEM Automated <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Sub-nanometer Boundary Metrology</span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
+        TEM Automated <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600">Sub-nanometer Boundary Metrology</span>
       </h1>
-      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+      <p class="text-slate-600 text-base sm:text-lg max-w-3xl leading-relaxed">
         High-precision automated boundary detection and layer thickness extraction on Transmission Electron Microscopy (TEM) micrographs, replacing manual measurements with sub-pixel edge detection.
       </p>
     </section>
 
     <!-- Interactive Technology Visualization: TEM Micrograph Inspector -->
     <section class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
         <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-sm font-mono">01</span>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center text-sm font-mono font-bold">01</span>
             Live TEM Micrograph Pipeline & Caliper Visualizer
           </h2>
-          <p class="text-sm text-slate-400">Switch filter modes and hover/drag the measurement caliper across atomic semiconductor layers.</p>
+          <p class="text-sm text-slate-500 mt-0.5">Switch filter modes and hover/drag the measurement caliper across atomic semiconductor layers.</p>
         </div>
         <div class="flex flex-wrap items-center gap-2 text-xs font-mono">
-          <button id="modeRaw" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white" onclick="setTemMode('raw')">
+          <button id="modeRaw" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-xs transition" onclick="setTemMode('raw')">
             1. Raw TEM
           </button>
-          <button id="modeFiltered" class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white" onclick="setTemMode('filtered')">
+          <button id="modeFiltered" class="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-xs transition" onclick="setTemMode('filtered')">
             2. Bilateral Denoised
           </button>
-          <button id="modeEdge" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold ring-2 ring-emerald-400" onclick="setTemMode('edge')">
+          <button id="modeEdge" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold ring-2 ring-emerald-300 shadow-md shadow-emerald-600/20 transition" onclick="setTemMode('edge')">
             3. Sub-Pixel Calipers
           </button>
         </div>
@@ -93,56 +127,56 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         <!-- Interactive Canvas -->
-        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+        <div class="lg:col-span-8 glass-card rounded-2xl p-6 space-y-4 border border-slate-200 bg-white/92">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-500">
             <span>TEM Micrograph Inspection Field (Scale: 1px = 0.042 nm)</span>
-            <span id="caliperMeasurementLabel" class="text-emerald-400 font-bold">Dielectric Layer Thickness: 2.38 nm</span>
+            <span id="caliperMeasurementLabel" class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Dielectric Layer Thickness: 2.38 nm</span>
           </div>
 
-          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+          <div class="relative w-full aspect-[16/10] bg-slate-900 rounded-xl overflow-hidden border border-slate-300 shadow-inner flex items-center justify-center">
             <canvas id="temCanvas" width="600" height="380" class="w-full h-full block cursor-ew-resize"></canvas>
           </div>
 
-          <div class="grid grid-cols-3 gap-2 pt-2 text-center text-xs font-mono">
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Measurement Precision</div>
-              <div class="text-emerald-400 font-bold text-sm mt-0.5">±0.038 nm</div>
+          <div class="grid grid-cols-3 gap-2.5 pt-2 text-center text-xs font-mono">
+            <div class="p-3 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Measurement Precision</div>
+              <div class="text-emerald-700 font-bold text-sm mt-0.5">±0.038 nm</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Repeatability (Gauge R&R)</div>
-              <div class="text-cyan-400 font-bold text-sm mt-0.5">99.4%</div>
+            <div class="p-3 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Repeatability (Gauge R&R)</div>
+              <div class="text-teal-700 font-bold text-sm mt-0.5">99.4%</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Processing Speed</div>
-              <div class="text-teal-400 font-bold text-sm mt-0.5">1.8s / Micrograph</div>
+            <div class="p-3 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Processing Speed</div>
+              <div class="text-indigo-700 font-bold text-sm mt-0.5">1.8s / Micrograph</div>
             </div>
           </div>
         </div>
 
         <!-- Tech Details Sidebar -->
-        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Computer Vision Metrology Stack</h3>
+        <div class="lg:col-span-4 glass-card rounded-2xl p-6 space-y-4 text-xs text-slate-600 leading-relaxed border border-slate-200 bg-white/92">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-900 font-mono">Computer Vision Metrology Stack</h3>
           <p>
             At sub-nanometer scale, standard pixel-level thresholding creates step-quantization errors exceeding 20% of total film thickness.
           </p>
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-emerald-400 font-bold">1. Sub-Pixel Parabolic Fitting:</div>
-            <p class="text-slate-400 text-[10px]">Finds the peak of the image gradient curve $\nabla I(x)$ by fitting a continuous second-order polynomial through the 3 highest gradient pixels: $\delta = \frac{g_{i-1} - g_{i+1}}{2(g_{i-1} - 2g_i + g_{i+1})}$.</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-emerald-700 font-bold">1. Sub-Pixel Parabolic Fitting:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Finds the peak of the image gradient curve $\nabla I(x)$ by fitting a continuous second-order polynomial through the 3 highest gradient pixels: $\delta = \frac{g_{i-1} - g_{i+1}}{2(g_{i-1} - 2g_i + g_{i+1})}$.</p>
           </div>
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-cyan-400 font-bold">2. Normal Vector Raycasting:</div>
-            <p class="text-slate-400 text-[10px]">Casts 500+ orthogonal interface rays perpendicular to the substrate contour to capture true local thickness distribution without perspective distortion.</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-teal-700 font-bold">2. Normal Vector Raycasting:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Casts 500+ orthogonal interface rays perpendicular to the substrate contour to capture true local thickness distribution without perspective distortion.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Bottom Navigation -->
-    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <a href="floorplan-synthesis.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+    <div class="pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="floorplan-synthesis.html" class="text-sm text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
         ← Previous: SDXL Floor Plan Synthesis
       </a>
-      <a href="robot-pose.html" class="px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-emerald-500/20">
+      <a href="robot-pose.html" class="px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-md shadow-emerald-600/20">
         Next Project: Robot 6D Pose Estimation →
       </a>
     </div>
@@ -161,10 +195,11 @@
       currentMode = mode;
       ['raw', 'filtered', 'edge'].forEach(m => {
         const btn = document.getElementById(`mode${m.charAt(0).toUpperCase() + m.slice(1)}`);
+        if (!btn) return;
         if (m === mode) {
-          btn.className = 'px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold ring-2 ring-emerald-400';
+          btn.className = 'px-3 py-1.5 rounded-lg bg-emerald-600 text-white font-bold ring-2 ring-emerald-300 shadow-md shadow-emerald-600/20 transition';
         } else {
-          btn.className = 'px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-700 text-slate-300 hover:text-white';
+          btn.className = 'px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 shadow-xs transition';
         }
       });
       renderTem();

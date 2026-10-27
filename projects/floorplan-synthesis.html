@@ -17,8 +17,17 @@
             mono: ['"Fira Code"', 'monospace'],
           },
           colors: {
-            brand: '#a855f7',
-            accent: '#ec4899',
+            brand: '#9333ea',
+            accent: '#db2777',
+            pastel: {
+              canvas: '#faf9f5',
+              card: 'rgba(255, 255, 255, 0.92)',
+              border: 'rgba(226, 232, 240, 0.85)',
+              lavender: '#ede9fe',
+              rose: '#ffe4e6',
+              indigo: '#e0e7ff',
+              emerald: '#dcfce7',
+            }
           }
         }
       }
@@ -26,28 +35,54 @@
   </script>
   <style>
     .glass-panel {
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 4px 20px -2px rgba(100, 116, 139, 0.05);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(51, 65, 85, 0.6);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      box-shadow: 0 4px 20px -4px rgba(148, 163, 184, 0.12);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(147, 51, 234, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px -8px rgba(147, 51, 234, 0.12);
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.45; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(1.04); }
+    }
+    .pulse-glow {
+      animation: pulseGlow 6s ease-in-out infinite;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-purple-500 selection:text-white min-h-screen">
+<body class="bg-[#faf9f5] text-slate-800 font-sans antialiased selection:bg-purple-500 selection:text-white min-h-screen relative">
+
+  <!-- Ambient Pastel Glow Effects -->
+  <div class="fixed top-0 left-1/4 w-[460px] h-[460px] bg-purple-200/50 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow"></div>
+  <div class="fixed top-1/3 right-1/4 w-[480px] h-[480px] bg-pink-200/45 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 2s;"></div>
+  <div class="fixed bottom-1/4 left-1/3 w-[420px] h-[420px] bg-indigo-200/40 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 1s;"></div>
+  <div class="fixed bottom-10 right-10 w-[380px] h-[380px] bg-emerald-200/40 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 3s;"></div>
 
   <!-- Header -->
-  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-200/80">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-4">
-        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-purple-400 hover:text-purple-300 font-medium transition group">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-purple-700 hover:text-purple-800 font-medium transition group">
           <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
           </svg>
           Back to Portfolio
         </a>
-        <span class="text-slate-600">|</span>
-        <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-950/80 border border-purple-800 text-purple-300">Generative AI Deep-Dive</span>
+        <span class="text-slate-300">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-purple-50 border border-purple-200 text-purple-800 font-semibold shadow-xs">Generative AI Deep-Dive</span>
       </div>
-      <div class="text-xs font-mono text-slate-400">
+      <div class="text-xs font-mono text-slate-500 hidden sm:block">
         SDXL · LoRA Fine-Tuning · Architectural Synthesis
       </div>
     </div>
@@ -56,79 +91,79 @@
   <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
     <!-- Project Hero Header -->
     <section class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-950/60 border border-purple-500/30 text-xs font-mono text-purple-400">
-        <span class="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-50/90 border border-purple-200 text-xs font-mono text-purple-800 shadow-xs">
+        <span class="w-2 h-2 rounded-full bg-purple-500 animate-pulse"></span>
         Generative AI & Architectural Layouts
       </div>
-      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-        Architectural Floor Plan Synthesis with <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-indigo-300">SDXL & LoRA Fine-Tuning</span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
+        Architectural Floor Plan Synthesis with <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600">SDXL & LoRA Fine-Tuning</span>
       </h1>
-      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+      <p class="text-slate-600 text-base sm:text-lg max-w-3xl leading-relaxed">
         Trained specialized Low-Rank Adaptation (LoRA) models on architectural floor plans using Stable Diffusion XL (SDXL). Synthesizes diverse, production-ready residential layouts with clear color-coded room arrangements, structural wall partitions, door swings, and interior furnishings governed by deterministic generation seeds.
       </p>
     </section>
 
     <!-- Interactive Technology Visualization: Generative Layout Simulator -->
     <section class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
         <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-purple-500/10 text-purple-400 border border-purple-500/20 flex items-center justify-center text-sm font-mono">01</span>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 border border-purple-200 flex items-center justify-center text-sm font-mono font-bold">01</span>
             Interactive Architectural Floor Plan Generator
           </h2>
-          <p class="text-sm text-slate-400">Change generation seeds to explore different room archetypes (1LDK to luxury suites), and adjust LoRA weight and CFG guidance scale.</p>
+          <p class="text-sm text-slate-500 mt-0.5">Change generation seeds to explore different room archetypes (1LDK to luxury suites), and adjust LoRA weight and CFG guidance scale.</p>
         </div>
         <div class="flex flex-wrap items-center gap-3">
-          <button id="randomSeedBtn" class="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-mono text-xs font-semibold transition flex items-center gap-1.5 shadow-md shadow-purple-500/20">
+          <button id="randomSeedBtn" class="px-4 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-mono text-xs font-semibold transition flex items-center gap-1.5 shadow-md shadow-purple-600/20">
             <span>🎲</span> Random Seed
           </button>
         </div>
       </div>
 
       <!-- Controls & Seed Presets Bar -->
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 glass-panel p-4 rounded-xl text-xs font-mono">
-        <div class="md:col-span-3 space-y-1">
-          <label class="text-slate-400 flex justify-between">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-4 glass-card p-4 rounded-xl text-xs font-mono border border-slate-200 bg-white/92 shadow-xs">
+        <div class="md:col-span-3 space-y-1.5">
+          <label class="text-slate-600 font-semibold flex justify-between">
             <span>Generation Seed:</span>
-            <span id="currentSeedDisplay" class="text-purple-300 font-bold">#42</span>
+            <span id="currentSeedDisplay" class="text-purple-700 font-bold">#42</span>
           </label>
           <div class="flex items-center gap-2">
-            <input type="number" id="seedInput" value="42" min="1" max="99999" class="w-full bg-slate-900 border border-slate-700 text-purple-300 px-3 py-1.5 rounded-lg font-bold focus:border-purple-400 outline-none">
+            <input type="number" id="seedInput" value="42" min="1" max="99999" class="w-full bg-slate-50 border border-slate-300 text-purple-700 px-3 py-1.5 rounded-lg font-bold focus:border-purple-500 outline-none">
           </div>
         </div>
 
-        <div class="md:col-span-4 space-y-1">
-          <div class="flex justify-between text-slate-400">
+        <div class="md:col-span-4 space-y-1.5">
+          <div class="flex justify-between text-slate-600 font-semibold">
             <span title="Governs architectural CAD structural fidelity and layout discipline">CFG Guidance Scale:</span>
-            <span id="cfgVal" class="text-purple-400 font-bold">7.5 (Optimal Structural)</span>
+            <span id="cfgVal" class="text-purple-700 font-bold">7.5 (Optimal Structural)</span>
           </div>
-          <input type="range" id="cfgRange" min="1.0" max="15.0" step="0.5" value="7.5" class="w-full accent-purple-400">
+          <input type="range" id="cfgRange" min="1.0" max="15.0" step="0.5" value="7.5" class="w-full accent-purple-600 cursor-pointer">
         </div>
 
-        <div class="md:col-span-5 space-y-1">
-          <div class="flex justify-between text-slate-400">
+        <div class="md:col-span-5 space-y-1.5">
+          <div class="flex justify-between text-slate-600 font-semibold">
             <span title="Controls architectural style transfer strength, floor textures, and interior furnishings">LoRA Model Scale (α):</span>
-            <span id="loraVal" class="text-pink-400 font-bold">0.85 (High Detail)</span>
+            <span id="loraVal" class="text-pink-700 font-bold">0.85 (High Detail)</span>
           </div>
-          <input type="range" id="loraRange" min="0.0" max="1.0" step="0.05" value="0.85" class="w-full accent-pink-400">
+          <input type="range" id="loraRange" min="0.0" max="1.0" step="0.05" value="0.85" class="w-full accent-pink-600 cursor-pointer">
         </div>
 
         <!-- Seed Presets -->
-        <div class="md:col-span-12 flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800 text-[11px]">
-          <span class="text-slate-500">Typology Presets:</span>
-          <button class="preset-btn px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" data-seed="42">
+        <div class="md:col-span-12 flex flex-wrap items-center gap-2 pt-2 border-t border-slate-200/80 text-[11px]">
+          <span class="text-slate-500 font-semibold">Typology Presets:</span>
+          <button class="preset-btn px-2.5 py-1 rounded bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-xs transition" data-seed="42">
             Seed 42 (2LDK Urban Balanced)
           </button>
-          <button class="preset-btn px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" data-seed="108">
+          <button class="preset-btn px-2.5 py-1 rounded bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-xs transition" data-seed="108">
             Seed 108 (3LDK Family Residence)
           </button>
-          <button class="preset-btn px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" data-seed="256">
+          <button class="preset-btn px-2.5 py-1 rounded bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-xs transition" data-seed="256">
             Seed 256 (Open Studio Loft)
           </button>
-          <button class="preset-btn px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" data-seed="582">
+          <button class="preset-btn px-2.5 py-1 rounded bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-xs transition" data-seed="582">
             Seed 582 (Executive Penthouse Suite)
           </button>
-          <button class="preset-btn px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition" data-seed="914">
+          <button class="preset-btn px-2.5 py-1 rounded bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 shadow-xs transition" data-seed="914">
             Seed 914 (Dual-Balcony Villa)
           </button>
         </div>
@@ -136,95 +171,95 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <!-- Interactive Multi-Stage Canvas -->
-        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
-            <span id="planTitle" class="font-bold text-white">Generated 2LDK Urban Layout · Seed #42</span>
-            <span id="genStatusText" class="text-purple-300 font-bold">Inference: SDXL DPM++ 2M SDE · 30 Steps</span>
+        <div class="lg:col-span-8 glass-card rounded-2xl p-6 space-y-4 border border-slate-200 bg-white/92">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-500">
+            <span id="planTitle" class="font-bold text-slate-900">Generated 2LDK Urban Layout · Seed #42</span>
+            <span id="genStatusText" class="text-purple-700 font-bold bg-purple-50 px-2 py-0.5 rounded border border-purple-200">Inference: SDXL DPM++ 2M SDE · 30 Steps</span>
           </div>
 
-          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center shadow-inner">
+          <div class="relative w-full aspect-[16/10] bg-slate-900 rounded-xl overflow-hidden border border-slate-300 flex items-center justify-center shadow-inner">
             <canvas id="planCanvas" width="600" height="380" class="w-full h-full block"></canvas>
           </div>
 
           <!-- Color-Coded Room Legend -->
-          <div class="p-3 bg-slate-900/90 rounded-xl border border-slate-800">
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 shadow-xs">
             <div class="flex items-center justify-between mb-2">
-              <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400">Color-Coded Room Layout Legend:</span>
-              <span class="text-[10px] text-pink-400 font-mono" id="furnishingIndicator">Detailing: High (LoRA α = 0.85)</span>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-slate-500 font-semibold">Color-Coded Room Layout Legend:</span>
+              <span class="text-[10px] text-pink-700 font-mono font-semibold" id="furnishingIndicator">Detailing: High (LoRA α = 0.85)</span>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] font-mono">
               <div class="flex items-center gap-2">
-                <span class="w-3.5 h-3.5 rounded-sm bg-sky-500 border border-sky-300 inline-block"></span>
-                <span class="text-slate-200">Living Room</span>
+                <span class="w-3.5 h-3.5 rounded-sm bg-sky-500 border border-sky-400 inline-block"></span>
+                <span class="text-slate-700">Living Room</span>
               </div>
               <div class="flex items-center gap-2">
-                <span class="w-3.5 h-3.5 rounded-sm bg-amber-500 border border-amber-300 inline-block"></span>
-                <span class="text-slate-200">Kitchen & Dining</span>
+                <span class="w-3.5 h-3.5 rounded-sm bg-amber-500 border border-amber-400 inline-block"></span>
+                <span class="text-slate-700">Kitchen & Dining</span>
               </div>
               <div class="flex items-center gap-2">
-                <span class="w-3.5 h-3.5 rounded-sm bg-purple-500 border border-purple-300 inline-block"></span>
-                <span class="text-slate-200">Master Bedroom</span>
+                <span class="w-3.5 h-3.5 rounded-sm bg-purple-500 border border-purple-400 inline-block"></span>
+                <span class="text-slate-700">Master Bedroom</span>
               </div>
               <div class="flex items-center gap-2">
-                <span class="w-3.5 h-3.5 rounded-sm bg-pink-500 border border-pink-300 inline-block"></span>
-                <span class="text-slate-200">Bedroom 2 / Kids</span>
+                <span class="w-3.5 h-3.5 rounded-sm bg-pink-500 border border-pink-400 inline-block"></span>
+                <span class="text-slate-700">Bedroom 2 / Kids</span>
               </div>
               <div class="flex items-center gap-2">
-                <span class="w-3.5 h-3.5 rounded-sm bg-emerald-500 border border-emerald-300 inline-block"></span>
-                <span class="text-slate-200">Bathroom / Ensuite</span>
+                <span class="w-3.5 h-3.5 rounded-sm bg-emerald-500 border border-emerald-400 inline-block"></span>
+                <span class="text-slate-700">Bathroom / Ensuite</span>
               </div>
               <div class="flex items-center gap-2">
-                <span class="w-3.5 h-3.5 rounded-sm bg-blue-500 border border-blue-300 inline-block"></span>
-                <span class="text-slate-200">Home Office / Study</span>
+                <span class="w-3.5 h-3.5 rounded-sm bg-blue-500 border border-blue-400 inline-block"></span>
+                <span class="text-slate-700">Home Office / Study</span>
               </div>
               <div class="flex items-center gap-2">
-                <span class="w-3.5 h-3.5 rounded-sm bg-rose-500 border border-rose-300 inline-block"></span>
-                <span class="text-slate-200">Balcony / Terrace</span>
+                <span class="w-3.5 h-3.5 rounded-sm bg-rose-500 border border-rose-400 inline-block"></span>
+                <span class="text-slate-700">Balcony / Terrace</span>
               </div>
               <div class="flex items-center gap-2">
-                <span class="w-3.5 h-3.5 rounded-sm bg-slate-500 border border-slate-300 inline-block"></span>
-                <span class="text-slate-200">Corridor / Foyer</span>
+                <span class="w-3.5 h-3.5 rounded-sm bg-slate-500 border border-slate-400 inline-block"></span>
+                <span class="text-slate-700">Corridor / Foyer</span>
               </div>
             </div>
           </div>
 
-          <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono">
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Total Floor Area</div>
-              <div id="floorAreaVal" class="text-purple-400 font-bold text-sm mt-0.5">84.2 m²</div>
+          <div class="grid grid-cols-4 gap-2.5 pt-2 text-center text-xs font-mono">
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Total Floor Area</div>
+              <div id="floorAreaVal" class="text-purple-700 font-bold text-sm mt-0.5">84.2 m²</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Room Count</div>
-              <div id="roomCountVal" class="text-cyan-400 font-bold text-sm mt-0.5">6 Rooms</div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Room Count</div>
+              <div id="roomCountVal" class="text-sky-700 font-bold text-sm mt-0.5">6 Rooms</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Spatial Consistency</div>
-              <div id="spatialScoreVal" class="text-emerald-400 font-bold text-sm mt-0.5">98.2%</div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Spatial Consistency</div>
+              <div id="spatialScoreVal" class="text-emerald-700 font-bold text-sm mt-0.5">98.2%</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Adjacency Graph</div>
-              <div id="roomLegalVal" class="text-emerald-400 font-bold text-sm mt-0.5">100% Legal</div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Adjacency Graph</div>
+              <div id="roomLegalVal" class="text-emerald-700 font-bold text-sm mt-0.5">100% Legal</div>
             </div>
           </div>
         </div>
 
         <!-- Tech Details Sidebar -->
-        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">SDXL + LoRA Architecture</h3>
+        <div class="lg:col-span-4 glass-card rounded-2xl p-6 space-y-4 text-xs text-slate-600 leading-relaxed border border-slate-200 bg-white/92">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-900 font-mono">SDXL + LoRA Architecture</h3>
           <p>
             Standard text-to-image base models lack knowledge of architectural conventions and CAD drafting standards. By training custom LoRA adapters on architectural floor plans, the model learns realistic spatial proportions, partition boundaries, and functional room adjacencies:
           </p>
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-purple-400 font-bold">1. SDXL Latent Diffusion Backbone:</div>
-            <p class="text-slate-400 text-[10px]">Operates in a 128x128 latent space compressed via VAE (8x downsampling), enabling high-fidelity architectural layout generation at 1024x1024 resolution with crisp structural lines.</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-purple-700 font-bold">1. SDXL Latent Diffusion Backbone:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Operates in a 128x128 latent space compressed via VAE (8x downsampling), enabling high-fidelity architectural layout generation at 1024x1024 resolution with crisp structural lines.</p>
           </div>
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-pink-400 font-bold">2. LoRA Fine-Tuning (Rank r=16, α=32):</div>
-            <p class="text-slate-400 text-[10px]">Trained low-rank decomposition matrices targeting cross-attention projection layers (Wq, Wv) on thousands of curated architectural floor plans. Learns architectural conventions, standard room dimensions, and functional interior arrangements.</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-pink-700 font-bold">2. LoRA Fine-Tuning (Rank r=16, α=32):</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Trained low-rank decomposition matrices targeting cross-attention projection layers (Wq, Wv) on thousands of curated architectural floor plans. Learns architectural conventions, standard room dimensions, and functional interior arrangements.</p>
           </div>
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-cyan-400 font-bold">3. Seed-Deterministic Latent Sampling:</div>
-            <p class="text-slate-400 text-[10px]">The initial Gaussian noise latent tensor ε ~ N(0, I) is keyed deterministically by seed number, generating distinct layout typologies (studio, 2LDK, multi-bed suite, penthouse) reliably and repeatably.</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-sky-700 font-bold">3. Seed-Deterministic Latent Sampling:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">The initial Gaussian noise latent tensor ε ~ N(0, I) is keyed deterministically by seed number, generating distinct layout typologies (studio, 2LDK, multi-bed suite, penthouse) reliably and repeatably.</p>
           </div>
         </div>
       </div>
@@ -232,32 +267,32 @@
 
     <!-- Algorithmic Verification Section -->
     <section class="space-y-6">
-      <div class="border-b border-slate-800 pb-4">
-        <h2 class="text-xl font-bold text-white flex items-center gap-2">
-          <span class="w-7 h-7 rounded-lg bg-pink-500/10 text-pink-400 border border-pink-500/20 flex items-center justify-center text-sm font-mono">02</span>
+      <div class="border-b border-slate-200/80 pb-4">
+        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+          <span class="w-7 h-7 rounded-lg bg-pink-50 text-pink-700 border border-pink-200 flex items-center justify-center text-sm font-mono font-bold">02</span>
           Architectural Layout Analysis & Verification Pipeline
         </h2>
-        <p class="text-sm text-slate-400">Automated post-generation algorithmic validation ensuring architectural compliance and habitable circulation.</p>
+        <p class="text-sm text-slate-500 mt-0.5">Automated post-generation algorithmic validation ensuring architectural compliance and habitable circulation.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
-        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-purple-500">
-          <h4 class="text-white font-bold text-sm">Room Boundary Segmentation</h4>
-          <p class="text-slate-400 leading-relaxed">
+        <div class="glass-card p-5 rounded-xl space-y-2 border-t-4 border-purple-500 bg-white/92 shadow-xs">
+          <h4 class="text-slate-900 font-bold text-sm">Room Boundary Segmentation</h4>
+          <p class="text-slate-600 leading-relaxed">
             Extracts wall contours and partition polygons using adaptive thresholding and morphological closing operators in OpenCV to isolate individual room enclosures.
           </p>
         </div>
 
-        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-pink-500">
-          <h4 class="text-white font-bold text-sm">Polygon IoU Matching</h4>
-          <p class="text-slate-400 leading-relaxed">
+        <div class="glass-card p-5 rounded-xl space-y-2 border-t-4 border-pink-500 bg-white/92 shadow-xs">
+          <h4 class="text-slate-900 font-bold text-sm">Polygon IoU Matching</h4>
+          <p class="text-slate-600 leading-relaxed">
             Computes geometric Intersection-over-Union between generated wall partitions and architectural target specifications to verify spatial proportion integrity.
           </p>
         </div>
 
-        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-indigo-500">
-          <h4 class="text-white font-bold text-sm">Adjacency Graph Check</h4>
-          <p class="text-slate-400 leading-relaxed">
+        <div class="glass-card p-5 rounded-xl space-y-2 border-t-4 border-indigo-500 bg-white/92 shadow-xs">
+          <h4 class="text-slate-900 font-bold text-sm">Adjacency Graph Check</h4>
+          <p class="text-slate-600 leading-relaxed">
             Constructs a planar graph of room connections (e.g., verifying that bathrooms and bedrooms have proper circulation paths) to prevent nonsensical layouts.
           </p>
         </div>
@@ -265,11 +300,11 @@
     </section>
 
     <!-- Bottom Navigation -->
-    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <a href="cad-nesting.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+    <div class="pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="cad-nesting.html" class="text-sm text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
         ← Previous: CAD 2D Nesting Engine
       </a>
-      <a href="tem-metrology.html" class="px-5 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-purple-500/20">
+      <a href="tem-metrology.html" class="px-5 py-2.5 rounded-lg bg-purple-600 hover:bg-purple-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-md shadow-purple-600/20">
         Next Project: TEM Semiconductor Metrology →
       </a>
     </div>

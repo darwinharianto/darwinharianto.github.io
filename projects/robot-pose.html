@@ -17,8 +17,17 @@
             mono: ['"Fira Code"', 'monospace'],
           },
           colors: {
-            brand: '#3b82f6',
-            accent: '#06b6d4',
+            brand: '#0284c7',
+            accent: '#4f46e5',
+            pastel: {
+              canvas: '#faf9f5',
+              card: 'rgba(255, 255, 255, 0.92)',
+              border: 'rgba(226, 232, 240, 0.85)',
+              sky: '#e0f2fe',
+              indigo: '#e0e7ff',
+              emerald: '#dcfce7',
+              rose: '#ffe4e6',
+            }
           }
         }
       }
@@ -26,9 +35,29 @@
   </script>
   <style>
     .glass-panel {
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 4px 20px -2px rgba(100, 116, 139, 0.05);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(51, 65, 85, 0.6);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      box-shadow: 0 4px 20px -4px rgba(148, 163, 184, 0.12);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(2, 132, 199, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px -8px rgba(2, 132, 199, 0.12);
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.45; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(1.04); }
+    }
+    .pulse-glow {
+      animation: pulseGlow 6s ease-in-out infinite;
     }
     @keyframes blink {
       0%, 100% { opacity: 1; }
@@ -39,22 +68,28 @@
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen">
+<body class="bg-[#faf9f5] text-slate-800 font-sans antialiased selection:bg-sky-500 selection:text-white min-h-screen relative">
+
+  <!-- Ambient Pastel Glow Effects -->
+  <div class="fixed top-0 left-1/4 w-[460px] h-[460px] bg-sky-200/50 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow"></div>
+  <div class="fixed top-1/3 right-1/4 w-[480px] h-[480px] bg-indigo-200/55 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 2s;"></div>
+  <div class="fixed bottom-1/4 left-1/3 w-[420px] h-[420px] bg-emerald-200/40 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 1s;"></div>
+  <div class="fixed bottom-10 right-10 w-[380px] h-[380px] bg-rose-200/40 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 3s;"></div>
 
   <!-- Header -->
-  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-200/80">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-4">
-        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition group">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-sky-700 hover:text-sky-800 font-medium transition group">
           <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
           </svg>
           Back to Portfolio
         </a>
-        <span class="text-slate-600">|</span>
-        <span class="text-xs font-mono px-2.5 py-1 rounded bg-blue-950/80 border border-blue-800 text-blue-300">Robotics 6D Vision</span>
+        <span class="text-slate-300">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-sky-50 border border-sky-200 text-sky-800 font-semibold shadow-xs">Robotics 6D Vision</span>
       </div>
-      <div class="text-xs font-mono text-slate-400">
+      <div class="text-xs font-mono text-slate-500 hidden sm:block">
         Detectron2 · Custom PVNet · SolvePnP
       </div>
     </div>
@@ -63,129 +98,129 @@
   <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
     <!-- Project Hero Header -->
     <section class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-950/60 border border-blue-500/30 text-xs font-mono text-cyan-400">
-        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-sky-50/90 border border-sky-200 text-xs font-mono text-sky-800 shadow-xs">
+        <span class="w-2 h-2 rounded-full bg-sky-500 animate-pulse"></span>
         Lead Engineer · 4-Person Engineering Team
       </div>
-      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-        Hospital Autonomous Robot <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400">6D Pose Estimation via CCTV</span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
+        Hospital Autonomous Robot <span class="text-transparent bg-clip-text bg-gradient-to-r from-sky-600 via-indigo-600 to-emerald-600">6D Pose Estimation via CCTV</span>
       </h1>
-      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+      <p class="text-slate-600 text-base sm:text-lg max-w-3xl leading-relaxed">
         Estimated 6-DoF position and orientation ($[X,Y,Z, \text{Roll},\text{Pitch},\text{Yaw}]$) of autonomous mobile robots in hospital hallways from normal overhead ceiling CCTV camera feeds. Leveraged synthetic 3D CAD data, custom vector-field keypoint voting (PVNet), intrinsic/extrinsic camera calibration ($K, [R|t]$), and SolvePnP to achieve &lt; 5.0 cm localization accuracy.
       </p>
     </section>
 
     <!-- Interactive Technology Visualization: CCTV Hospital Hallway 6D Pose -->
     <section class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
         <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center text-sm font-mono">01</span>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-sky-50 text-sky-700 border border-sky-200 flex items-center justify-center text-sm font-mono font-bold">01</span>
             Hospital CCTV Feed: 6D Pose Registration & Keypoint Voting
           </h2>
-          <p class="text-sm text-slate-400">Simulate a ceiling-mounted CCTV camera in a hospital corridor observing an AGV cube robot (split white-top / navy-bottom).</p>
+          <p class="text-sm text-slate-500 mt-0.5">Simulate a ceiling-mounted CCTV camera in a hospital corridor observing an AGV cube robot (split white-top / navy-bottom).</p>
         </div>
-        <div class="flex flex-wrap items-center gap-3 text-xs font-mono">
-          <button id="togglePatrolBtn" class="px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold transition flex items-center gap-1.5 shadow-md shadow-blue-500/20">
+        <div class="flex flex-wrap items-center gap-2.5 text-xs font-mono">
+          <button id="togglePatrolBtn" class="px-3 py-1.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold transition flex items-center gap-1.5 shadow-md shadow-sky-600/20">
             <span>▶</span> Auto Patrol
           </button>
-          <button id="toggleVectorsBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/30 transition">
+          <button id="toggleVectorsBtn" class="px-3 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100/80 text-sky-800 border border-sky-200 font-semibold shadow-xs transition">
             PVNet Vectors: ON
           </button>
-          <button id="toggleWireframeBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 transition">
+          <button id="toggleWireframeBtn" class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100/80 text-emerald-800 border border-emerald-200 font-semibold shadow-xs transition">
             3D Box: ON
           </button>
         </div>
       </div>
 
       <!-- Controls Bar -->
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 glass-panel p-4 rounded-xl text-xs font-mono">
-        <div class="space-y-1">
-          <div class="flex justify-between text-slate-400">
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 glass-card p-4 rounded-xl text-xs font-mono border border-slate-200 bg-white/92 shadow-xs">
+        <div class="space-y-1.5">
+          <div class="flex justify-between text-slate-600 font-semibold">
             <span>Robot Yaw (Heading θ):</span>
-            <span id="robotYawVal" class="text-cyan-400 font-bold">+20°</span>
+            <span id="robotYawVal" class="text-sky-700 font-bold">+20°</span>
           </div>
-          <input type="range" id="robotYawRange" min="-180" max="180" step="5" value="20" class="accent-cyan-400 w-full">
+          <input type="range" id="robotYawRange" min="-180" max="180" step="5" value="20" class="accent-sky-600 w-full cursor-pointer">
         </div>
 
-        <div class="space-y-1">
-          <div class="flex justify-between text-slate-400">
+        <div class="space-y-1.5">
+          <div class="flex justify-between text-slate-600 font-semibold">
             <span>Hallway Distance (Z):</span>
-            <span id="robotDistVal" class="text-blue-400 font-bold">3.2 m</span>
+            <span id="robotDistVal" class="text-indigo-700 font-bold">3.2 m</span>
           </div>
-          <input type="range" id="robotDistRange" min="1.8" max="6.5" step="0.1" value="3.2" class="accent-blue-400 w-full">
+          <input type="range" id="robotDistRange" min="1.8" max="6.5" step="0.1" value="3.2" class="accent-indigo-600 w-full cursor-pointer">
         </div>
 
-        <div class="space-y-1">
-          <div class="flex justify-between text-slate-400">
+        <div class="space-y-1.5">
+          <div class="flex justify-between text-slate-600 font-semibold">
             <span>Corridor Lane Offset (X):</span>
-            <span id="robotLaneVal" class="text-emerald-400 font-bold">+0.15 m</span>
+            <span id="robotLaneVal" class="text-emerald-700 font-bold">+0.15 m</span>
           </div>
-          <input type="range" id="robotLaneRange" min="-0.7" max="0.7" step="0.05" value="0.15" class="accent-emerald-400 w-full">
+          <input type="range" id="robotLaneRange" min="-0.7" max="0.7" step="0.05" value="0.15" class="accent-emerald-600 w-full cursor-pointer">
         </div>
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         <!-- Interactive Canvas -->
-        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+        <div class="lg:col-span-8 glass-card rounded-2xl p-6 space-y-4 border border-slate-200 bg-white/92">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-500">
             <span class="flex items-center gap-2">
               <span class="w-2.5 h-2.5 rounded-full bg-rose-500 rec-blink inline-block"></span>
-              <span class="text-white font-bold">CCTV-04 [HOSPITAL 2F WEST HALLWAY]</span>
+              <span class="text-slate-800 font-bold">CCTV-04 [HOSPITAL 2F WEST HALLWAY]</span>
               <span>· Lens Pitch: 24°</span>
             </span>
-            <span id="poseAccuracyText" class="text-emerald-400 font-bold">Position Error: 2.7 cm (&lt; 5.0 cm Target)</span>
+            <span id="poseAccuracyText" class="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Position Error: 2.7 cm (&lt; 5.0 cm Target)</span>
           </div>
 
-          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center shadow-inner">
+          <div class="relative w-full aspect-[16/10] bg-slate-900 rounded-xl overflow-hidden border border-slate-300 flex items-center justify-center shadow-inner">
             <canvas id="poseCanvas" width="640" height="400" class="w-full h-full block"></canvas>
           </div>
 
-          <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono">
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">3D Position Error</div>
-              <div id="transErrVal" class="text-emerald-400 font-bold text-sm mt-0.5">2.7 cm</div>
+          <div class="grid grid-cols-4 gap-2.5 pt-2 text-center text-xs font-mono">
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">3D Position Error</div>
+              <div id="transErrVal" class="text-emerald-700 font-bold text-sm mt-0.5">2.7 cm</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Rotation Error</div>
-              <div id="rotErrVal" class="text-cyan-400 font-bold text-sm mt-0.5">1.3°</div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Rotation Error</div>
+              <div id="rotErrVal" class="text-sky-700 font-bold text-sm mt-0.5">1.3°</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">SolvePnP Inliers</div>
-              <div class="text-emerald-400 font-bold text-sm mt-0.5">8 / 8 Keypoints</div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">SolvePnP Inliers</div>
+              <div class="text-teal-700 font-bold text-sm mt-0.5">8 / 8 Keypoints</div>
             </div>
-            <div class="p-2.5 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Inference Speed</div>
-              <div class="text-purple-400 font-bold text-sm mt-0.5">38 FPS</div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Inference Speed</div>
+              <div class="text-indigo-700 font-bold text-sm mt-0.5">38 FPS</div>
             </div>
           </div>
         </div>
 
         <!-- Tech Details Sidebar -->
-        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">Technical Architecture & Stack</h3>
+        <div class="lg:col-span-4 glass-card rounded-2xl p-6 space-y-4 text-xs text-slate-600 leading-relaxed border border-slate-200 bg-white/92">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-900 font-mono">Technical Architecture & Stack</h3>
           
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-cyan-400 font-bold">1. Detectron2 + Custom PVNet Head:</div>
-            <p class="text-slate-400 text-[10px]">Predicts semantic segmentation masks and pixel-wise 2D unit vector fields that vote for the 8 corner vertices of the cubic AGV via RANSAC voting, maintaining robustness against obstacle occlusions in busy hospital corridors.</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-sky-700 font-bold">1. Detectron2 + Custom PVNet Head:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Predicts semantic segmentation masks and pixel-wise 2D unit vector fields that vote for the 8 corner vertices of the cubic AGV via RANSAC voting, maintaining robustness against obstacle occlusions in busy hospital corridors.</p>
           </div>
 
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-blue-400 font-bold">2. Camera Calibration & SolvePnP:</div>
-            <p class="text-slate-400 text-[10px]">Using intrinsic camera parameters ($f_x, f_y, c_x, c_y$) from CCTV calibration and 2D-3D keypoint correspondences, recovers 6-DoF rigid transformation $[R|t]$ via Levenberg-Marquardt PnP optimization:</p>
-            <div class="text-slate-400 text-[9px] bg-slate-950 p-1.5 rounded border border-slate-800">
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-indigo-700 font-bold">2. Camera Calibration & SolvePnP:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Using intrinsic camera parameters ($f_x, f_y, c_x, c_y$) from CCTV calibration and 2D-3D keypoint correspondences, recovers 6-DoF rigid transformation $[R|t]$ via Levenberg-Marquardt PnP optimization:</p>
+            <div class="text-slate-700 text-[9px] bg-white p-1.5 rounded border border-slate-200 font-mono">
               s · [u, v, 1]ᵀ = K · [R | t] · [X, Y, Z, 1]ᵀ
             </div>
           </div>
 
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-emerald-400 font-bold">3. Synthetic CAD Dataset & Domain Randomization:</div>
-            <p class="text-slate-400 text-[10px]">Synthesized 50k+ hospital hallway scenes featuring varying lighting reflections on linoleum floors, shadows, patient gurneys, and camera angles to train PVNet without physical robot manual labeling.</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-emerald-700 font-bold">3. Synthetic CAD Dataset:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Synthesized 50k+ hospital hallway scenes featuring varying lighting reflections on linoleum floors, shadows, patient gurneys, and camera angles to train PVNet without physical robot manual labeling.</p>
           </div>
 
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-purple-400 font-bold">4. Real-world Verification:</div>
-            <p class="text-slate-400 text-[10px]">Tested on live physical AGVs operating under real hospital lighting. Exceeded performance spec by reducing position error to &lt; 5 cm (achieved ~2.7 cm).</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-purple-700 font-bold">4. Real-world Verification:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Tested on live physical AGVs operating under real hospital lighting. Exceeded performance spec by reducing position error to &lt; 5 cm (achieved ~2.7 cm).</p>
           </div>
         </div>
       </div>
@@ -193,32 +228,32 @@
 
     <!-- Results & Impact Section -->
     <section class="space-y-6">
-      <div class="border-b border-slate-800 pb-4">
-        <h2 class="text-xl font-bold text-white flex items-center gap-2">
-          <span class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-sm font-mono">02</span>
+      <div class="border-b border-slate-200/80 pb-4">
+        <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+          <span class="w-7 h-7 rounded-lg bg-sky-50 text-sky-700 border border-sky-200 flex items-center justify-center text-sm font-mono font-bold">02</span>
           Hardware Deployment & Fleet Impact
         </h2>
-        <p class="text-sm text-slate-400">Validated on mobile robotics fleets across clinical hallway environments.</p>
+        <p class="text-sm text-slate-500 mt-0.5">Validated on mobile robotics fleets across clinical hallway environments.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
-        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-cyan-400">
-          <h4 class="text-white font-bold text-sm">Sub-5cm Precision Spec</h4>
-          <p class="text-slate-400 leading-relaxed">
+        <div class="glass-card p-5 rounded-xl space-y-2 border-t-4 border-sky-500 bg-white/92 shadow-xs">
+          <h4 class="text-slate-900 font-bold text-sm">Sub-5cm Precision Spec</h4>
+          <p class="text-slate-600 leading-relaxed">
             Achieved average 3D translation error of <strong>2.7 cm</strong> and orientation error under <strong>1.5°</strong>, enabling precise automatic door triggering and elevator docking.
           </p>
         </div>
 
-        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-blue-400">
-          <h4 class="text-white font-bold text-sm">38+ FPS Real-Time Inference</h4>
-          <p class="text-slate-400 leading-relaxed">
+        <div class="glass-card p-5 rounded-xl space-y-2 border-t-4 border-indigo-500 bg-white/92 shadow-xs">
+          <h4 class="text-slate-900 font-bold text-sm">38+ FPS Real-Time Inference</h4>
+          <p class="text-slate-600 leading-relaxed">
             Optimized the PVNet voting stage with vectorized CUDA kernels and TensorRT INT8 quantization, accelerating inference from 14 FPS to <strong>38 FPS</strong>.
           </p>
         </div>
 
-        <div class="glass-panel p-5 rounded-xl space-y-2 border-t-2 border-emerald-400">
-          <h4 class="text-white font-bold text-sm">Occlusion Resilience</h4>
-          <p class="text-slate-400 leading-relaxed">
+        <div class="glass-card p-5 rounded-xl space-y-2 border-t-4 border-emerald-500 bg-white/92 shadow-xs">
+          <h4 class="text-slate-900 font-bold text-sm">Occlusion Resilience</h4>
+          <p class="text-slate-600 leading-relaxed">
             Because every pixel votes for keypoint locations via direction vectors, the robot's pose was reliably estimated even when pedestrians or medical carts occluded 40% of the body.
           </p>
         </div>
@@ -226,11 +261,11 @@
     </section>
 
     <!-- Bottom Navigation -->
-    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <a href="tem-metrology.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+    <div class="pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="tem-metrology.html" class="text-sm text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
         ← Previous: TEM Semiconductor Metrology
       </a>
-      <a href="excavator-automation.html" class="px-5 py-2.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-cyan-500/20">
+      <a href="excavator-automation.html" class="px-5 py-2.5 rounded-lg bg-sky-600 hover:bg-sky-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-md shadow-sky-600/20">
         Next Project: Autonomous Excavator & Digital Twin →
       </a>
     </div>
@@ -265,8 +300,8 @@
       showVectors = !showVectors;
       toggleVectorsBtn.textContent = `PVNet Vectors: ${showVectors ? 'ON' : 'OFF'}`;
       toggleVectorsBtn.className = showVectors
-        ? 'px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-cyan-300 border border-cyan-500/30 transition'
-        : 'px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-500 border border-slate-700 transition';
+        ? 'px-3 py-1.5 rounded-lg bg-sky-50 hover:bg-sky-100/80 text-sky-800 border border-sky-300 font-semibold shadow-xs transition'
+        : 'px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-slate-600 border border-slate-200 shadow-xs transition';
       renderScene();
     });
 
@@ -274,8 +309,8 @@
       showWireframe = !showWireframe;
       toggleWireframeBtn.textContent = `3D Box: ${showWireframe ? 'ON' : 'OFF'}`;
       toggleWireframeBtn.className = showWireframe
-        ? 'px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-300 border border-emerald-500/30 transition'
-        : 'px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-500 border border-slate-700 transition';
+        ? 'px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100/80 text-emerald-800 border border-emerald-300 font-semibold shadow-xs transition'
+        : 'px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-slate-600 border border-slate-200 shadow-xs transition';
       renderScene();
     });
 

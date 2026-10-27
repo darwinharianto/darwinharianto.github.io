@@ -17,8 +17,17 @@
             mono: ['"Fira Code"', 'monospace'],
           },
           colors: {
-            brand: '#f59e0b',
-            accent: '#06b6d4',
+            brand: '#d97706',
+            accent: '#0284c7',
+            pastel: {
+              canvas: '#faf9f5',
+              card: 'rgba(255, 255, 255, 0.92)',
+              border: 'rgba(226, 232, 240, 0.85)',
+              amber: '#fef3c7',
+              sky: '#e0f2fe',
+              emerald: '#dcfce7',
+              rose: '#ffe4e6',
+            }
           }
         }
       }
@@ -26,28 +35,54 @@
   </script>
   <style>
     .glass-panel {
-      background: rgba(15, 23, 42, 0.75);
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 4px 20px -2px rgba(100, 116, 139, 0.05);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(12px);
-      border: 1px solid rgba(51, 65, 85, 0.6);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      box-shadow: 0 4px 20px -4px rgba(148, 163, 184, 0.12);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(217, 119, 6, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 36px -8px rgba(217, 119, 6, 0.12);
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.45; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(1.04); }
+    }
+    .pulse-glow {
+      animation: pulseGlow 6s ease-in-out infinite;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-amber-500 selection:text-white min-h-screen">
+<body class="bg-[#faf9f5] text-slate-800 font-sans antialiased selection:bg-amber-500 selection:text-white min-h-screen relative">
+
+  <!-- Ambient Pastel Glow Effects -->
+  <div class="fixed top-0 left-1/4 w-[460px] h-[460px] bg-amber-200/50 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow"></div>
+  <div class="fixed top-1/3 right-1/4 w-[480px] h-[480px] bg-sky-200/55 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 2s;"></div>
+  <div class="fixed bottom-1/4 left-1/3 w-[420px] h-[420px] bg-emerald-200/40 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 1s;"></div>
+  <div class="fixed bottom-10 right-10 w-[380px] h-[380px] bg-rose-200/40 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 3s;"></div>
 
   <!-- Header -->
-  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-200/80">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-4">
-        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-amber-400 hover:text-amber-300 font-medium transition group">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-amber-700 hover:text-amber-800 font-medium transition group">
           <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
           </svg>
           Back to Portfolio
         </a>
-        <span class="text-slate-600">|</span>
-        <span class="text-xs font-mono px-2.5 py-1 rounded bg-amber-950/80 border border-amber-800 text-amber-300">Robotics & Digital Twins</span>
+        <span class="text-slate-300">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded-md bg-amber-50 border border-amber-200 text-amber-800 font-semibold shadow-xs">Robotics & Digital Twins</span>
       </div>
-      <div class="text-xs font-mono text-slate-400">
+      <div class="text-xs font-mono text-slate-500 hidden sm:block">
         3D LiDAR · Unity · Python gRPC · ML Control
       </div>
     </div>
@@ -56,39 +91,39 @@
   <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
     <!-- Project Hero Header -->
     <section class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-950/60 border border-amber-500/30 text-xs font-mono text-amber-400">
-        <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-50/90 border border-amber-200 text-xs font-mono text-amber-800 shadow-xs">
+        <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
         Lead Engineer · 4-Person Japanese Engineering Team
       </div>
-      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-        Autonomous Excavator (バックホウ) <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-cyan-400">Automation & Unity Digital Twin</span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-[1.15]">
+        Autonomous Excavator (バックホウ) <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-indigo-600">Automation & Unity Digital Twin</span>
       </h1>
-      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+      <p class="text-slate-600 text-base sm:text-lg max-w-3xl leading-relaxed">
         Engineered multi-modal 3D LiDAR & sensor fusion, Unity 3D digital twin physical simulation, high-frequency Python gRPC machine controllers, and machine learning autonomous excavation algorithms.
       </p>
     </section>
 
     <!-- Interactive Technology Visualization: Excavator Digital Twin & LiDAR Simulation -->
     <section class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
         <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-sm font-mono">01</span>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-amber-50 text-amber-700 border border-amber-200 flex items-center justify-center text-sm font-mono font-bold">01</span>
             Interactive Kinematic Digital Twin & Dirt Pile Scooping Simulator
           </h2>
-          <p class="text-sm text-slate-400">Simulate scooping a realistic dirt pile with terrain deformation, bucket payload, and real-time 3D LiDAR point cloud updates.</p>
+          <p class="text-sm text-slate-500 mt-0.5">Simulate scooping a realistic dirt pile with terrain deformation, bucket payload, and real-time 3D LiDAR point cloud updates.</p>
         </div>
-        <div class="flex flex-wrap items-center gap-3">
-          <button id="autoDigBtn" class="px-4 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-xs font-mono text-white font-semibold shadow-lg shadow-amber-500/20 transition flex items-center gap-1.5">
+        <div class="flex flex-wrap items-center gap-2.5">
+          <button id="autoDigBtn" class="px-4 py-1.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-xs font-mono text-white font-semibold shadow-md shadow-amber-600/20 transition flex items-center gap-1.5">
             <span>⚡ Run ML Auto-Dig Cycle</span>
           </button>
-          <button id="dumpBucketBtn" class="px-3 py-1.5 rounded-lg bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-700/60 text-xs font-mono text-emerald-300 transition">
+          <button id="dumpBucketBtn" class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100/80 border border-emerald-200 text-xs font-mono text-emerald-800 font-semibold shadow-xs transition">
             Dump Bucket
           </button>
-          <button id="resetPileBtn" class="px-3 py-1.5 rounded-lg bg-amber-950/80 hover:bg-amber-900 border border-amber-700/60 text-xs font-mono text-amber-300 transition">
+          <button id="resetPileBtn" class="px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100/80 border border-amber-200 text-xs font-mono text-amber-800 font-semibold shadow-xs transition">
             Restore Dirt Pile
           </button>
-          <button id="resetJointsBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300 border border-slate-700 transition">
+          <button id="resetJointsBtn" class="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-xs font-mono text-slate-700 border border-slate-200 shadow-xs transition">
             Reset Pose
           </button>
         </div>
@@ -96,94 +131,94 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         <!-- Digital Twin Kinematic Canvas -->
-        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
-          <div class="flex items-center justify-between text-xs font-mono text-slate-400">
+        <div class="lg:col-span-8 glass-card rounded-2xl p-6 space-y-4 border border-slate-200 bg-white/92">
+          <div class="flex items-center justify-between text-xs font-mono text-slate-500">
             <span>Unity Digital Twin Kinematics & 3D LiDAR Point Cloud Terrain</span>
-            <span id="grpcStatusText" class="text-amber-300 font-bold">gRPC Stream: CONNECTED (12ms RTT)</span>
+            <span id="grpcStatusText" class="text-amber-800 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-200">gRPC Stream: CONNECTED (12ms RTT)</span>
           </div>
 
-          <div class="relative w-full aspect-[16/10] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center">
+          <div class="relative w-full aspect-[16/10] bg-slate-900 rounded-xl overflow-hidden border border-slate-300 shadow-inner flex items-center justify-center">
             <canvas id="excavatorCanvas" width="600" height="380" class="w-full h-full block"></canvas>
           </div>
 
           <!-- Interactive Joint Sliders -->
-          <div class="grid grid-cols-3 gap-4 pt-1 text-xs font-mono">
-            <div>
+          <div class="grid grid-cols-3 gap-3 pt-1 text-xs font-mono">
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
               <div class="flex justify-between mb-1">
-                <span class="text-slate-400">Boom Angle:</span>
-                <span id="boomAngleVal" class="text-amber-400 font-bold">-25°</span>
+                <span class="text-slate-600 font-semibold">Boom Angle:</span>
+                <span id="boomAngleVal" class="text-amber-700 font-bold">-25°</span>
               </div>
-              <input type="range" id="boomRange" min="-50" max="15" step="1" value="-25" class="w-full accent-amber-400">
+              <input type="range" id="boomRange" min="-50" max="15" step="1" value="-25" class="w-full accent-amber-600 cursor-pointer">
             </div>
-            <div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
               <div class="flex justify-between mb-1">
-                <span class="text-slate-400">Arm Pitch:</span>
-                <span id="armPitchVal" class="text-cyan-400 font-bold">+40°</span>
+                <span class="text-slate-600 font-semibold">Arm Pitch:</span>
+                <span id="armPitchVal" class="text-sky-700 font-bold">+40°</span>
               </div>
-              <input type="range" id="armRange" min="10" max="95" step="1" value="40" class="w-full accent-cyan-400">
+              <input type="range" id="armRange" min="10" max="95" step="1" value="40" class="w-full accent-sky-600 cursor-pointer">
             </div>
-            <div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
               <div class="flex justify-between mb-1">
-                <span class="text-slate-400">Bucket Curl:</span>
-                <span id="bucketCurlVal" class="text-emerald-400 font-bold">+15°</span>
+                <span class="text-slate-600 font-semibold">Bucket Curl:</span>
+                <span id="bucketCurlVal" class="text-emerald-700 font-bold">+15°</span>
               </div>
-              <input type="range" id="bucketRange" min="-45" max="65" step="1" value="15" class="w-full accent-emerald-400">
+              <input type="range" id="bucketRange" min="-45" max="65" step="1" value="15" class="w-full accent-emerald-600 cursor-pointer">
             </div>
           </div>
 
-          <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono border-t border-slate-800">
-            <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Bucket Fill Factor</div>
-              <div id="bucketLoadVal" class="text-amber-400 font-bold text-sm mt-0.5">0% Empty</div>
+          <div class="grid grid-cols-4 gap-2 pt-2 text-center text-xs font-mono border-t border-slate-200/80">
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Bucket Fill Factor</div>
+              <div id="bucketLoadVal" class="text-amber-700 font-bold text-sm mt-0.5">0% Empty</div>
             </div>
-            <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Soil Excavated</div>
-              <div id="excavatedVolVal" class="text-emerald-400 font-bold text-sm mt-0.5">0.00 m³</div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Soil Excavated</div>
+              <div id="excavatedVolVal" class="text-emerald-700 font-bold text-sm mt-0.5">0.00 m³</div>
             </div>
-            <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">Hydraulic Pressure</div>
-              <div id="pressureVal" class="text-cyan-400 font-bold text-sm mt-0.5">14.2 MPa</div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">Hydraulic Pressure</div>
+              <div id="pressureVal" class="text-sky-700 font-bold text-sm mt-0.5">14.2 MPa</div>
             </div>
-            <div class="p-2 rounded-xl bg-slate-900 border border-slate-800">
-              <div class="text-slate-400 text-[10px]">LiDAR Scanning</div>
-              <div class="text-purple-400 font-bold text-sm mt-0.5">120k pts/s</div>
+            <div class="p-2.5 rounded-xl bg-slate-50/90 border border-slate-200 shadow-xs">
+              <div class="text-slate-500 text-[10px]">LiDAR Scanning</div>
+              <div class="text-purple-700 font-bold text-sm mt-0.5">120k pts/s</div>
             </div>
           </div>
         </div>
 
         <!-- Tech Details Sidebar -->
-        <div class="lg:col-span-4 glass-panel rounded-2xl p-6 space-y-4 text-xs text-slate-300 leading-relaxed">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-white font-mono">System Architecture</h3>
+        <div class="lg:col-span-4 glass-card rounded-2xl p-6 space-y-4 text-xs text-slate-600 leading-relaxed border border-slate-200 bg-white/92">
+          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-900 font-mono">System Architecture</h3>
           
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-amber-400 font-bold">1. 3D LiDAR & Multi-Sensor Fusion:</div>
-            <p class="text-slate-400 text-[10px]">Streams real-time Velodyne/Livox point clouds fused with IMU tilt angles and hydraulic pressure transducers to model terrain topography and resistance torque.</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-amber-700 font-bold">1. 3D LiDAR & Multi-Sensor Fusion:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Streams real-time Velodyne/Livox point clouds fused with IMU tilt angles and hydraulic pressure transducers to model terrain topography and resistance torque.</p>
           </div>
 
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-cyan-400 font-bold">2. High-Speed Python gRPC Bridge:</div>
-            <p class="text-slate-400 text-[10px]">Implemented asynchronous bidirectional gRPC channels communicating with the physical machine's CAN-bus embedded controller at 50 Hz with &lt; 15ms latency.</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-sky-700 font-bold">2. High-Speed Python gRPC Bridge:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Implemented asynchronous bidirectional gRPC channels communicating with the physical machine's CAN-bus embedded controller at 50 Hz with &lt; 15ms latency.</p>
           </div>
 
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-emerald-400 font-bold">3. Unity 3D Digital Twin GUI:</div>
-            <p class="text-slate-400 text-[10px]">Recreated the physical backhoe excavator with forward & inverse kinematics (IK), dynamic terrain deformation, and remote operator safety zone visualization.</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-emerald-700 font-bold">3. Unity 3D Digital Twin GUI:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Recreated the physical backhoe excavator with forward & inverse kinematics (IK), dynamic terrain deformation, and remote operator safety zone visualization.</p>
           </div>
 
-          <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 space-y-1.5 font-mono text-[11px]">
-            <div class="text-purple-400 font-bold">4. ML Autonomous Digging:</div>
-            <p class="text-slate-400 text-[10px]">Trained neural trajectory planning models to optimize bucket fill factor while preventing engine stall from excessive soil resistance.</p>
+          <div class="p-3.5 bg-slate-50/90 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] shadow-xs">
+            <div class="text-purple-700 font-bold">4. ML Autonomous Digging:</div>
+            <p class="text-slate-500 text-[10px] leading-relaxed">Trained neural trajectory planning models to optimize bucket fill factor while preventing engine stall from excessive soil resistance.</p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Bottom Navigation -->
-    <div class="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <a href="robot-pose.html" class="text-sm text-slate-400 hover:text-white transition flex items-center gap-2">
+    <div class="pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <a href="robot-pose.html" class="text-sm text-slate-600 hover:text-slate-900 transition flex items-center gap-2">
         ← Previous: Robot 6D Pose Estimation
       </a>
-      <a href="bolt-inspection.html" class="px-5 py-2.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-lg shadow-amber-500/20">
+      <a href="bolt-inspection.html" class="px-5 py-2.5 rounded-lg bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm transition flex items-center gap-2 shadow-md shadow-amber-600/20">
         Next Project: iOS On-Device Bolt Safety Inspection →
       </a>
     </div>

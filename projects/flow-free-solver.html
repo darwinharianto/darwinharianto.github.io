@@ -26,32 +26,48 @@
   </script>
   <style>
     .glass-panel {
-      background: rgba(15, 23, 42, 0.75);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(51, 65, 85, 0.6);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(226, 232, 240, 0.85);
     }
-    .neon-glow {
-      box-shadow: 0 0 25px -5px rgba(6, 182, 212, 0.3);
+    .glass-card {
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      background: rgba(255, 255, 255, 0.98);
+      border-color: rgba(203, 213, 225, 1);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen">
+<body class="bg-[#faf9f5] text-slate-800 font-sans antialiased selection:bg-emerald-500 selection:text-white min-h-screen relative overflow-x-hidden">
+
+  <!-- Ambient Light Pulse Background Glows -->
+  <div class="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
+    <div class="absolute -top-40 -left-40 w-96 h-96 bg-emerald-200/40 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute top-1/3 -right-40 w-96 h-96 bg-teal-200/35 rounded-full blur-3xl animate-pulse" style="animation-delay: 2s;"></div>
+    <div class="absolute bottom-20 left-1/4 w-96 h-96 bg-cyan-200/35 rounded-full blur-3xl animate-pulse" style="animation-delay: 4s;"></div>
+  </div>
 
   <!-- Header -->
-  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800">
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-200/80">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <div class="flex items-center gap-4">
-        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-cyan-400 hover:text-cyan-300 font-medium transition group">
+        <a href="../index.html#projects" class="flex items-center gap-2 text-sm text-emerald-700 hover:text-emerald-800 font-medium transition group">
           <svg class="w-4 h-4 transform group-hover:-translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
           </svg>
           Back to Portfolio
         </a>
-        <span class="text-slate-600">|</span>
-        <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-300">Open-Source Optimization</span>
+        <span class="text-slate-300">|</span>
+        <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 font-medium">Open-Source Optimization</span>
       </div>
       <div class="flex items-center gap-3">
-        <a href="https://github.com/darwinharianto/flow" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-900 border border-slate-700 text-xs font-mono text-slate-300 hover:text-white hover:border-cyan-500 transition">
+        <a href="https://github.com/darwinharianto/flow" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white border border-slate-200 text-xs font-mono text-slate-700 hover:text-slate-900 hover:border-slate-300 shadow-xs transition">
           <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
           <span>GitHub: flow</span>
         </a>
@@ -62,17 +78,17 @@
   <main class="max-w-6xl mx-auto px-6 py-10 space-y-16">
     <!-- Hero Section -->
     <section class="space-y-4">
-      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-xs font-mono text-emerald-400">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs font-mono text-emerald-800">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
         Constraint Satisfaction & Turn Minimization Engine
       </div>
-      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
-        Flow Free <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">Constraint Programming Solver</span>
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-slate-900">
+        Flow Free <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600">Constraint Programming Solver</span>
       </h1>
-      <p class="text-slate-400 text-base sm:text-lg max-w-3xl leading-relaxed">
+      <p class="text-slate-600 text-base sm:text-lg max-w-3xl leading-relaxed">
         An optimal solver for Flow Free grid games that routes non-intersecting colored paths on arbitrary grid dimensions while 
-        <strong class="text-slate-200">minimizing path turns</strong>, maximizing board coverage, and routing around obstacles using 
-        <strong class="text-cyan-400">Google OR-Tools CP-SAT</strong>.
+        <strong class="text-slate-900 font-semibold">minimizing path turns</strong>, maximizing board coverage, and routing around obstacles using 
+        <strong class="text-emerald-700 font-semibold">Google OR-Tools CP-SAT</strong>.
       </p>
 
       <!-- Repo Badges Row -->
@@ -92,24 +108,24 @@
         <a href="https://github.com/darwinharianto/flow/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">
           <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License MIT" class="h-6 rounded">
         </a>
-        <a href="https://github.com/darwinharianto/flow" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300 border border-slate-700 transition">
-          <svg class="w-3.5 h-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+        <a href="https://github.com/darwinharianto/flow" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-white hover:bg-slate-50 text-xs font-mono text-slate-700 border border-slate-200 shadow-xs transition">
+          <svg class="w-3.5 h-3.5 text-amber-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
           <span>Star on GitHub</span>
         </a>
       </div>
 
       <!-- Explainer Banner: Client-Side Web Simulation vs Python Local Package -->
-      <div class="p-4 bg-slate-900/90 border border-cyan-500/30 rounded-2xl text-xs text-slate-300 flex items-start gap-3 shadow-lg shadow-cyan-950/20">
-        <div class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center justify-center font-bold text-base shrink-0">
+      <div class="p-4 bg-emerald-50/70 border border-emerald-200 rounded-2xl text-xs text-slate-700 flex items-start gap-3 shadow-xs">
+        <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 border border-emerald-200 flex items-center justify-center font-bold text-base shrink-0">
           ℹ️
         </div>
         <div class="space-y-1">
-          <div class="font-bold text-white text-sm flex items-center gap-2">
+          <div class="font-bold text-slate-900 text-sm flex items-center gap-2">
             <span>How This Interactive Visualizer Works</span>
-            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">Pure Browser JS / No Python Needed</span>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">Pure Browser JS / No Python Needed</span>
           </div>
-          <p class="text-slate-400 text-xs leading-relaxed">
-            This interactive canvas runs <strong>entirely in pure client-side JavaScript &amp; HTML5 Canvas</strong>—it does <strong>not</strong> install or run Python in your browser. It visually simulates and validates the exact turn-minimized and 100% board-filling solutions discovered by Darwin's open-source <strong class="text-white">Google OR-Tools CP-SAT</strong> Python algorithm. To run Darwin's real Python package with custom grid matrices and matplotlib rendering on your computer, check out the CLI instructions in the sidebar or clone <a href="https://github.com/darwinharianto/flow" target="_blank" class="text-cyan-400 underline font-mono hover:text-cyan-300">darwinharianto/flow</a> on GitHub!
+          <p class="text-slate-600 text-xs leading-relaxed">
+            This interactive canvas runs <strong>entirely in pure client-side JavaScript &amp; HTML5 Canvas</strong>—it does <strong>not</strong> install or run Python in your browser. It visually simulates and validates the exact turn-minimized and 100% board-filling solutions discovered by Darwin's open-source <strong class="text-slate-900">Google OR-Tools CP-SAT</strong> Python algorithm. To run Darwin's real Python package with custom grid matrices and matplotlib rendering on your computer, check out the CLI instructions in the sidebar or clone <a href="https://github.com/darwinharianto/flow" target="_blank" class="text-emerald-700 underline font-mono hover:text-emerald-800 font-semibold">darwinharianto/flow</a> on GitHub!
           </p>
         </div>
       </div>
@@ -117,47 +133,47 @@
 
     <!-- Interactive Flow Free Solver Simulation -->
     <section class="space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
         <div>
-          <h2 class="text-xl font-bold text-white flex items-center gap-2">
-            <span class="w-7 h-7 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-sm font-mono">01</span>
+          <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+            <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center text-sm font-mono font-bold">01</span>
             Interactive Grid Solver & Turn Minimizer
           </h2>
-          <p class="text-sm text-slate-400">Watch the CP-SAT model connect all matching pairs without overlapping while strictly minimizing path bends.</p>
+          <p class="text-sm text-slate-500">Watch the CP-SAT model connect all matching pairs without overlapping while strictly minimizing path bends.</p>
         </div>
         <div class="flex flex-wrap items-center gap-2.5">
-          <div class="flex items-center gap-1.5 bg-slate-900 border border-slate-700/80 rounded-lg px-2.5 py-1">
-            <label for="puzzlePresetSelect" class="text-xs font-mono text-slate-400">Preset:</label>
-            <select id="puzzlePresetSelect" class="bg-transparent text-xs font-mono text-cyan-300 focus:outline-none cursor-pointer">
-              <option value="demo5x5" class="bg-slate-900 text-white">5x5 Grid (with Wall Obstacle)</option>
-              <option value="classic6x6" class="bg-slate-900 text-white">6x6 Quad Circuit (4 Colors)</option>
-              <option value="dense7x7" class="bg-slate-900 text-white">7x7 Dense Routing (5 Colors)</option>
-              <option value="barrier8x8" class="bg-slate-900 text-white">8x8 Island Barrier (6 Colors, 4 Walls)</option>
+          <div class="flex items-center gap-1.5 bg-white border border-slate-200 rounded-lg px-2.5 py-1 shadow-xs">
+            <label for="puzzlePresetSelect" class="text-xs font-mono text-slate-500">Preset:</label>
+            <select id="puzzlePresetSelect" class="bg-transparent text-xs font-mono text-emerald-800 font-semibold focus:outline-none cursor-pointer">
+              <option value="demo5x5" class="bg-white text-slate-800">5x5 Grid (with Wall Obstacle)</option>
+              <option value="classic6x6" class="bg-white text-slate-800">6x6 Quad Circuit (4 Colors)</option>
+              <option value="dense7x7" class="bg-white text-slate-800">7x7 Dense Routing (5 Colors)</option>
+              <option value="barrier8x8" class="bg-white text-slate-800">8x8 Island Barrier (6 Colors, 4 Walls)</option>
             </select>
           </div>
 
           <!-- Speed Control Pills -->
-          <div class="flex items-center gap-1 bg-slate-900 border border-slate-700/80 rounded-lg px-2 py-1 text-[11px] font-mono">
-            <span class="text-slate-400 pr-1">Speed:</span>
-            <button type="button" id="speedBtnHalf" onclick="setSolveSpeed(0.5)" class="px-1.5 py-0.5 rounded transition text-slate-400 hover:text-white">0.5x</button>
-            <button type="button" id="speedBtn1x" onclick="setSolveSpeed(1.0)" class="px-1.5 py-0.5 rounded transition bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/40">1x</button>
-            <button type="button" id="speedBtn2x" onclick="setSolveSpeed(2.0)" class="px-1.5 py-0.5 rounded transition text-slate-400 hover:text-white">2x</button>
-            <button type="button" id="speedBtnInstant" onclick="setSolveSpeed('instant')" class="px-1.5 py-0.5 rounded transition text-slate-400 hover:text-white">⚡ Instant</button>
+          <div class="flex items-center gap-1 bg-white border border-slate-200 rounded-lg px-2 py-1 text-[11px] font-mono shadow-xs">
+            <span class="text-slate-500 pr-1">Speed:</span>
+            <button type="button" id="speedBtnHalf" onclick="setSolveSpeed(0.5)" class="px-1.5 py-0.5 rounded transition text-slate-600 hover:text-slate-900">0.5x</button>
+            <button type="button" id="speedBtn1x" onclick="setSolveSpeed(1.0)" class="px-1.5 py-0.5 rounded transition bg-emerald-100 text-emerald-800 font-bold border border-emerald-300">1x</button>
+            <button type="button" id="speedBtn2x" onclick="setSolveSpeed(2.0)" class="px-1.5 py-0.5 rounded transition text-slate-600 hover:text-slate-900">2x</button>
+            <button type="button" id="speedBtnInstant" onclick="setSolveSpeed('instant')" class="px-1.5 py-0.5 rounded transition text-slate-600 hover:text-slate-900">⚡ Instant</button>
           </div>
 
           <!-- Mode Switcher: Draw vs Edit Walls -->
-          <button type="button" id="toggleInteractionModeBtn" onclick="toggleInteractionMode()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300 border border-slate-700 transition flex items-center gap-1.5" title="Switch between pipe drawing and clicking cells to toggle wall obstacles">
+          <button type="button" id="toggleInteractionModeBtn" onclick="toggleInteractionMode()" class="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-xs font-mono text-slate-700 border border-slate-200 shadow-xs transition flex items-center gap-1.5" title="Switch between pipe drawing and clicking cells to toggle wall obstacles">
             <span id="interactionModeIcon">✏️</span>
             <span id="interactionModeLabel">Mode: Draw Pipes</span>
           </button>
 
-          <button id="resetGridBtn" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300 border border-slate-700 transition">
+          <button id="resetGridBtn" class="px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-xs font-mono text-slate-700 border border-slate-200 shadow-xs transition">
             Reset
           </button>
-          <button id="stepSolveBtn" class="px-3.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-cyan-400 border border-cyan-800 transition">
+          <button id="stepSolveBtn" class="px-3.5 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-xs font-mono text-emerald-800 font-semibold border border-emerald-200 shadow-xs transition">
             Step Flow
           </button>
-          <button id="solveOptimalBtn" class="px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-600 to-cyan-600 hover:from-emerald-500 hover:to-cyan-500 text-xs font-mono text-white font-semibold shadow-lg shadow-emerald-600/20 transition flex items-center gap-1.5">
+          <button id="solveOptimalBtn" class="px-4 py-1.5 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-xs font-mono text-white font-semibold shadow-sm transition flex items-center gap-1.5">
             <span>Solve CP-SAT</span>
             <span class="text-[10px] bg-white/20 px-1 rounded">Optimal</span>
           </button>
@@ -166,36 +182,36 @@
 
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         <!-- Flow Canvas & CLI Terminal View Area -->
-        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4">
+        <div class="lg:col-span-8 glass-panel rounded-2xl p-6 space-y-4 shadow-sm">
           <!-- View Switcher Tabs & Status Header -->
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/80 pb-3">
             <div class="flex items-center gap-2">
-              <button id="viewTabCanvas" onclick="switchViewTab('canvas')" class="px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center gap-1.5 shadow-sm shadow-cyan-500/10">
+              <button id="viewTabCanvas" onclick="switchViewTab('canvas')" class="px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5 shadow-xs">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path></svg>
                 <span>Interactive Canvas</span>
               </button>
-              <button id="viewTabTerminal" onclick="switchViewTab('terminal')" class="px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800 flex items-center gap-1.5">
+              <button id="viewTabTerminal" onclick="switchViewTab('terminal')" class="px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-white text-slate-600 hover:text-slate-900 border border-slate-200 flex items-center gap-1.5 shadow-xs">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 <span>Python CLI / ASCII Terminal</span>
               </button>
             </div>
             <div class="flex items-center gap-3 text-xs font-mono">
-              <span id="boardDimensionLabel" class="text-slate-400">Board: 5×5 Grid (1 Wall Obstacle)</span>
-              <span class="text-slate-700 hidden sm:inline">|</span>
-              <span id="solverStatusText" class="text-emerald-400 font-bold">Ready to solve</span>
+              <span id="boardDimensionLabel" class="text-slate-500">Board: 5×5 Grid (1 Wall Obstacle)</span>
+              <span class="text-slate-300 hidden sm:inline">|</span>
+              <span id="solverStatusText" class="text-emerald-700 font-bold">Ready to solve</span>
             </div>
           </div>
 
           <!-- View 1: Interactive Canvas Container -->
           <div id="canvasViewContainer" class="space-y-4">
-            <div class="relative flex items-center justify-center p-3 bg-slate-950/80 rounded-xl border border-slate-800/80">
+            <div class="relative flex items-center justify-center p-3 bg-slate-900 rounded-xl border border-slate-300 shadow-inner">
               <canvas id="flowCanvas" width="500" height="500" class="w-full max-w-[480px] aspect-square rounded-lg shadow-inner cursor-pointer"></canvas>
             </div>
 
-            <div class="flex flex-wrap items-center justify-between gap-4 pt-1 text-xs text-slate-400 font-mono">
+            <div class="flex flex-wrap items-center justify-between gap-4 pt-1 text-xs text-slate-600 font-mono">
               <div class="flex items-center gap-4">
                 <span class="flex items-center gap-1.5">
-                  <span class="w-3 h-3 rounded-full bg-red-500 shadow-sm shadow-red-500/50"></span>
+                  <span class="w-3 h-3 rounded-full bg-red-500 shadow-xs"></span>
                   <span>Terminals</span>
                 </span>
                 <span class="flex items-center gap-1.5">
@@ -203,7 +219,7 @@
                   <span>Walls (-1)</span>
                 </span>
                 <span class="flex items-center gap-1.5">
-                  <span class="w-3 h-1 bg-cyan-400 rounded"></span>
+                  <span class="w-3 h-1 bg-emerald-500 rounded"></span>
                   <span>Directed Arc Flow</span>
                 </span>
               </div>
@@ -213,7 +229,7 @@
 
           <!-- View 2: Python CLI Terminal Container (Hidden by default) -->
           <div id="terminalViewContainer" class="hidden space-y-3">
-            <div class="bg-slate-950 rounded-xl border border-slate-800 overflow-hidden shadow-2xl">
+            <div class="bg-slate-950 rounded-xl border border-slate-300 overflow-hidden shadow-md">
               <!-- Terminal Window Header -->
               <div class="flex items-center justify-between px-4 py-2.5 bg-slate-900 border-b border-slate-800 text-xs font-mono">
                 <div class="flex items-center gap-2">
@@ -225,7 +241,7 @@
                   <span class="text-slate-400 pl-2">bash — darwin@workstation: ~/flow — python 3.10</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <button id="runCliBtn" onclick="runCliSimulation()" class="px-2.5 py-1 rounded bg-emerald-950 hover:bg-emerald-900 border border-emerald-700/80 text-emerald-300 text-[11px] font-mono transition flex items-center gap-1">
+                  <button id="runCliBtn" onclick="runCliSimulation()" class="px-2.5 py-1 rounded bg-emerald-900 hover:bg-emerald-800 border border-emerald-700 text-emerald-200 text-[11px] font-mono transition flex items-center gap-1">
                     <span>▶ Run demo.py</span>
                   </button>
                   <button id="copyCliBtn" onclick="copyTerminalOutput()" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-[11px] font-mono transition flex items-center gap-1">
@@ -234,10 +250,10 @@
                 </div>
               </div>
               <!-- Terminal Body Output -->
-              <pre id="terminalOutput" class="p-4 text-[11px] sm:text-xs font-mono text-slate-200 overflow-x-auto leading-relaxed max-h-[440px] overflow-y-auto select-all bg-black/60"></pre>
+              <pre id="terminalOutput" class="p-4 text-[11px] sm:text-xs font-mono text-slate-200 overflow-x-auto leading-relaxed max-h-[440px] overflow-y-auto select-all bg-black/85"></pre>
             </div>
             <div class="flex items-center justify-between text-[11px] font-mono text-slate-500">
-              <span>Simulating <code class="text-cyan-400">flow_solver.solver.solve_model()</code> standard output</span>
+              <span>Simulating <code class="text-emerald-700 font-semibold">flow_solver.solver.solve_model()</code> standard output</span>
               <span>8 CP-SAT Parallel Workers</span>
             </div>
           </div>
@@ -245,47 +261,47 @@
 
         <!-- Telemetry & Metrics Sidebar -->
         <div class="lg:col-span-4 space-y-4">
-          <div class="glass-panel rounded-2xl p-6 space-y-4">
-            <h3 class="text-sm font-bold text-white uppercase tracking-wider font-mono flex items-center justify-between">
+          <div class="glass-panel rounded-2xl p-6 space-y-4 shadow-sm">
+            <h3 class="text-sm font-bold text-slate-900 uppercase tracking-wider font-mono flex items-center justify-between">
               <span>Optimization Telemetry</span>
-              <span id="solverBadge" class="text-[10px] px-2 py-0.5 rounded bg-emerald-950 border border-emerald-700 text-emerald-400 font-normal">CP-SAT Engine</span>
+              <span id="solverBadge" class="text-[10px] px-2 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold">CP-SAT Engine</span>
             </h3>
 
             <div class="space-y-3">
-              <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800/80">
-                <div class="flex items-center justify-between text-xs text-slate-400">
-                  <span>Path Turns (Objective)</span>
-                  <span id="turnMetricVal" class="text-sm font-mono font-bold text-emerald-400">0 turns</span>
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 shadow-xs">
+                <div class="flex items-center justify-between text-xs text-slate-500">
+                  <span class="font-medium">Path Turns (Objective)</span>
+                  <span id="turnMetricVal" class="text-sm font-mono font-bold text-emerald-700">0 turns</span>
                 </div>
                 <div class="mt-2 text-[11px] text-slate-500 leading-tight">
-                  Minimized penalty: <code class="text-cyan-300 font-mono">min ∑ turns</code>
+                  Minimized penalty: <code class="text-emerald-700 font-mono font-semibold">min ∑ turns</code>
                 </div>
               </div>
 
-              <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800/80">
-                <div class="flex items-center justify-between text-xs text-slate-400">
-                  <span>Board Fill Coverage</span>
-                  <span id="fillRateVal" class="text-sm font-mono font-bold text-cyan-400">0%</span>
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 shadow-xs">
+                <div class="flex items-center justify-between text-xs text-slate-500">
+                  <span class="font-medium">Board Fill Coverage</span>
+                  <span id="fillRateVal" class="text-sm font-mono font-bold text-teal-700">0%</span>
                 </div>
-                <div class="w-full bg-slate-800 rounded-full h-1.5 mt-2 overflow-hidden">
-                  <div id="fillProgressBar" class="bg-cyan-500 h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+                <div class="w-full bg-slate-200 rounded-full h-1.5 mt-2 overflow-hidden">
+                  <div id="fillProgressBar" class="bg-teal-500 h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
                 </div>
               </div>
 
-              <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800/80">
-                <div class="flex items-center justify-between text-xs text-slate-400">
-                  <span>Solved Arcs & Continuity</span>
-                  <span id="arcCountVal" class="text-sm font-mono font-bold text-white">0 / 0</span>
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 shadow-xs">
+                <div class="flex items-center justify-between text-xs text-slate-500">
+                  <span class="font-medium">Solved Arcs & Continuity</span>
+                  <span id="arcCountVal" class="text-sm font-mono font-bold text-slate-800">0 / 0</span>
                 </div>
                 <div class="mt-2 text-[11px] text-slate-500 leading-tight">
                   Node Law: In-degree = Out-degree = 1
                 </div>
               </div>
 
-              <div class="p-3 bg-slate-900/60 rounded-xl border border-slate-800/80">
-                <div class="flex items-center justify-between text-xs text-slate-400">
-                  <span>Solve Execution Latency</span>
-                  <span id="latencyMetricVal" class="text-sm font-mono font-bold text-slate-300">~12 ms</span>
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 shadow-xs">
+                <div class="flex items-center justify-between text-xs text-slate-500">
+                  <span class="font-medium">Solve Execution Latency</span>
+                  <span id="latencyMetricVal" class="text-sm font-mono font-bold text-slate-700">~12 ms</span>
                 </div>
                 <div class="mt-2 text-[11px] text-slate-500 leading-tight">
                   Constraint Propagation & Boolean SAT
@@ -293,34 +309,34 @@
               </div>
             </div>
 
-            <div class="pt-2 border-t border-slate-800 text-xs font-mono text-slate-400">
+            <div class="pt-2 border-t border-slate-200/80 text-xs font-mono text-slate-500">
               <div class="flex items-center justify-between">
                 <span>Active Color Pairs:</span>
-                <span id="colorCountLabel" class="text-slate-200 font-bold">3 Pairs</span>
+                <span id="colorCountLabel" class="text-slate-800 font-bold">3 Pairs</span>
               </div>
             </div>
           </div>
 
           <!-- Python Quick Invocation Box -->
-          <div class="glass-panel rounded-2xl p-5 space-y-3 border border-slate-800">
+          <div class="glass-panel rounded-2xl p-5 space-y-3 border border-slate-200 shadow-sm">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-mono text-slate-300 font-semibold flex items-center gap-1.5">
-                <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+              <span class="text-xs font-mono text-slate-800 font-semibold flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 <span>Local CLI Quickstart</span>
               </span>
-              <button id="copySnippetBtn" onclick="copySnippetToClipboard('git clone https://github.com/darwinharianto/flow\ncd flow && python examples/demo.py', 'copySnippetBtn')" class="px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-[10px] font-mono text-cyan-300 border border-slate-700 transition flex items-center gap-1">
+              <button id="copySnippetBtn" onclick="copySnippetToClipboard('git clone https://github.com/darwinharianto/flow\ncd flow && python examples/demo.py', 'copySnippetBtn')" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-slate-200 text-[10px] font-mono text-slate-700 border border-slate-200 transition flex items-center gap-1 shadow-xs">
                 <span class="btn-text">📋 Copy Clone</span>
               </button>
             </div>
             <div class="relative group">
-              <pre class="bg-slate-950 p-2.5 rounded-lg border border-slate-800 text-[11px] font-mono text-cyan-300 overflow-x-auto select-all"><code>git clone https://github.com/darwinharianto/flow
+              <pre class="bg-slate-900 p-2.5 rounded-lg border border-slate-300 text-[11px] font-mono text-emerald-300 overflow-x-auto select-all"><code>git clone https://github.com/darwinharianto/flow
 cd flow && python examples/demo.py</code></pre>
             </div>
-            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80 text-[10px] font-mono text-slate-400">
+            <div class="flex items-center justify-between pt-1 border-t border-slate-200/80 text-[10px] font-mono text-slate-500">
               <span>Install OR-Tools:</span>
-              <button id="copyPipBtn" onclick="copySnippetToClipboard('pip install -r requirements.txt', 'copyPipBtn')" class="text-slate-400 hover:text-white transition flex items-center gap-1">
+              <button id="copyPipBtn" onclick="copySnippetToClipboard('pip install -r requirements.txt', 'copyPipBtn')" class="text-slate-600 hover:text-slate-900 transition flex items-center gap-1">
                 <code>pip install -r requirements.txt</code>
-                <span class="text-cyan-400 btn-text">📋</span>
+                <span class="text-emerald-600 btn-text">📋</span>
               </button>
             </div>
           </div>
@@ -330,67 +346,67 @@ cd flow && python examples/demo.py</code></pre>
 
     <!-- Mathematical Formulation & Architecture Section -->
     <section class="space-y-8">
-      <div class="border-b border-slate-800 pb-4">
-        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-          <span class="w-7 h-7 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20 flex items-center justify-center text-sm font-mono">02</span>
+      <div class="border-b border-slate-200/80 pb-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <span class="w-7 h-7 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center text-sm font-mono font-bold">02</span>
           Mathematical CP-SAT Formulation
         </h2>
-        <p class="text-sm text-slate-400">Translating topological Flow Free game physics into exact Integer & Boolean Linear Constraints.</p>
+        <p class="text-sm text-slate-500">Translating topological Flow Free game physics into exact Integer & Boolean Linear Constraints.</p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <!-- Card 1: Directed Arc Conservation -->
-        <div class="glass-panel rounded-2xl p-6 space-y-3">
+        <div class="glass-panel rounded-2xl p-6 space-y-3 shadow-sm">
           <div class="flex items-center gap-2">
-            <span class="w-6 h-6 rounded bg-emerald-950 text-emerald-400 border border-emerald-800 flex items-center justify-center text-xs font-mono font-bold">1</span>
-            <h3 class="text-base font-bold text-white">Directed Flow Conservation (Kirchhoff's Node Law)</h3>
+            <span class="w-6 h-6 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 flex items-center justify-center text-xs font-mono font-bold">1</span>
+            <h3 class="text-base font-bold text-slate-900">Directed Flow Conservation (Kirchhoff's Node Law)</h3>
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
+          <p class="text-xs text-slate-600 leading-relaxed">
             For each color $c \in \{1 \dots K\}$ and every directed edge $(u, v)$ between adjacent grid squares, a Boolean decision variable $x_{u,v}^c \in \{0, 1\}$ dictates path flow:
           </p>
-          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs font-mono text-cyan-300 space-y-1">
-            <div>• Terminals: <span class="text-slate-300">Out-degree = 1 (Source), In-degree = 1 (Sink)</span></div>
+          <div class="bg-slate-900 p-3 rounded-xl border border-slate-300 text-xs font-mono text-emerald-300 space-y-1">
+            <div>• Terminals: <span class="text-slate-200">Out-degree = 1 (Source), In-degree = 1 (Sink)</span></div>
             <div>• Transit Cells: <span class="text-emerald-400">∑ x(u,v) = ∑ x(v,u) ≤ 1</span></div>
             <div>• Walls (-1): <span class="text-rose-400">x(u,v) = 0, x(v,u) = 0</span></div>
           </div>
-          <p class="text-[11px] text-slate-400 leading-relaxed">
+          <p class="text-[11px] text-slate-500 leading-relaxed">
             Ensures exactly one continuous, self-avoiding directed path connects each color terminal pair without dead-ends or isolated cycles.
           </p>
         </div>
 
         <!-- Card 2: Turn Minimization Objective -->
-        <div class="glass-panel rounded-2xl p-6 space-y-3">
+        <div class="glass-panel rounded-2xl p-6 space-y-3 shadow-sm">
           <div class="flex items-center gap-2">
-            <span class="w-6 h-6 rounded bg-cyan-950 text-cyan-400 border border-cyan-800 flex items-center justify-center text-xs font-mono font-bold">2</span>
-            <h3 class="text-base font-bold text-white">Global Turn Minimization Objective</h3>
+            <span class="w-6 h-6 rounded bg-teal-50 text-teal-700 border border-teal-200 flex items-center justify-center text-xs font-mono font-bold">2</span>
+            <h3 class="text-base font-bold text-slate-900">Global Turn Minimization Objective</h3>
           </div>
-          <p class="text-xs text-slate-300 leading-relaxed">
+          <p class="text-xs text-slate-600 leading-relaxed">
             Human aesthetics and spatial economy prefer direct, unbent lines. To penalize circuitous bends, the model creates turn indicators $t_u^c \in \{0, 1\}$:
           </p>
-          <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-xs font-mono text-cyan-300 space-y-1">
-            <div>• Turn condition: <span class="text-slate-300">dir_in(u) ⟂ dir_out(u) ⇒ t_u^c = 1</span></div>
+          <div class="bg-slate-900 p-3 rounded-xl border border-slate-300 text-xs font-mono text-teal-300 space-y-1">
+            <div>• Turn condition: <span class="text-slate-200">dir_in(u) ⟂ dir_out(u) ⇒ t_u^c = 1</span></div>
             <div>• Objective: <span class="text-emerald-400">Minimize ∑_{u, c} t_u^c</span></div>
             <div>• Full Board Fill: <span class="text-amber-300">∑_{u} filled(u) == (N × M - Num_Walls)</span></div>
           </div>
-          <p class="text-[11px] text-slate-400 leading-relaxed">
+          <p class="text-[11px] text-slate-500 leading-relaxed">
             Solved simultaneously using Google OR-Tools CP-SAT with SAT presolve, conflict analysis, and parallel branch-and-bound workers.
           </p>
         </div>
       </div>
 
       <!-- Algorithmic Benchmark & Complexity Comparison Card -->
-      <div class="glass-panel rounded-2xl p-6 space-y-5 border border-slate-800">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+      <div class="glass-panel rounded-2xl p-6 space-y-5 border border-slate-200 shadow-sm">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/80 pb-3">
           <div class="flex items-center gap-2">
-            <span class="w-6 h-6 rounded bg-purple-950 text-purple-400 border border-purple-800 flex items-center justify-center text-xs font-mono font-bold">★</span>
-            <h3 class="text-base font-bold text-white">Algorithmic Complexity & Benchmark: CP-SAT vs. Classical Search</h3>
+            <span class="w-6 h-6 rounded bg-purple-50 text-purple-700 border border-purple-200 flex items-center justify-center text-xs font-mono font-bold">★</span>
+            <h3 class="text-base font-bold text-slate-900">Algorithmic Complexity & Benchmark: CP-SAT vs. Classical Search</h3>
           </div>
-          <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950 text-emerald-400 border border-emerald-800">
+          <span class="text-xs font-mono px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">
             Why Constraint Programming Dominates Flow Free
           </span>
         </div>
 
-        <p class="text-xs text-slate-300 leading-relaxed">
+        <p class="text-xs text-slate-600 leading-relaxed">
           Flow Free on an $N \times M$ grid with $K$ colored pairs is an NP-complete multi-commodity disjoint-path routing problem. Classical graph search approaches fail to scale as grid dimensions increase because independent paths collide and block each other without global coordination.
         </p>
 
@@ -398,49 +414,49 @@ cd flow && python examples/demo.py</code></pre>
         <div class="overflow-x-auto">
           <table class="w-full text-left text-xs font-mono border-collapse">
             <thead>
-              <tr class="border-b border-slate-800 text-slate-400 bg-slate-900/60">
+              <tr class="border-b border-slate-200 text-slate-600 bg-slate-50">
                 <th class="p-3">Evaluation Metric</th>
-                <th class="p-3 text-cyan-300 font-bold bg-cyan-950/20 border-l border-r border-cyan-800/30">Google OR-Tools CP-SAT (Darwin)</th>
+                <th class="p-3 text-emerald-800 font-bold bg-emerald-50/70 border-l border-r border-emerald-200">Google OR-Tools CP-SAT (Darwin)</th>
                 <th class="p-3">Naive Backtracking (DFS)</th>
                 <th class="p-3">Multi-Agent A* (Heuristic)</th>
               </tr>
             </thead>
-            <tbody class="divide-y divide-slate-800/60 text-slate-300">
-              <tr class="hover:bg-slate-900/30 transition">
-                <td class="p-3 font-semibold text-white">Search Space Pruning</td>
-                <td class="p-3 text-emerald-400 font-bold bg-cyan-950/10 border-l border-r border-cyan-800/30">
+            <tbody class="divide-y divide-slate-200 text-slate-700">
+              <tr class="hover:bg-slate-50 transition">
+                <td class="p-3 font-semibold text-slate-900">Search Space Pruning</td>
+                <td class="p-3 text-emerald-700 font-bold bg-emerald-50/40 border-l border-r border-emerald-200">
                   Boolean Arc Propagation + Clause Learning
                 </td>
-                <td class="p-3 text-rose-400">Brute-force trial: $O(4^{N \times M})$</td>
-                <td class="p-3 text-amber-400">Manhattan distance heuristic</td>
+                <td class="p-3 text-rose-600">Brute-force trial: $O(4^{N \times M})$</td>
+                <td class="p-3 text-amber-700">Manhattan distance heuristic</td>
               </tr>
-              <tr class="hover:bg-slate-900/30 transition">
-                <td class="p-3 font-semibold text-white">8×8 Island Barrier Solve Time</td>
-                <td class="p-3 text-emerald-400 font-bold bg-cyan-950/10 border-l border-r border-cyan-800/30">
+              <tr class="hover:bg-slate-50 transition">
+                <td class="p-3 font-semibold text-slate-900">8×8 Island Barrier Solve Time</td>
+                <td class="p-3 text-emerald-700 font-bold bg-emerald-50/40 border-l border-r border-emerald-200">
                   ⚡ &lt; 15 ms (Optimal)
                 </td>
-                <td class="p-3 text-rose-400">⏱️ > 120s / Timeout ($4^{64} \approx 3.4 \times 10^{38}$)</td>
-                <td class="p-3 text-amber-400">⚠️ 1.8s (Deadlocks frequent)</td>
+                <td class="p-3 text-rose-600">⏱️ > 120s / Timeout ($4^{64} \approx 3.4 \times 10^{38}$)</td>
+                <td class="p-3 text-amber-700">⚠️ 1.8s (Deadlocks frequent)</td>
               </tr>
-              <tr class="hover:bg-slate-900/30 transition">
-                <td class="p-3 font-semibold text-white">Turn Minimization Objective</td>
-                <td class="p-3 text-emerald-400 font-bold bg-cyan-950/10 border-l border-r border-cyan-800/30">
+              <tr class="hover:bg-slate-50 transition">
+                <td class="p-3 font-semibold text-slate-900">Turn Minimization Objective</td>
+                <td class="p-3 text-emerald-700 font-bold bg-emerald-50/40 border-l border-r border-emerald-200">
                   ✓ Globally Guaranteed ($\min \sum t_u^c$)
                 </td>
-                <td class="p-3 text-rose-400">✗ Infeasible (Cannot optimize global turns)</td>
-                <td class="p-3 text-amber-400">△ Sub-optimal (Greedy step-by-step turns)</td>
+                <td class="p-3 text-rose-600">✗ Infeasible (Cannot optimize global turns)</td>
+                <td class="p-3 text-amber-700">△ Sub-optimal (Greedy step-by-step turns)</td>
               </tr>
-              <tr class="hover:bg-slate-900/30 transition">
-                <td class="p-3 font-semibold text-white">100% Board Fill Constraint</td>
-                <td class="p-3 text-emerald-400 font-bold bg-cyan-950/10 border-l border-r border-cyan-800/30">
+              <tr class="hover:bg-slate-50 transition">
+                <td class="p-3 font-semibold text-slate-900">100% Board Fill Constraint</td>
+                <td class="p-3 text-emerald-700 font-bold bg-emerald-50/40 border-l border-r border-emerald-200">
                   ✓ Hard Constraint ($\sum \text{cells} = NM - W$)
                 </td>
-                <td class="p-3 text-rose-400">✗ High failure rate (leaves orphan cells)</td>
-                <td class="p-3 text-amber-400">△ Post-processing wandering fills</td>
+                <td class="p-3 text-rose-600">✗ High failure rate (leaves orphan cells)</td>
+                <td class="p-3 text-amber-700">△ Post-processing wandering fills</td>
               </tr>
-              <tr class="hover:bg-slate-900/30 transition">
-                <td class="p-3 font-semibold text-white">Multi-Core Parallel Scaling</td>
-                <td class="p-3 text-emerald-400 font-bold bg-cyan-950/10 border-l border-r border-cyan-800/30">
+              <tr class="hover:bg-slate-50 transition">
+                <td class="p-3 font-semibold text-slate-900">Multi-Core Parallel Scaling</td>
+                <td class="p-3 text-emerald-700 font-bold bg-emerald-50/40 border-l border-r border-emerald-200">
                   ✓ Linear speedup (8 SAT workers)
                 </td>
                 <td class="p-3 text-slate-500">Single-threaded recursive stack</td>
@@ -452,15 +468,15 @@ cd flow && python examples/demo.py</code></pre>
       </div>
 
       <!-- Python Source Code Snippet from Repo -->
-      <div class="glass-panel rounded-2xl p-6 space-y-4">
+      <div class="glass-panel rounded-2xl p-6 space-y-4 shadow-sm">
         <div class="flex items-center justify-between">
-          <h3 class="text-sm font-bold text-white font-mono flex items-center gap-2">
-            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+          <h3 class="text-sm font-bold text-slate-900 font-mono flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
             <span>Core CP-SAT Model Implementation (flow/solver.py)</span>
           </h3>
           <span class="text-xs font-mono text-slate-500">Python 3.10+ · ortools.sat.python.cp_model</span>
         </div>
-        <pre class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-xs font-mono text-slate-300 overflow-x-auto leading-relaxed"><code>from ortools.sat.python import cp_model
+        <pre class="bg-slate-900 p-4 rounded-xl border border-slate-300 text-xs font-mono text-slate-200 overflow-x-auto leading-relaxed"><code>from ortools.sat.python import cp_model
 
 def initiate_model_with_param(board, num_colors, num_wall=0, fill=1.0):
     model = cp_model.CpModel()
@@ -491,34 +507,34 @@ def initiate_model_with_param(board, num_colors, num_wall=0, fill=1.0):
 
     <!-- Technical Architecture Features Grid -->
     <section class="space-y-6">
-      <div class="border-b border-slate-800 pb-4">
-        <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-          <span class="w-7 h-7 rounded-lg bg-teal-500/10 text-teal-400 border border-teal-500/20 flex items-center justify-center text-sm font-mono">03</span>
+      <div class="border-b border-slate-200/80 pb-4">
+        <h2 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+          <span class="w-7 h-7 rounded-lg bg-teal-50 text-teal-700 border border-teal-200 flex items-center justify-center text-sm font-mono font-bold">03</span>
           Engineering & Algorithmic Highlights
         </h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="glass-panel p-5 rounded-xl space-y-2.5">
-          <div class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-mono text-sm font-bold">01</div>
-          <h4 class="text-base font-bold text-white">Arbitrary Grid Sizes & Walls</h4>
-          <p class="text-xs text-slate-400 leading-relaxed">
+        <div class="glass-panel p-5 rounded-xl space-y-2.5 shadow-sm">
+          <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-700 flex items-center justify-center font-mono text-sm font-bold border border-emerald-200">01</div>
+          <h4 class="text-base font-bold text-slate-900">Arbitrary Grid Sizes & Walls</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
             Accommodates asymmetric rectangular dimensions ($M \times N$) and arbitrary impassable obstacle geometries (walls coded as $-1$), enforcing strict zero-flow cuts.
           </p>
         </div>
 
-        <div class="glass-panel p-5 rounded-xl space-y-2.5">
-          <div class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-mono text-sm font-bold">02</div>
-          <h4 class="text-base font-bold text-white">Sub-15ms Solve Times</h4>
-          <p class="text-xs text-slate-400 leading-relaxed">
+        <div class="glass-panel p-5 rounded-xl space-y-2.5 shadow-sm">
+          <div class="w-8 h-8 rounded-lg bg-teal-50 text-teal-700 flex items-center justify-center font-mono text-sm font-bold border border-teal-200">02</div>
+          <h4 class="text-base font-bold text-slate-900">Sub-15ms Solve Times</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
             By exploiting Boolean clause learning and propagator domain reductions in CP-SAT, searches complete in milliseconds without requiring heuristic A* approximations.
           </p>
         </div>
 
-        <div class="glass-panel p-5 rounded-xl space-y-2.5">
-          <div class="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center font-mono text-sm font-bold">03</div>
-          <h4 class="text-base font-bold text-white">Comprehensive CI/CD & Tests</h4>
-          <p class="text-xs text-slate-400 leading-relaxed">
+        <div class="glass-panel p-5 rounded-xl space-y-2.5 shadow-sm">
+          <div class="w-8 h-8 rounded-lg bg-cyan-50 text-cyan-700 flex items-center justify-center font-mono text-sm font-bold border border-cyan-200">03</div>
+          <h4 class="text-base font-bold text-slate-900">Comprehensive CI/CD & Tests</h4>
+          <p class="text-xs text-slate-600 leading-relaxed">
             Maintained with 100% Codecov coverage, GitHub Actions workflow matrix testing across Python 3.10, 3.11, and 3.12, and automatic matplotlib visualization exports.
           </p>
         </div>
@@ -526,19 +542,19 @@ def initiate_model_with_param(board, num_colors, num_wall=0, fill=1.0):
     </section>
 
     <!-- Bottom Navigation / Project Quick Spec -->
-    <section class="glass-panel rounded-2xl p-8 border border-slate-800 text-center space-y-4">
-      <h3 class="text-xl font-bold text-white">Explore More Optimization & AI Projects</h3>
-      <p class="text-slate-400 text-sm max-w-xl mx-auto">
+    <section class="glass-panel rounded-2xl p-8 border border-slate-200 text-center space-y-4 shadow-sm">
+      <h3 class="text-xl font-bold text-slate-900">Explore More Optimization & AI Projects</h3>
+      <p class="text-slate-600 text-sm max-w-xl mx-auto">
         Discover how Darwin applies mathematical optimization and computer vision to industrial engineering, 3D robotics, and generative models.
       </p>
       <div class="flex flex-wrap items-center justify-center gap-3 pt-2">
-        <a href="cad-nesting.html" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-mono text-cyan-300 border border-slate-700 transition">
+        <a href="cad-nesting.html" class="px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-xs font-mono text-slate-700 border border-slate-200 shadow-xs transition">
           ← CAD 2D Nesting Engine
         </a>
-        <a href="robot-pose.html" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-mono text-cyan-300 border border-slate-700 transition">
+        <a href="robot-pose.html" class="px-4 py-2 rounded-xl bg-white hover:bg-slate-50 text-xs font-mono text-slate-700 border border-slate-200 shadow-xs transition">
           AMR 6D Pose Estimation →
         </a>
-        <a href="../index.html#projects" class="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-xs font-mono text-white font-semibold shadow-lg shadow-cyan-600/20 transition">
+        <a href="../index.html#projects" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-xs font-mono text-white font-semibold shadow-sm transition">
           View All Portfolio Projects
         </a>
       </div>
@@ -1152,9 +1168,9 @@ def initiate_model_with_param(board, num_colors, num_wall=0, fill=1.0):
       for (const k in btns) {
         if (!btns[k]) continue;
         if (k == speed) {
-          btns[k].className = 'px-1.5 py-0.5 rounded transition bg-cyan-500/20 text-cyan-300 font-bold border border-cyan-500/40';
+          btns[k].className = 'px-1.5 py-0.5 rounded transition bg-emerald-100 text-emerald-800 font-bold border border-emerald-300';
         } else {
-          btns[k].className = 'px-1.5 py-0.5 rounded transition text-slate-400 hover:text-white';
+          btns[k].className = 'px-1.5 py-0.5 rounded transition text-slate-600 hover:text-slate-900';
         }
       }
     }
@@ -1167,18 +1183,18 @@ def initiate_model_with_param(board, num_colors, num_wall=0, fill=1.0):
 
       if (interactionMode === 'draw') {
         interactionMode = 'wall';
-        modeBtn.className = 'px-3 py-1.5 rounded-lg bg-amber-950/80 hover:bg-amber-900 border border-amber-700 text-amber-300 text-xs font-mono transition flex items-center gap-1.5 shadow-sm shadow-amber-950/40';
+        modeBtn.className = 'px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 border border-amber-300 text-amber-800 text-xs font-mono transition flex items-center gap-1.5 shadow-xs';
         icon.textContent = '🧱';
         label.textContent = 'Mode: Edit Walls (-1)';
         statusText.textContent = 'Wall Edit Mode: Click cells to toggle wall obstacles';
-        statusText.className = 'text-amber-400 font-bold';
+        statusText.className = 'text-amber-700 font-bold';
       } else {
         interactionMode = 'draw';
-        modeBtn.className = 'px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-mono text-slate-300 border border-slate-700 transition flex items-center gap-1.5';
+        modeBtn.className = 'px-3 py-1.5 rounded-lg bg-white hover:bg-slate-50 text-xs font-mono text-slate-700 border border-slate-200 transition flex items-center gap-1.5 shadow-xs';
         icon.textContent = '✏️';
         label.textContent = 'Mode: Draw Pipes';
         statusText.textContent = 'Ready to solve';
-        statusText.className = 'text-emerald-400 font-bold';
+        statusText.className = 'text-emerald-700 font-bold';
       }
     }
 
@@ -1193,14 +1209,14 @@ def initiate_model_with_param(board, num_colors, num_wall=0, fill=1.0):
       if (tab === 'canvas') {
         canvasContainer.classList.remove('hidden');
         terminalContainer.classList.add('hidden');
-        tabCanvasBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center gap-1.5 shadow-sm shadow-cyan-500/10';
-        tabTerminalBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800 flex items-center gap-1.5';
+        tabCanvasBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5 shadow-xs';
+        tabTerminalBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-white text-slate-600 hover:text-slate-900 border border-slate-200 flex items-center gap-1.5 shadow-xs';
         renderBoard();
       } else {
         canvasContainer.classList.add('hidden');
         terminalContainer.classList.remove('hidden');
-        tabTerminalBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 flex items-center gap-1.5 shadow-sm shadow-cyan-500/10';
-        tabCanvasBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800 flex items-center gap-1.5';
+        tabTerminalBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5 shadow-xs';
+        tabCanvasBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-white text-slate-600 hover:text-slate-900 border border-slate-200 flex items-center gap-1.5 shadow-xs';
         generateCliOutput(currentPresetKey);
       }
     }
