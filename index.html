@@ -21,10 +21,21 @@
           },
           colors: {
             brand: {
-              DEFAULT: '#2563eb',
-              glow: '#3b82f6',
+              DEFAULT: '#4f46e5',
+              glow: '#6366f1',
             },
-            accent: '#06b6d4',
+            accent: '#0284c7',
+            pastel: {
+              canvas: '#faf9f5',
+              card: 'rgba(255, 255, 255, 0.92)',
+              border: 'rgba(226, 232, 240, 0.85)',
+              lavender: '#ede9fe',
+              sky: '#e0f2fe',
+              emerald: '#dcfce7',
+              amber: '#fef3c7',
+              rose: '#ffe4e6',
+              indigo: '#e0e7ff',
+            }
           }
         }
       }
@@ -32,63 +43,88 @@
   </script>
   <style>
     .glass-panel {
-      background: rgba(15, 23, 42, 0.7);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(51, 65, 85, 0.6);
+      background: rgba(255, 255, 255, 0.86);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      box-shadow: 0 4px 20px -2px rgba(100, 116, 139, 0.05);
     }
     .glass-card {
-      background: linear-gradient(135deg, rgba(30, 41, 59, 0.45) 0%, rgba(15, 23, 42, 0.65) 100%);
-      border: 1px solid rgba(51, 65, 85, 0.5);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      box-shadow: 0 4px 20px -4px rgba(148, 163, 184, 0.12);
       transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .glass-card:hover {
-      border-color: rgba(56, 189, 248, 0.4);
+      border-color: rgba(99, 102, 241, 0.35);
       transform: translateY(-3px);
-      box-shadow: 0 12px 30px -10px rgba(14, 165, 233, 0.15);
+      box-shadow: 0 16px 36px -8px rgba(99, 102, 241, 0.14);
     }
-    .gradient-border-btn {
-      position: relative;
-      background: linear-gradient(60deg, #2563eb, #06b6d4, #a855f7);
-      padding: 1px;
-      border-radius: 0.75rem;
+    .tech-pill {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .tech-pill:hover {
+      transform: translateY(-1px);
+    }
+    .project-highlight-ring {
+      outline: 3px solid #6366f1 !important;
+      outline-offset: 4px;
+      box-shadow: 0 0 30px -4px rgba(99, 102, 241, 0.35) !important;
+      transform: translateY(-4px) !important;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.45; transform: scale(1); }
+      50% { opacity: 0.75; transform: scale(1.04); }
+    }
+    .pulse-glow {
+      animation: pulseGlow 6s ease-in-out infinite;
     }
   </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased selection:bg-cyan-500 selection:text-white min-h-screen">
+<body class="bg-[#faf9f5] text-slate-800 font-sans antialiased selection:bg-indigo-500 selection:text-white min-h-screen relative">
 
-  <!-- Ambient Glow Effects -->
-  <div class="fixed top-0 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
-  <div class="fixed bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+  <!-- Ambient Pastel Glow Effects -->
+  <div class="fixed top-0 left-1/4 w-[460px] h-[460px] bg-purple-200/50 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow"></div>
+  <div class="fixed top-1/3 right-1/4 w-[480px] h-[480px] bg-sky-200/55 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 2s;"></div>
+  <div class="fixed bottom-1/4 left-1/3 w-[420px] h-[420px] bg-rose-200/40 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 1s;"></div>
+  <div class="fixed bottom-10 right-10 w-[380px] h-[380px] bg-emerald-200/40 rounded-full blur-3xl pointer-events-none -z-10 pulse-glow" style="animation-delay: 3s;"></div>
 
   <!-- Navigation -->
-  <header class="sticky top-0 z-50 glass-panel border-b border-slate-800/80">
+  <header class="sticky top-0 z-50 glass-panel border-b border-slate-200/80">
     <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
       <a href="#" class="flex items-center gap-2 group">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center font-bold text-white text-sm shadow-lg shadow-blue-500/20 group-hover:scale-105 transition">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-indigo-600 to-sky-500 flex items-center justify-center font-bold text-white text-sm shadow-md shadow-indigo-500/20 group-hover:scale-105 transition">
           DH
         </div>
-        <span class="text-lg font-bold tracking-tight text-white group-hover:text-cyan-400 transition">
-          Darwin<span class="text-cyan-400">.ai</span>
+        <span class="text-lg font-bold tracking-tight text-slate-900 group-hover:text-indigo-600 transition">
+          Darwin<span class="text-indigo-600">.ai</span>
         </span>
       </a>
 
-      <nav class="hidden md:flex space-x-7 text-sm font-medium text-slate-300">
-        <a href="#about" class="hover:text-cyan-400 transition">About</a>
-        <a href="#capabilities" class="hover:text-cyan-400 transition">Capabilities</a>
-        <a href="#projects" class="hover:text-cyan-400 transition">Projects</a>
-        <a href="#learn-ml" class="hover:text-cyan-400 transition flex items-center gap-1.5">
+      <nav class="hidden md:flex items-center space-x-7 text-sm font-medium text-slate-600">
+        <a href="#about" class="hover:text-indigo-600 transition">About</a>
+        <a href="#capabilities" class="hover:text-indigo-600 transition">Tech Radar</a>
+        <a href="#projects" class="hover:text-indigo-600 transition">Projects</a>
+        <a href="#learn-ml" class="hover:text-indigo-600 transition flex items-center gap-1.5">
           <span>ML Concept Lab</span>
-          <span class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-cyan-950 text-cyan-400 border border-cyan-700/50">Interactive</span>
+          <span class="px-1.5 py-0.5 rounded text-[10px] font-mono bg-purple-50 text-purple-700 border border-purple-200">Interactive</span>
         </a>
-        <a href="#experience" class="hover:text-cyan-400 transition">Experience</a>
+        <a href="#experience" class="hover:text-indigo-600 transition">Experience</a>
       </nav>
 
-      <div class="flex items-center gap-3">
-        <a href="mailto:darwinharianto@gmail.com?subject=Resume%20Request%20-%20Darwin%20Harianto" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-700 hover:border-slate-500 text-xs font-semibold text-slate-300 hover:text-white transition">
-          <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+      <div class="flex items-center gap-2.5">
+        <!-- Developer Command Palette Button -->
+        <button type="button" onclick="openCommandPalette()" class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200/80 border border-slate-200/80 text-xs font-mono text-slate-600 hover:text-slate-900 transition shadow-xs" title="Open Command Palette (⌘K / Ctrl+K)">
+          <svg class="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+          <span>Search</span>
+          <kbd class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] text-slate-500 font-semibold shadow-xs">⌘K</kbd>
+        </button>
+
+        <a href="mailto:darwinharianto@gmail.com?subject=Resume%20Request%20-%20Darwin%20Harianto" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 hover:border-slate-300 bg-white text-xs font-semibold text-slate-700 hover:text-indigo-600 transition shadow-xs">
+          <svg class="w-3.5 h-3.5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
           <span>CV / Resume</span>
         </a>
-        <a href="#contact" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-xs font-semibold text-white shadow-lg shadow-blue-500/20 transition">
+        <a href="#contact" class="px-4 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-semibold text-white shadow-md shadow-indigo-600/20 transition">
           Contact
         </a>
       </div>
@@ -99,52 +135,52 @@
 
     <!-- Hero Section -->
     <section class="space-y-8 pt-4">
-      <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-xs font-mono text-cyan-400">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        Available for AI Architecture, GenAI & Production Engineering
+      <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-emerald-50/90 border border-emerald-200 text-xs font-mono text-emerald-800 shadow-xs">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        Available for AI Architecture, GenAI & Production Engineering · Tokyo / Global
       </div>
       
       <div class="space-y-4 max-w-4xl">
-        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white leading-[1.12]">
-          Turning Complex AI Research into <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-300">Production Systems</span>
+        <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.12]">
+          Turning Complex AI Research into <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 via-sky-600 to-teal-600">Production Systems</span>
         </h1>
-        <p class="text-lg sm:text-xl text-slate-400 leading-relaxed max-w-3xl">
+        <p class="text-lg sm:text-xl text-slate-600 leading-relaxed max-w-3xl">
           Senior AI & Software Systems Engineer with 8+ years across Japan and international teams. Specializing in <strong>Generative AI (SDXL/LoRA)</strong>, <strong>Multimodal Search (VLMs)</strong>, <strong>Sub-nanometer Computer Vision</strong>, and <strong>Mathematical Layout Optimization</strong>.
         </p>
       </div>
 
       <div class="flex flex-wrap items-center gap-4 pt-2">
-        <a href="#projects" class="px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 font-semibold text-white shadow-xl shadow-blue-600/25 transition flex items-center gap-2">
+        <a href="#projects" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-sky-600 hover:from-indigo-500 hover:to-sky-500 font-semibold text-white shadow-lg shadow-indigo-600/20 transition flex items-center gap-2">
           <span>View Engineering Work</span>
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
         </a>
-        <a href="#learn-ml" class="px-6 py-3.5 rounded-xl border border-slate-700 bg-slate-900/80 hover:bg-slate-800 font-semibold text-slate-200 transition flex items-center gap-2 group">
-          <span class="text-cyan-400 group-hover:scale-110 transition">⚡</span>
+        <a href="#learn-ml" class="px-6 py-3.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 font-semibold text-slate-700 transition flex items-center gap-2 group shadow-xs">
+          <span class="text-indigo-600 group-hover:scale-110 transition">⚡</span>
           <span>Explore Interactive ML Hub</span>
         </a>
-        <a href="mailto:darwinharianto@gmail.com?subject=Resume%20Request%20-%20Darwin%20Harianto" class="px-5 py-3.5 rounded-xl border border-slate-700/80 hover:border-slate-500 bg-slate-900/50 hover:bg-slate-800 text-slate-300 hover:text-white font-semibold transition flex items-center gap-2">
-          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+        <a href="mailto:darwinharianto@gmail.com?subject=Resume%20Request%20-%20Darwin%20Harianto" class="px-5 py-3.5 rounded-xl border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 font-semibold transition flex items-center gap-2 shadow-xs">
+          <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
           <span>Request CV (PDF)</span>
         </a>
       </div>
 
       <!-- Quick Stats Metrics Strip -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-slate-800/80">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-6 border-t border-slate-200/80">
         <div class="p-4 rounded-xl glass-card">
-          <div class="text-2xl font-bold font-mono text-cyan-400">8+ Years</div>
-          <div class="text-xs text-slate-400 mt-1">End-to-End Production Experience</div>
+          <div class="text-2xl font-bold font-mono text-indigo-600">8+ Years</div>
+          <div class="text-xs text-slate-500 mt-1">End-to-End Production Experience</div>
         </div>
         <div class="p-4 rounded-xl glass-card">
-          <div class="text-2xl font-bold font-mono text-emerald-400">Sub-nm</div>
-          <div class="text-xs text-slate-400 mt-1">Industrial CV Measurement Precision</div>
+          <div class="text-2xl font-bold font-mono text-emerald-600">Sub-nm</div>
+          <div class="text-xs text-slate-500 mt-1">Industrial CV Measurement Precision</div>
         </div>
         <div class="p-4 rounded-xl glass-card">
-          <div class="text-2xl font-bold font-mono text-purple-400">4× Speedup</div>
-          <div class="text-xs text-slate-400 mt-1">ONNX / INT8 Quantization Efficiency</div>
+          <div class="text-2xl font-bold font-mono text-purple-600">4× Speedup</div>
+          <div class="text-xs text-slate-500 mt-1">ONNX / INT8 Quantization Efficiency</div>
         </div>
         <div class="p-4 rounded-xl glass-card">
-          <div class="text-2xl font-bold font-mono text-amber-400">TOEIC 960</div>
-          <div class="text-xs text-slate-400 mt-1">JLPT N2 Bilingual Engineering</div>
+          <div class="text-2xl font-bold font-mono text-amber-600">TOEIC 960</div>
+          <div class="text-xs text-slate-500 mt-1">JLPT N2 Bilingual Engineering</div>
         </div>
       </div>
     </section>
@@ -152,12 +188,12 @@
     <!-- About Section -->
     <section id="about" class="space-y-8 scroll-mt-24">
       <div class="flex items-center gap-3">
-        <div class="h-6 w-1 bg-cyan-400 rounded-full"></div>
-        <h2 class="text-2xl font-bold text-white tracking-tight">About & Background</h2>
+        <div class="h-6 w-1 bg-indigo-500 rounded-full"></div>
+        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">About & Background</h2>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-        <div class="md:col-span-8 space-y-4 text-slate-300 leading-relaxed text-sm sm:text-base">
+        <div class="md:col-span-8 space-y-4 text-slate-600 leading-relaxed text-sm sm:text-base">
           <p>
             I am a Senior AI & Software Engineer with over 8 years of production development experience in Japan and globally—from building high-scale mobile and cloud architectures at <strong>Pasona Inc.</strong> to architecting cutting-edge generative AI, computer vision, and mathematical optimization pipelines at <strong>Chowa Giken Co., Ltd.</strong>
           </p>
@@ -166,95 +202,289 @@
           </p>
           
           <div class="pt-2 flex flex-wrap gap-2.5 text-xs font-mono">
-            <span class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-blue-400 flex items-center gap-1.5">
+            <span class="px-3 py-1.5 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-700 font-medium flex items-center gap-1.5 shadow-xs">
               <span>🎓</span> Universitas Indonesia (B.Eng Electrical)
             </span>
-            <span class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-purple-400 flex items-center gap-1.5">
+            <span class="px-3 py-1.5 rounded-lg bg-purple-50 border border-purple-200 text-purple-700 font-medium flex items-center gap-1.5 shadow-xs">
               <span>🇯🇵</span> JLPT N2 (Business Japanese)
             </span>
-            <span class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-emerald-400 flex items-center gap-1.5">
+            <span class="px-3 py-1.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 font-medium flex items-center gap-1.5 shadow-xs">
               <span>🌐</span> TOEIC 960 (Native Professional English)
             </span>
-            <span class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-amber-400 flex items-center gap-1.5">
+            <span class="px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 font-medium flex items-center gap-1.5 shadow-xs">
               <span>☁️</span> GCP Associate Cloud Engineer
             </span>
           </div>
         </div>
 
-        <div class="md:col-span-4 glass-card p-6 rounded-2xl space-y-4">
-          <h3 class="text-sm font-semibold uppercase tracking-wider text-slate-300 font-mono">Technical Summary</h3>
-          <ul class="space-y-3 text-xs text-slate-300">
-            <li class="flex justify-between border-b border-slate-800/80 pb-2">
-              <span class="text-slate-400">Primary Languages:</span>
-              <span class="font-mono text-cyan-300">Python, Swift, C#, JS</span>
+        <div class="md:col-span-4 glass-card p-6 rounded-2xl space-y-4 border border-slate-200 bg-white/90">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 font-mono">Technical Summary</h3>
+          <ul class="space-y-3 text-xs text-slate-700">
+            <li class="flex justify-between border-b border-slate-200/80 pb-2">
+              <span class="text-slate-500">Primary Languages:</span>
+              <span class="font-mono text-indigo-600 font-semibold">Python, Swift, C#, JS</span>
             </li>
-            <li class="flex justify-between border-b border-slate-800/80 pb-2">
-              <span class="text-slate-400">AI Frameworks:</span>
-              <span class="font-mono text-cyan-300">PyTorch, Diffusers, OpenCV</span>
+            <li class="flex justify-between border-b border-slate-200/80 pb-2">
+              <span class="text-slate-500">AI Frameworks:</span>
+              <span class="font-mono text-indigo-600 font-semibold">PyTorch, Diffusers, OpenCV</span>
             </li>
-            <li class="flex justify-between border-b border-slate-800/80 pb-2">
-              <span class="text-slate-400">Optimization:</span>
-              <span class="font-mono text-cyan-300">OR-Tools, ONNX, TensorRT</span>
+            <li class="flex justify-between border-b border-slate-200/80 pb-2">
+              <span class="text-slate-500">Optimization:</span>
+              <span class="font-mono text-indigo-600 font-semibold">OR-Tools, ONNX, TensorRT</span>
             </li>
-            <li class="flex justify-between border-b border-slate-800/80 pb-2">
-              <span class="text-slate-400">Multimodal:</span>
-              <span class="font-mono text-cyan-300">Gemini VLM, FAISS, LoRA</span>
+            <li class="flex justify-between border-b border-slate-200/80 pb-2">
+              <span class="text-slate-500">Multimodal:</span>
+              <span class="font-mono text-indigo-600 font-semibold">Gemini VLM, FAISS, LoRA</span>
             </li>
             <li class="flex justify-between">
-              <span class="text-slate-400">Cloud / Edge:</span>
-              <span class="font-mono text-cyan-300">GCP, Docker, iOS CoreML</span>
+              <span class="text-slate-500">Cloud / Edge:</span>
+              <span class="font-mono text-indigo-600 font-semibold">GCP, Docker, iOS CoreML</span>
             </li>
           </ul>
         </div>
       </div>
     </section>
 
-    <!-- Capabilities / Pillars -->
-    <section id="capabilities" class="space-y-8 scroll-mt-24">
-      <div class="flex items-center gap-3">
-        <div class="h-6 w-1 bg-cyan-400 rounded-full"></div>
-        <h2 class="text-2xl font-bold text-white tracking-tight">Core Technical Capabilities</h2>
+    <!-- Interactive Systems & Tech Stack Radar (Feature 2) -->
+    <section id="capabilities" class="space-y-6 scroll-mt-24">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="h-6 w-1 bg-indigo-500 rounded-full"></div>
+          <div>
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Interactive Systems & Tech Stack Radar</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Explore 6 production pillars — click any tech badge to spotlight matching engineering projects below</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-xs font-mono px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 font-medium">
+            ✦ Cross-Linked to 9 Projects
+          </span>
+        </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="glass-card p-6 rounded-2xl space-y-4">
-          <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-blue-400 font-mono text-lg">
-            ∑
+      <!-- Radar Active Filter & Spotlight Status Bar -->
+      <div id="radarSpotlightBar" class="hidden p-3.5 rounded-xl bg-indigo-50/90 border border-indigo-200 flex flex-wrap items-center justify-between gap-3 text-xs font-mono transition-all">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-ping"></span>
+          <span class="text-slate-600">Spotlight Active:</span>
+          <span id="radarActiveTechName" class="font-bold text-indigo-700 bg-white px-2.5 py-0.5 rounded border border-indigo-200 shadow-xs">Google OR-Tools</span>
+          <span id="radarMatchCount" class="text-slate-500 text-[11px]">(2 matching projects)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="scrollToProjects()" class="px-3 py-1 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold shadow-xs transition flex items-center gap-1 text-[11px]">
+            <span>View Highlighted Projects</span>
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+          </button>
+          <button onclick="clearTechSpotlight()" class="px-2.5 py-1 rounded-lg bg-white hover:bg-slate-100 text-slate-600 border border-slate-200 text-[11px] transition">
+            Reset ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- 6 Radar Pillar Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- Pillar 1: Mathematical Optimization -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 border border-slate-200 bg-white/92 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-200 flex items-center justify-center text-indigo-600 font-mono text-base font-bold shadow-xs">
+                ∑
+              </div>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-indigo-700 bg-indigo-50/80 px-2 py-0.5 rounded border border-indigo-100 font-semibold">Optimization</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Mathematical Optimization & Geometry</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Formulating complex real-world physical constraints into mathematical objective functions. No-Fit Polygon (NFP) geometry, cutting-stock packing, and turn-minimizing constraint programming.
+            </p>
           </div>
-          <h3 class="text-lg font-bold text-white">Mathematical Modeling & Optimization</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Formulating complex real-world physical constraints into mathematical objective functions. Expertise in No-Fit Polygon (NFP) collision geometry, cutting-stock algorithms with Google OR-Tools, and 2D/3D packing engines.
-          </p>
-          <div class="text-[11px] font-mono text-blue-400 pt-2 border-t border-slate-800/60">
-            Google OR-Tools · CAD DXF · Shapely · Heuristics
+          <div class="pt-3 border-t border-slate-200/80 space-y-1.5">
+            <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Click Tech to Spotlight:</div>
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <button onclick="spotlightTech('ortools', 'Google OR-Tools')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-indigo-100/80 border border-slate-200 text-slate-700 hover:text-indigo-800 transition" data-tech="ortools">
+                Google OR-Tools
+              </button>
+              <button onclick="spotlightTech('cpsat', 'CP-SAT Solver')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-indigo-100/80 border border-slate-200 text-slate-700 hover:text-indigo-800 transition" data-tech="cpsat">
+                CP-SAT Solver
+              </button>
+              <button onclick="spotlightTech('nfp', 'NFP Geometry (Shapely)')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-indigo-100/80 border border-slate-200 text-slate-700 hover:text-indigo-800 transition" data-tech="nfp">
+                NFP Geometry
+              </button>
+              <button onclick="spotlightTech('cad', 'CAD DXF Parsing')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-indigo-100/80 border border-slate-200 text-slate-700 hover:text-indigo-800 transition" data-tech="cad">
+                CAD DXF
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="glass-card p-6 rounded-2xl space-y-4">
-          <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 font-mono text-lg">
-            ❖
+        <!-- Pillar 2: Generative AI & Foundation Models -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 border border-slate-200 bg-white/92 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="w-9 h-9 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-600 font-mono text-base font-bold shadow-xs">
+                ❖
+              </div>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-purple-700 bg-purple-50/80 px-2 py-0.5 rounded border border-purple-100 font-semibold">Generative AI</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Generative AI & Multimodal Intelligence</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Fine-tuning diffusion models (SDXL with LoRA adapters), enforcing structural boundaries via ControlNet (M-LSD / Canny), and building multimodal vector search with Gemini VLMs.
+            </p>
           </div>
-          <h3 class="text-lg font-bold text-white">Generative AI & Multimodal Search</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Fine-tuning diffusion models (SDXL with LoRA adapters), enforcing structural boundaries via ControlNet (M-LSD / Canny), and constructing semantic multimodal retrieval pipelines with Gemini VLM embeddings and FAISS.
-          </p>
-          <div class="text-[11px] font-mono text-purple-400 pt-2 border-t border-slate-800/60">
-            SDXL · ControlNet · Gemini VLM · FAISS Vector DB
+          <div class="pt-3 border-t border-slate-200/80 space-y-1.5">
+            <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Click Tech to Spotlight:</div>
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <button onclick="spotlightTech('sdxl', 'SDXL & Diffusers')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-purple-100/80 border border-slate-200 text-slate-700 hover:text-purple-800 transition" data-tech="sdxl">
+                SDXL
+              </button>
+              <button onclick="spotlightTech('lora', 'LoRA Fine-Tuning')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-purple-100/80 border border-slate-200 text-slate-700 hover:text-purple-800 transition" data-tech="lora">
+                LoRA Fine-Tuning
+              </button>
+              <button onclick="spotlightTech('vlm', 'Gemini VLM API')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-purple-100/80 border border-slate-200 text-slate-700 hover:text-purple-800 transition" data-tech="vlm">
+                Gemini VLM
+              </button>
+              <button onclick="spotlightTech('faiss', 'FAISS Vector Index')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-purple-100/80 border border-slate-200 text-slate-700 hover:text-purple-800 transition" data-tech="faiss">
+                FAISS Vector DB
+              </button>
+            </div>
           </div>
         </div>
 
-        <div class="glass-card p-6 rounded-2xl space-y-4">
-          <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 font-mono text-lg">
-            ⚡
+        <!-- Pillar 3: Computer Vision & Metrology -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 border border-slate-200 bg-white/92 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="w-9 h-9 rounded-xl bg-emerald-50 border border-emerald-200 flex items-center justify-center text-emerald-600 font-mono text-base font-bold shadow-xs">
+                ◎
+              </div>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-emerald-800 bg-emerald-50/80 px-2 py-0.5 rounded border border-emerald-100 font-semibold">Computer Vision</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Computer Vision & Nanometrology</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Automated sub-nanometer boundary detection for TEM semiconductor micrographs with 99.4% repeatability, plus asymmetric PDF layout parsing with Japanese Kanji OCR.
+            </p>
           </div>
-          <h3 class="text-lg font-bold text-white">Edge Acceleration & Production Vision</h3>
-          <p class="text-xs text-slate-400 leading-relaxed">
-            Translating research models to high-throughput production runtimes: PyTorch to ONNX graph transformation, post-training INT8 quantization, Apple CoreML deployment, and sub-nanometer automated TEM metrology.
-          </p>
-          <div class="text-[11px] font-mono text-emerald-400 pt-2 border-t border-slate-800/60">
-            ONNX Runtime · INT8 · OpenCV · iOS CoreML · FastAPI
+          <div class="pt-3 border-t border-slate-200/80 space-y-1.5">
+            <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Click Tech to Spotlight:</div>
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <button onclick="spotlightTech('opencv', 'OpenCV Metrology')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-emerald-100/80 border border-slate-200 text-slate-700 hover:text-emerald-800 transition" data-tech="opencv">
+                OpenCV
+              </button>
+              <button onclick="spotlightTech('metrology', 'Sub-pixel Metrology')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-emerald-100/80 border border-slate-200 text-slate-700 hover:text-emerald-800 transition" data-tech="metrology">
+                Sub-pixel Metrology
+              </button>
+              <button onclick="spotlightTech('ocr', 'Japanese Kanji OCR')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-emerald-100/80 border border-slate-200 text-slate-700 hover:text-emerald-800 transition" data-tech="ocr">
+                Kanji OCR
+              </button>
+              <button onclick="spotlightTech('ner', 'Japanese Name NER')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-emerald-100/80 border border-slate-200 text-slate-700 hover:text-emerald-800 transition" data-tech="ner">
+                Japanese NER
+              </button>
+            </div>
           </div>
         </div>
+
+        <!-- Pillar 4: Robotics & 3D Spatial -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 border border-slate-200 bg-white/92 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="w-9 h-9 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600 font-mono text-base font-bold shadow-xs">
+                ⚙
+              </div>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-amber-800 bg-amber-50/80 px-2 py-0.5 rounded border border-amber-100 font-semibold">Robotics & 3D</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Robotics & 3D Spatial Intelligence</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Hospital corridor AMR 6-DoF pose estimation with PVNet keypoint vector voting, 3D LiDAR point cloud mapping, and Unity 3D physical digital twins with 50Hz gRPC bridges.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-slate-200/80 space-y-1.5">
+            <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Click Tech to Spotlight:</div>
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <button onclick="spotlightTech('pvnet', 'PVNet Vector Voting')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-amber-100/80 border border-slate-200 text-slate-700 hover:text-amber-800 transition" data-tech="pvnet">
+                PVNet Head
+              </button>
+              <button onclick="spotlightTech('solvepnp', 'SolvePnP 6-DoF')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-amber-100/80 border border-slate-200 text-slate-700 hover:text-amber-800 transition" data-tech="solvepnp">
+                SolvePnP
+              </button>
+              <button onclick="spotlightTech('lidar', '3D LiDAR Mapping')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-amber-100/80 border border-slate-200 text-slate-700 hover:text-amber-800 transition" data-tech="lidar">
+                3D LiDAR
+              </button>
+              <button onclick="spotlightTech('unity', 'Unity Digital Twin')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-amber-100/80 border border-slate-200 text-slate-700 hover:text-amber-800 transition" data-tech="unity">
+                Unity 3D
+              </button>
+              <button onclick="spotlightTech('grpc', 'Python gRPC Bridge')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-amber-100/80 border border-slate-200 text-slate-700 hover:text-amber-800 transition" data-tech="grpc">
+                Python gRPC
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 5: Edge AI & Quantization -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 border border-slate-200 bg-white/92 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="w-9 h-9 rounded-xl bg-sky-50 border border-sky-200 flex items-center justify-center text-sky-600 font-mono text-base font-bold shadow-xs">
+                ⚡
+              </div>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-sky-800 bg-sky-50/80 px-2 py-0.5 rounded border border-sky-100 font-semibold">Edge Acceleration</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Edge AI & On-Device Quantization</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Apple CoreML ensemble deployment on ANE, post-training INT8 quantization, monocular 3D depth projection, and low-latency asynchronous FastAPI microservices.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-slate-200/80 space-y-1.5">
+            <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Click Tech to Spotlight:</div>
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <button onclick="spotlightTech('coreml', 'iOS CoreML (ANE)')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-sky-100/80 border border-slate-200 text-slate-700 hover:text-sky-800 transition" data-tech="coreml">
+                iOS CoreML
+              </button>
+              <button onclick="spotlightTech('quantization', 'INT8 Quantization')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-sky-100/80 border border-slate-200 text-slate-700 hover:text-sky-800 transition" data-tech="quantization">
+                INT8 Quant
+              </button>
+              <button onclick="spotlightTech('depth', 'Monocular 3D Depth')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-sky-100/80 border border-slate-200 text-slate-700 hover:text-sky-800 transition" data-tech="depth">
+                3D Depth
+              </button>
+              <button onclick="spotlightTech('onnx', 'ONNX Runtime')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-sky-100/80 border border-slate-200 text-slate-700 hover:text-sky-800 transition" data-tech="onnx">
+                ONNX Runtime
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 6: Languages & Engineering Stack -->
+        <div class="glass-card p-6 rounded-2xl space-y-4 border border-slate-200 bg-white/92 flex flex-col justify-between">
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <div class="w-9 h-9 rounded-xl bg-rose-50 border border-rose-200 flex items-center justify-center text-rose-600 font-mono text-base font-bold shadow-xs">
+                ⌘
+              </div>
+              <span class="text-[10px] font-mono uppercase tracking-wider text-rose-800 bg-rose-50/80 px-2 py-0.5 rounded border border-rose-100 font-semibold">Core Stack</span>
+            </div>
+            <h3 class="text-base font-bold text-slate-900">Languages & Production Rigor</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              Industrial delivery across Python, Swift, C#, and JavaScript/TypeScript. Rigorous testing practices with 100% test coverage, Docker containerization, and GCP infrastructure.
+            </p>
+          </div>
+          <div class="pt-3 border-t border-slate-200/80 space-y-1.5">
+            <div class="text-[10px] font-mono text-slate-400 uppercase tracking-wider">Click Tech to Spotlight:</div>
+            <div class="flex flex-wrap gap-1.5 text-xs font-mono">
+              <button onclick="spotlightTech('python', 'Python Ecosystem')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-rose-100/80 border border-slate-200 text-slate-700 hover:text-rose-800 transition" data-tech="python">
+                Python 3.10+
+              </button>
+              <button onclick="spotlightTech('pytorch', 'PyTorch Framework')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-rose-100/80 border border-slate-200 text-slate-700 hover:text-rose-800 transition" data-tech="pytorch">
+                PyTorch
+              </button>
+              <button onclick="spotlightTech('swift', 'Swift & UIKit')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-rose-100/80 border border-slate-200 text-slate-700 hover:text-rose-800 transition" data-tech="swift">
+                Swift
+              </button>
+              <button onclick="spotlightTech('codecov', 'Codecov 100%')" class="tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-rose-100/80 border border-slate-200 text-slate-700 hover:text-rose-800 transition" data-tech="codecov">
+                Codecov 100%
+              </button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
 
@@ -262,68 +492,68 @@
     <section id="projects" class="space-y-6 scroll-mt-24">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div class="flex items-center gap-3">
-          <div class="h-6 w-1 bg-cyan-400 rounded-full"></div>
+          <div class="h-6 w-1 bg-indigo-500 rounded-full"></div>
           <div>
-            <h2 class="text-2xl font-bold text-white tracking-tight">Featured Engineering Projects</h2>
-            <p class="text-xs text-slate-400 mt-0.5">Production AI systems, mathematical geometry, and nanometrology with interactive visualizer pages</p>
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Featured Engineering Projects</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Production AI systems, mathematical geometry, and nanometrology with interactive visualizer pages</p>
           </div>
         </div>
-        <span class="text-xs font-mono px-3 py-1 rounded-full bg-slate-900 border border-slate-800 text-cyan-400">
+        <span class="text-xs font-mono px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 font-medium">
           Each project features a dedicated visualizer page ↗
         </span>
       </div>
 
       <!-- Category Filter Pills -->
-      <div class="flex flex-wrap items-center gap-2 pt-1 pb-2 border-b border-slate-800/60" id="projectFilterBar">
-        <button onclick="filterProjects('all')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-cyan-500 text-slate-950 border border-cyan-400 shadow-md shadow-cyan-500/20" data-filter="all">
-          All Projects (8)
+      <div class="flex flex-wrap items-center gap-2 pt-1 pb-2 border-b border-slate-200/80" id="projectFilterBar">
+        <button onclick="filterProjects('all')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-indigo-600 text-white border border-indigo-600 shadow-md shadow-indigo-600/20" data-filter="all">
+          All Projects (9)
         </button>
-        <button onclick="filterProjects('robotics')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800" data-filter="robotics">
+        <button onclick="filterProjects('robotics')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200" data-filter="robotics">
           Robotics & 3D (2)
         </button>
-        <button onclick="filterProjects('vision')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800" data-filter="vision">
+        <button onclick="filterProjects('vision')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200" data-filter="vision">
           Computer Vision & Metrology (3)
         </button>
-        <button onclick="filterProjects('genai')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800" data-filter="genai">
+        <button onclick="filterProjects('genai')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200" data-filter="genai">
           Generative AI & Multimodal (2)
         </button>
-        <button onclick="filterProjects('optimization')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800" data-filter="optimization">
-          Mathematical Optimization (1)
+        <button onclick="filterProjects('optimization')" class="filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200" data-filter="optimization">
+          Mathematical Optimization (2)
         </button>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="projectsContainer">
 
         <!-- Project 1: CAD 2D Nesting -->
-        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="optimization">
+        <div id="project-card-cad-nesting" class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group border border-slate-200 bg-white/92 transition-all" data-category="optimization" data-tech="ortools,cad,nfp,optimization,python">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-mono px-2.5 py-1 rounded bg-blue-950/80 border border-blue-800 text-blue-300">Mathematical Optimization</span>
-              <a href="projects/cad-nesting.html" class="text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-indigo-50 border border-indigo-200 text-indigo-700 font-semibold">Mathematical Optimization</span>
+              <a href="projects/cad-nesting.html" class="text-xs font-mono text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
                 Launch Visualizer Page →
               </a>
             </div>
-            <h3 class="text-xl font-bold text-white group-hover:text-cyan-300 transition">
+            <h3 class="text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition">
               <a href="projects/cad-nesting.html">Automated CAD 2D Irregular Nesting & Packing Engine</a>
             </h3>
-            <p class="text-sm text-slate-300 leading-relaxed">
+            <p class="text-sm text-slate-600 leading-relaxed">
               Engineered an algorithmic tool utilizing <strong>Google OR-Tools</strong> and No-Fit Polygon (NFP) geometry to solve high-constraint 2D workpiece layouts from raw CAD (DXF) files with an interactive layout GUI, minimizing sheet material waste.
             </p>
           </div>
           
           <div class="space-y-3 pt-2">
             <div class="flex flex-wrap gap-1.5 text-xs font-mono">
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Google OR-Tools</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">CAD DXF</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Python GUI</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">NFP Geometry</span>
+              <button type="button" onclick="spotlightTech('ortools', 'Google OR-Tools'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 text-slate-700 hover:text-indigo-700 transition cursor-pointer">Google OR-Tools</button>
+              <button type="button" onclick="spotlightTech('cad', 'CAD DXF'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 text-slate-700 hover:text-indigo-700 transition cursor-pointer">CAD DXF</button>
+              <button type="button" onclick="spotlightTech('python', 'Python Ecosystem'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 text-slate-700 hover:text-indigo-700 transition cursor-pointer">Python GUI</button>
+              <button type="button" onclick="spotlightTech('nfp', 'NFP Geometry'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 text-slate-700 hover:text-indigo-700 transition cursor-pointer">NFP Geometry</button>
             </div>
-            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+            <div class="flex items-center justify-between pt-1 border-t border-slate-200/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-mono text-emerald-400">✓ Slashed sheet waste by 18-24%</span>
-                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="Proprietary IP — Algorithms & synthetic visualizer reproduced for public demonstration">· Proprietary IP</span>
+                <span class="text-xs font-mono text-emerald-700 font-semibold">✓ Slashed sheet waste by 18-24%</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-400" title="Proprietary IP — Algorithms & synthetic visualizer reproduced for public demonstration">· Proprietary IP</span>
               </div>
-              <button onclick="openProjectModal('nesting')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+              <button onclick="openProjectModal('nesting')" class="text-xs font-mono text-slate-500 hover:text-indigo-600 transition font-semibold">
                 Quick Spec
               </button>
             </div>
@@ -331,35 +561,35 @@
         </div>
 
         <!-- Project 2: Floor Plan Synthesis -->
-        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="genai">
+        <div id="project-card-floorplan" class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group border border-slate-200 bg-white/92 transition-all" data-category="genai" data-tech="sdxl,lora,diffusers,pytorch,genai,python">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-950/80 border border-purple-800 text-purple-300">Generative AI & Architecture</span>
-              <a href="projects/floorplan-synthesis.html" class="text-xs font-mono text-purple-400 hover:text-purple-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-50 border border-purple-200 text-purple-700 font-semibold">Generative AI & Architecture</span>
+              <a href="projects/floorplan-synthesis.html" class="text-xs font-mono text-purple-600 hover:text-purple-800 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
                 Launch Visualizer Page →
               </a>
             </div>
-            <h3 class="text-xl font-bold text-white group-hover:text-purple-300 transition">
+            <h3 class="text-xl font-bold text-slate-900 group-hover:text-purple-600 transition">
               <a href="projects/floorplan-synthesis.html">Architectural Floor Plan Synthesis with SDXL & LoRA</a>
             </h3>
-            <p class="text-sm text-slate-300 leading-relaxed">
+            <p class="text-sm text-slate-600 leading-relaxed">
               Trained custom <strong>LoRA adapters for Stable Diffusion XL</strong> on architectural floor plans. Synthesizes diverse color-coded room layouts (Living, Master Suite, Bed, Kitchen, Terrace, Bath) with clean structural wall partitions and interior spatial proportions governed by deterministic generation seeds.
             </p>
           </div>
           
           <div class="space-y-3 pt-2">
             <div class="flex flex-wrap gap-1.5 text-xs font-mono">
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">SDXL</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">LoRA Fine-Tuning</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Diffusers</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Spatial Geometry</span>
+              <button type="button" onclick="spotlightTech('sdxl', 'SDXL'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-purple-50 border border-slate-200 hover:border-purple-200 text-slate-700 hover:text-purple-700 transition cursor-pointer">SDXL</button>
+              <button type="button" onclick="spotlightTech('lora', 'LoRA Fine-Tuning'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-purple-50 border border-slate-200 hover:border-purple-200 text-slate-700 hover:text-purple-700 transition cursor-pointer">LoRA Fine-Tuning</button>
+              <button type="button" onclick="spotlightTech('pytorch', 'PyTorch Framework'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-purple-50 border border-slate-200 hover:border-purple-200 text-slate-700 hover:text-purple-700 transition cursor-pointer">Diffusers</button>
+              <button type="button" onclick="spotlightTech('python', 'Python Ecosystem'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-purple-50 border border-slate-200 hover:border-purple-200 text-slate-700 hover:text-purple-700 transition cursor-pointer">Spatial Geometry</button>
             </div>
-            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+            <div class="flex items-center justify-between pt-1 border-t border-slate-200/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-mono text-emerald-400">✓ 98%+ structural layout consistency</span>
-                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="GenAI Architecture Blueprint Research">· GenAI Research</span>
+                <span class="text-xs font-mono text-emerald-700 font-semibold">✓ 98%+ structural layout consistency</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-400" title="GenAI Architecture Blueprint Research">· GenAI Research</span>
               </div>
-              <button onclick="openProjectModal('floorplan')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+              <button onclick="openProjectModal('floorplan')" class="text-xs font-mono text-slate-500 hover:text-purple-600 transition font-semibold">
                 Quick Spec
               </button>
             </div>
@@ -367,35 +597,35 @@
         </div>
 
         <!-- Project 3: TEM Semiconductor CV -->
-        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="vision">
+        <div id="project-card-tem" class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group border border-slate-200 bg-white/92 transition-all" data-category="vision" data-tech="opencv,pytorch,metrology,vision,onnx,python">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-300">Industrial Computer Vision</span>
-              <a href="projects/tem-metrology.html" class="text-xs font-mono text-emerald-400 hover:text-emerald-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold">Industrial Computer Vision</span>
+              <a href="projects/tem-metrology.html" class="text-xs font-mono text-emerald-600 hover:text-emerald-800 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
                 Launch Visualizer Page →
               </a>
             </div>
-            <h3 class="text-xl font-bold text-white group-hover:text-emerald-300 transition">
+            <h3 class="text-xl font-bold text-slate-900 group-hover:text-emerald-600 transition">
               <a href="projects/tem-metrology.html">TEM Semiconductor Automated Sub-nanometer Metrology</a>
             </h3>
-            <p class="text-sm text-slate-300 leading-relaxed">
+            <p class="text-sm text-slate-600 leading-relaxed">
               Developed automated sub-nanometer boundary detection & thickness measurement algorithms for Transmission Electron Microscopy (TEM) images, replacing painstaking manual measurement on critical semiconductor layers.
             </p>
           </div>
           
           <div class="space-y-3 pt-2">
             <div class="flex flex-wrap gap-1.5 text-xs font-mono">
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">OpenCV</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">PyTorch</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Sub-pixel Metrology</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Noise Filtering</span>
+              <button type="button" onclick="spotlightTech('opencv', 'OpenCV'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 text-slate-700 hover:text-emerald-700 transition cursor-pointer">OpenCV</button>
+              <button type="button" onclick="spotlightTech('pytorch', 'PyTorch'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 text-slate-700 hover:text-emerald-700 transition cursor-pointer">PyTorch</button>
+              <button type="button" onclick="spotlightTech('metrology', 'Sub-pixel Metrology'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 text-slate-700 hover:text-emerald-700 transition cursor-pointer">Sub-pixel Metrology</button>
+              <button type="button" onclick="spotlightTech('onnx', 'ONNX Runtime'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 text-slate-700 hover:text-emerald-700 transition cursor-pointer">Noise Filtering</button>
             </div>
-            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+            <div class="flex items-center justify-between pt-1 border-t border-slate-200/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-mono text-emerald-400">✓ 99.4% Gauge R&R Repeatability</span>
-                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="Proprietary Fab IP — Algorithms & synthetic visualizer reproduced for public demonstration">· Proprietary Fab IP</span>
+                <span class="text-xs font-mono text-emerald-700 font-semibold">✓ 99.4% Gauge R&R Repeatability</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-400" title="Proprietary Fab IP — Algorithms & synthetic visualizer reproduced for public demonstration">· Proprietary Fab IP</span>
               </div>
-              <button onclick="openProjectModal('tem')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+              <button onclick="openProjectModal('tem')" class="text-xs font-mono text-slate-500 hover:text-emerald-600 transition font-semibold">
                 Quick Spec
               </button>
             </div>
@@ -403,35 +633,35 @@
         </div>
 
         <!-- Project 4: Robot 6D Pose Estimation -->
-        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="robotics">
+        <div id="project-card-robot-pose" class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group border border-slate-200 bg-white/92 transition-all" data-category="robotics" data-tech="detectron2,pvnet,solvepnp,robotics,opencv,python">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-mono px-2.5 py-1 rounded bg-blue-950/80 border border-blue-800 text-blue-300">Robotics 6D Vision</span>
-              <a href="projects/robot-pose.html" class="text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-amber-50 border border-amber-200 text-amber-800 font-semibold">Robotics 6D Vision</span>
+              <a href="projects/robot-pose.html" class="text-xs font-mono text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
                 Launch Visualizer Page →
               </a>
             </div>
-            <h3 class="text-xl font-bold text-white group-hover:text-cyan-300 transition">
+            <h3 class="text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition">
               <a href="projects/robot-pose.html">Hospital Corridor Robot 6D Pose Estimation (PVNet + SolvePnP)</a>
             </h3>
-            <p class="text-sm text-slate-300 leading-relaxed">
+            <p class="text-sm text-slate-600 leading-relaxed">
               Tracked 6-DoF position and orientation ($[X,Y,Z, \text{Roll},\text{Pitch},\text{Yaw}]$) of cubic mobile robots in hospital corridors from overhead CCTV cameras using synthetic 3D CAD data, <strong>Detectron2 with custom PVNet vector-field keypoint voting</strong>, camera calibration ($K, [R|t]$), and SolvePnP (&lt; 5 cm error).
             </p>
           </div>
           
           <div class="space-y-3 pt-2">
             <div class="flex flex-wrap gap-1.5 text-xs font-mono">
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Detectron2</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">PVNet Head</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">SolvePnP</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">3D CAD Synthetic</span>
+              <button type="button" onclick="spotlightTech('pvnet', 'PVNet Head'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 text-slate-700 hover:text-amber-800 transition cursor-pointer">Detectron2</button>
+              <button type="button" onclick="spotlightTech('pvnet', 'PVNet Head'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 text-slate-700 hover:text-amber-800 transition cursor-pointer">PVNet Head</button>
+              <button type="button" onclick="spotlightTech('solvepnp', 'SolvePnP'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 text-slate-700 hover:text-amber-800 transition cursor-pointer">SolvePnP</button>
+              <button type="button" onclick="spotlightTech('python', 'Python'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 text-slate-700 hover:text-amber-800 transition cursor-pointer">3D CAD Synthetic</button>
             </div>
-            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+            <div class="flex items-center justify-between pt-1 border-t border-slate-200/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-mono text-emerald-400">✓ Error &lt; 5.0 cm & 38 FPS</span>
-                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="Healthcare Robotics IP — Synthetic corridor demo reproduced for public demonstration">· Robotics IP</span>
+                <span class="text-xs font-mono text-emerald-700 font-semibold">✓ Error &lt; 5.0 cm & 38 FPS</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-400" title="Healthcare Robotics IP — Synthetic corridor demo reproduced for public demonstration">· Robotics IP</span>
               </div>
-              <button onclick="openProjectModal('robotpose')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+              <button onclick="openProjectModal('robotpose')" class="text-xs font-mono text-slate-500 hover:text-indigo-600 transition font-semibold">
                 Quick Spec
               </button>
             </div>
@@ -439,35 +669,35 @@
         </div>
 
         <!-- Project 5: Autonomous Excavator & Digital Twin -->
-        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="robotics">
+        <div id="project-card-excavator" class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group border border-slate-200 bg-white/92 transition-all" data-category="robotics" data-tech="lidar,unity,grpc,robotics,python">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-mono px-2.5 py-1 rounded bg-amber-950/80 border border-amber-800 text-amber-300">Robotics & Digital Twins</span>
-              <a href="projects/excavator-automation.html" class="text-xs font-mono text-amber-400 hover:text-amber-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-amber-50 border border-amber-200 text-amber-800 font-semibold">Robotics & Digital Twins</span>
+              <a href="projects/excavator-automation.html" class="text-xs font-mono text-amber-600 hover:text-amber-800 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
                 Launch Visualizer Page →
               </a>
             </div>
-            <h3 class="text-xl font-bold text-white group-hover:text-amber-300 transition">
+            <h3 class="text-xl font-bold text-slate-900 group-hover:text-amber-600 transition">
               <a href="projects/excavator-automation.html">Autonomous Excavator (バックホウ) Automation & Unity Digital Twin</a>
             </h3>
-            <p class="text-sm text-slate-300 leading-relaxed">
+            <p class="text-sm text-slate-600 leading-relaxed">
               Engineered multi-modal <strong>3D LiDAR point-cloud terrain mapping</strong>, Unity 3D physical digital twin, high-frequency Python gRPC machine controllers, and machine learning autonomous dirt scooping and excavation control.
             </p>
           </div>
           
           <div class="space-y-3 pt-2">
             <div class="flex flex-wrap gap-1.5 text-xs font-mono">
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">3D LiDAR</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Unity 3D</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Python gRPC</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">ML Excavation</span>
+              <button type="button" onclick="spotlightTech('lidar', '3D LiDAR'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 text-slate-700 hover:text-amber-800 transition cursor-pointer">3D LiDAR</button>
+              <button type="button" onclick="spotlightTech('unity', 'Unity 3D'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 text-slate-700 hover:text-amber-800 transition cursor-pointer">Unity 3D</button>
+              <button type="button" onclick="spotlightTech('grpc', 'Python gRPC'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 text-slate-700 hover:text-amber-800 transition cursor-pointer">Python gRPC</button>
+              <button type="button" onclick="spotlightTech('python', 'Python'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-amber-50 border border-slate-200 hover:border-amber-200 text-slate-700 hover:text-amber-800 transition cursor-pointer">ML Excavation</button>
             </div>
-            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+            <div class="flex items-center justify-between pt-1 border-t border-slate-200/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-mono text-emerald-400">✓ Closed-loop machine control</span>
-                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="Heavy Machinery Automation IP — Digital twin visualizer reproduced for public demonstration">· Automation IP</span>
+                <span class="text-xs font-mono text-emerald-700 font-semibold">✓ Closed-loop machine control</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-400" title="Heavy Machinery Automation IP — Digital twin visualizer reproduced for public demonstration">· Automation IP</span>
               </div>
-              <button onclick="openProjectModal('excavator')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+              <button onclick="openProjectModal('excavator')" class="text-xs font-mono text-slate-500 hover:text-amber-600 transition font-semibold">
                 Quick Spec
               </button>
             </div>
@@ -475,35 +705,35 @@
         </div>
 
         <!-- Project 6: iOS On-Device Bolt Safety Inspection -->
-        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="vision">
+        <div id="project-card-bolt-inspection" class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group border border-slate-200 bg-white/92 transition-all" data-category="vision" data-tech="coreml,depth,quantization,edge,swift,ios">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-300">iOS On-Device Edge AI</span>
-              <a href="projects/bolt-inspection.html" class="text-xs font-mono text-emerald-400 hover:text-emerald-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-sky-50 border border-sky-200 text-sky-800 font-semibold">iOS On-Device Edge AI</span>
+              <a href="projects/bolt-inspection.html" class="text-xs font-mono text-sky-600 hover:text-sky-800 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
                 Launch Visualizer Page →
               </a>
             </div>
-            <h3 class="text-xl font-bold text-white group-hover:text-emerald-300 transition">
+            <h3 class="text-xl font-bold text-slate-900 group-hover:text-sky-600 transition">
               <a href="projects/bolt-inspection.html">iOS On-Device AI: Bolt Safety Check & 3D Angle Metrology</a>
             </h3>
-            <p class="text-sm text-slate-300 leading-relaxed">
+            <p class="text-sm text-slate-600 leading-relaxed">
               Detects bolts, extracts color-segmented torque seal lines, projects 2D pixels into 3D camera coordinates via monocular depth, and calculates precise 3D line angles on a single iPhone image using quantized <strong>CoreML model ensembles</strong>.
             </p>
           </div>
           
           <div class="space-y-3 pt-2">
             <div class="flex flex-wrap gap-1.5 text-xs font-mono">
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">iOS CoreML</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">3D Depth Projection</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">INT8 Quantization</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Vector Angle</span>
+              <button type="button" onclick="spotlightTech('coreml', 'iOS CoreML'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-sky-50 border border-slate-200 hover:border-sky-200 text-slate-700 hover:text-sky-800 transition cursor-pointer">iOS CoreML</button>
+              <button type="button" onclick="spotlightTech('depth', '3D Depth'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-sky-50 border border-slate-200 hover:border-sky-200 text-slate-700 hover:text-sky-800 transition cursor-pointer">3D Depth Projection</button>
+              <button type="button" onclick="spotlightTech('quantization', 'INT8 Quantization'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-sky-50 border border-slate-200 hover:border-sky-200 text-slate-700 hover:text-sky-800 transition cursor-pointer">INT8 Quantization</button>
+              <button type="button" onclick="spotlightTech('swift', 'Swift'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-sky-50 border border-slate-200 hover:border-sky-200 text-slate-700 hover:text-sky-800 transition cursor-pointer">Vector Angle</button>
             </div>
-            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+            <div class="flex items-center justify-between pt-1 border-t border-slate-200/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-mono text-emerald-400">✓ On-device ensemble processing</span>
-                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="Infrastructure Safety IP — CoreML model pipeline reproduced for public demonstration">· Edge AI IP</span>
+                <span class="text-xs font-mono text-emerald-700 font-semibold">✓ On-device ensemble processing</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-400" title="Infrastructure Safety IP — CoreML model pipeline reproduced for public demonstration">· Edge AI IP</span>
               </div>
-              <button onclick="openProjectModal('boltinspection')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+              <button onclick="openProjectModal('boltinspection')" class="text-xs font-mono text-slate-500 hover:text-sky-600 transition font-semibold">
                 Quick Spec
               </button>
             </div>
@@ -511,35 +741,35 @@
         </div>
 
         <!-- Project 7: Multimodal Search -->
-        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="genai">
+        <div id="project-card-multimodal-search" class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group border border-slate-200 bg-white/92 transition-all" data-category="genai" data-tech="vlm,gemini,faiss,fastapi,genai,python">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-950/80 border border-cyan-800 text-cyan-300">Multimodal Foundation Models</span>
-              <a href="projects/multimodal-search.html" class="text-xs font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-50 border border-purple-200 text-purple-700 font-semibold">Multimodal Foundation Models</span>
+              <a href="projects/multimodal-search.html" class="text-xs font-mono text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
                 Launch Visualizer Page →
               </a>
             </div>
-            <h3 class="text-xl font-bold text-white group-hover:text-cyan-300 transition">
+            <h3 class="text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition">
               <a href="projects/multimodal-search.html">Building Image Text, Color & Pattern Vector Search</a>
             </h3>
-            <p class="text-sm text-slate-300 leading-relaxed">
+            <p class="text-sm text-slate-600 leading-relaxed">
               Prompted <strong>Gemini Vision Language Models</strong> to extract dominant color palettes, surface textures, and facade patterns from building photographs, converting them into 768D embeddings to query an indexed 2.4M image FAISS HNSW vector database clustered by color & pattern in &lt;30ms.
             </p>
           </div>
           
           <div class="space-y-3 pt-2">
             <div class="flex flex-wrap gap-1.5 text-xs font-mono">
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Gemini VLM</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">FAISS Index</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">FastAPI</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Vector Embeddings</span>
+              <button type="button" onclick="spotlightTech('vlm', 'Gemini VLM'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-purple-50 border border-slate-200 hover:border-purple-200 text-slate-700 hover:text-purple-700 transition cursor-pointer">Gemini VLM</button>
+              <button type="button" onclick="spotlightTech('faiss', 'FAISS Index'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-purple-50 border border-slate-200 hover:border-purple-200 text-slate-700 hover:text-purple-700 transition cursor-pointer">FAISS Index</button>
+              <button type="button" onclick="spotlightTech('fastapi', 'FastAPI'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-purple-50 border border-slate-200 hover:border-purple-200 text-slate-700 hover:text-purple-700 transition cursor-pointer">FastAPI</button>
+              <button type="button" onclick="spotlightTech('python', 'Python'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-purple-50 border border-slate-200 hover:border-purple-200 text-slate-700 hover:text-purple-700 transition cursor-pointer">Vector Embeddings</button>
             </div>
-            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+            <div class="flex items-center justify-between pt-1 border-t border-slate-200/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-mono text-emerald-400">✓ Sub-100ms P99 Vector Retrieval</span>
-                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="VLM Vector Search Architecture">· VLM Retrieval</span>
+                <span class="text-xs font-mono text-emerald-700 font-semibold">✓ Sub-100ms P99 Vector Retrieval</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-400" title="VLM Vector Search Architecture">· VLM Retrieval</span>
               </div>
-              <button onclick="openProjectModal('vlm')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+              <button onclick="openProjectModal('vlm')" class="text-xs font-mono text-slate-500 hover:text-indigo-600 transition font-semibold">
                 Quick Spec
               </button>
             </div>
@@ -547,35 +777,35 @@
         </div>
 
         <!-- Project 8: Japanese Signed Document Detection -->
-        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="vision">
+        <div id="project-card-document-signature" class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group border border-slate-200 bg-white/92 transition-all" data-category="vision" data-tech="pdf,ocr,ner,opencv,vision,python">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-mono px-2.5 py-1 rounded bg-sky-950/80 border border-sky-800 text-sky-300">Document AI & OCR</span>
-              <a href="projects/document-signature-detection.html" class="text-xs font-mono text-sky-400 hover:text-sky-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold">Document AI & OCR</span>
+              <a href="projects/document-signature-detection.html" class="text-xs font-mono text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
                 Launch Visualizer Page →
               </a>
             </div>
-            <h3 class="text-xl font-bold text-white group-hover:text-sky-300 transition">
+            <h3 class="text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition">
               <a href="projects/document-signature-detection.html">Automated Japanese Signed Document Detection & OCR</a>
             </h3>
-            <p class="text-sm text-slate-300 leading-relaxed">
+            <p class="text-sm text-slate-600 leading-relaxed">
               Automated document intake verification for complex cadastral and legal survey PDFs (featuring parcel maps on one side and structured form boxes on the other). Isolates the target signature block to verify valid Japanese person names (Kanji handwriting / personal seals) with <strong>99% accuracy</strong>, slashing manual inspection labor.
             </p>
           </div>
           
           <div class="space-y-3 pt-2">
             <div class="flex flex-wrap gap-1.5 text-xs font-mono">
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">PDF Layout Analysis</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Japanese Name NER</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Kanji OCR</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">ROI Localization</span>
+              <button type="button" onclick="spotlightTech('ocr', 'PDF Layout'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 text-slate-700 hover:text-emerald-700 transition cursor-pointer">PDF Layout</button>
+              <button type="button" onclick="spotlightTech('ner', 'Japanese Name NER'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 text-slate-700 hover:text-emerald-700 transition cursor-pointer">Japanese Name NER</button>
+              <button type="button" onclick="spotlightTech('ocr', 'Kanji OCR'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 text-slate-700 hover:text-emerald-700 transition cursor-pointer">Kanji OCR</button>
+              <button type="button" onclick="spotlightTech('opencv', 'OpenCV'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-200 text-slate-700 hover:text-emerald-700 transition cursor-pointer">ROI Localization</button>
             </div>
-            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+            <div class="flex items-center justify-between pt-1 border-t border-slate-200/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-mono text-emerald-400">✓ 99% accuracy · Slashed labor by >90%</span>
-                <span class="hidden sm:inline text-[10px] font-mono text-slate-500" title="Legal & Survey Document Intake IP">· Production IP</span>
+                <span class="text-xs font-mono text-emerald-700 font-semibold">✓ 99% accuracy · Slashed labor by >90%</span>
+                <span class="hidden sm:inline text-[10px] font-mono text-slate-400" title="Legal & Survey Document Intake IP">· Production IP</span>
               </div>
-              <button onclick="openProjectModal('documentsignature')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+              <button onclick="openProjectModal('documentsignature')" class="text-xs font-mono text-slate-500 hover:text-indigo-600 transition font-semibold">
                 Quick Spec
               </button>
             </div>
@@ -583,36 +813,35 @@
         </div>
 
         <!-- Project 9: Flow Free Constraint Programming Solver -->
-        <div class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group" data-category="optimization">
+        <div id="project-card-flow-free-solver" class="project-card glass-card p-6 rounded-2xl space-y-4 flex flex-col justify-between group border border-slate-200 bg-white/92 transition-all" data-category="optimization" data-tech="ortools,cpsat,optimization,python,codecov">
           <div class="space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-950/80 border border-emerald-800 text-emerald-300">Open-Source Optimization</span>
-              <a href="projects/flow-free-solver.html" class="text-xs font-mono text-emerald-400 hover:text-emerald-300 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-indigo-50 border border-indigo-200 text-indigo-700 font-semibold">Open-Source Optimization</span>
+              <a href="projects/flow-free-solver.html" class="text-xs font-mono text-indigo-600 hover:text-indigo-800 flex items-center gap-1 group-hover:translate-x-1 transition font-bold">
                 Launch Visualizer Page →
               </a>
             </div>
-            <h3 class="text-xl font-bold text-white group-hover:text-emerald-300 transition">
+            <h3 class="text-xl font-bold text-slate-900 group-hover:text-indigo-600 transition">
               <a href="projects/flow-free-solver.html">Flow Free Constraint Programming Solver (Google OR-Tools)</a>
             </h3>
-            <p class="text-sm text-slate-300 leading-relaxed">
+            <p class="text-sm text-slate-600 leading-relaxed">
               Engineered an optimal CP-SAT solver for Flow Free grid games that routes non-intersecting paths on arbitrary grid dimensions while <strong>minimizing path turns</strong> and maximizing board coverage around obstacles. Open-sourced on GitHub with 100% test coverage.
             </p>
           </div>
           
           <div class="space-y-3 pt-2">
             <div class="flex flex-wrap gap-1.5 text-xs font-mono">
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Google OR-Tools</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">CP-SAT Solver</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Turn Minimization</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Python 3.10+</span>
-              <span class="px-2 py-1 rounded bg-slate-800 text-slate-300">Codecov 100%</span>
+              <button type="button" onclick="spotlightTech('ortools', 'Google OR-Tools'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 text-slate-700 hover:text-indigo-700 transition cursor-pointer">Google OR-Tools</button>
+              <button type="button" onclick="spotlightTech('cpsat', 'CP-SAT Solver'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 text-slate-700 hover:text-indigo-700 transition cursor-pointer">CP-SAT Solver</button>
+              <button type="button" onclick="spotlightTech('python', 'Python 3.10+'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 text-slate-700 hover:text-indigo-700 transition cursor-pointer">Turn Minimization</button>
+              <button type="button" onclick="spotlightTech('codecov', 'Codecov 100%'); event.stopPropagation();" class="px-2 py-1 rounded bg-slate-100 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-200 text-slate-700 hover:text-indigo-700 transition cursor-pointer">Codecov 100%</button>
             </div>
-            <div class="flex items-center justify-between pt-1 border-t border-slate-800/80">
+            <div class="flex items-center justify-between pt-1 border-t border-slate-200/80">
               <div class="flex items-center gap-2">
-                <span class="text-xs font-mono text-emerald-400">✓ Globally optimal min turns · Sub-15ms</span>
-                <a href="https://github.com/darwinharianto/flow" target="_blank" rel="noopener noreferrer" class="hidden sm:inline text-[10px] font-mono text-cyan-400 hover:underline">· github.com/darwinharianto/flow ↗</a>
+                <span class="text-xs font-mono text-emerald-700 font-semibold">✓ Globally optimal min turns · Sub-15ms</span>
+                <a href="https://github.com/darwinharianto/flow" target="_blank" rel="noopener noreferrer" class="hidden sm:inline text-[10px] font-mono text-indigo-600 hover:underline">· github.com/darwinharianto/flow ↗</a>
               </div>
-              <button onclick="openProjectModal('flowsolver')" class="text-xs font-mono text-slate-400 hover:text-white transition">
+              <button onclick="openProjectModal('flowsolver')" class="text-xs font-mono text-slate-500 hover:text-indigo-600 transition font-semibold">
                 Quick Spec
               </button>
             </div>
@@ -624,15 +853,15 @@
 
     <!-- Interactive ML Learning Hub (Requested Feature) -->
     <section id="learn-ml" class="space-y-8 scroll-mt-24">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/80 pb-4">
         <div class="flex items-center gap-3">
-          <div class="h-6 w-1 bg-cyan-400 rounded-full"></div>
+          <div class="h-6 w-1 bg-indigo-500 rounded-full"></div>
           <div>
-            <h2 class="text-2xl font-bold text-white tracking-tight">Interactive ML Concept Lab</h2>
-            <p class="text-xs text-slate-400 mt-0.5">Clickable interactive educational visualizers built from first principles</p>
+            <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Interactive ML Concept Lab</h2>
+            <p class="text-xs text-slate-500 mt-0.5">Clickable interactive educational visualizers built from first principles</p>
           </div>
         </div>
-        <span class="text-xs font-mono px-3 py-1 rounded-full bg-cyan-950/80 text-cyan-300 border border-cyan-800">
+        <span class="text-xs font-mono px-3 py-1 rounded-full bg-purple-50 text-purple-700 border border-purple-200 font-medium">
           Click cards to launch visualizer apps ↗
         </span>
       </div>
@@ -640,79 +869,79 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
         <!-- Module 1 Card: Foundations -->
-        <a href="learn/foundations.html" class="glass-card p-6 rounded-2xl flex flex-col justify-between group hover:border-cyan-500/50">
+        <a href="learn/foundations.html" class="glass-card p-6 rounded-2xl flex flex-col justify-between group border border-slate-200 bg-white/92 hover:border-indigo-300 shadow-xs hover:shadow-md transition-all">
           <div class="space-y-4">
             <div class="flex items-center justify-between">
-              <span class="px-2.5 py-1 text-xs font-mono bg-blue-500/10 text-cyan-400 rounded-lg border border-cyan-500/20">Part 01</span>
-              <span class="text-xs font-mono text-cyan-400 flex items-center gap-1 group-hover:translate-x-1 transition">
+              <span class="px-2.5 py-1 text-xs font-mono bg-indigo-50 text-indigo-700 rounded-lg border border-indigo-200 font-semibold">Part 01</span>
+              <span class="text-xs font-mono text-indigo-600 flex items-center gap-1 group-hover:translate-x-1 transition font-semibold">
                 Launch Visualizer →
               </span>
             </div>
-            <h3 class="text-lg font-bold text-white group-hover:text-cyan-300 transition">
+            <h3 class="text-lg font-bold text-slate-900 group-hover:text-indigo-600 transition">
               Neural Networks, Activations & Loss Landscapes
             </h3>
-            <p class="text-xs text-slate-400 leading-relaxed">
+            <p class="text-xs text-slate-600 leading-relaxed">
               Interactive forward-pass signal flow, dynamic activation curves (ReLU, GELU, Sigmoid), and live 2D gradient descent simulation on a multi-modal loss contour.
             </p>
           </div>
 
           <div class="pt-6 space-y-2">
-            <div class="text-[11px] font-mono text-slate-400 space-y-1 bg-slate-900/90 p-3 rounded-xl border border-slate-800">
-              <div class="text-cyan-400 font-semibold">• Live Perceptron Canvas</div>
-              <div class="text-cyan-400 font-semibold">• Vanishing Gradient Visualizer</div>
-              <div class="text-cyan-400 font-semibold">• Momentum & Learning Rate Ball</div>
+            <div class="text-[11px] font-mono text-slate-600 space-y-1 bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <div class="text-indigo-700 font-semibold">• Live Perceptron Canvas</div>
+              <div class="text-indigo-700 font-semibold">• Vanishing Gradient Visualizer</div>
+              <div class="text-indigo-700 font-semibold">• Momentum & Learning Rate Ball</div>
             </div>
           </div>
         </a>
 
         <!-- Module 2 Card: Vision -->
-        <a href="learn/vision.html" class="glass-card p-6 rounded-2xl flex flex-col justify-between group hover:border-emerald-500/50">
+        <a href="learn/vision.html" class="glass-card p-6 rounded-2xl flex flex-col justify-between group border border-slate-200 bg-white/92 hover:border-emerald-300 shadow-xs hover:shadow-md transition-all">
           <div class="space-y-4">
             <div class="flex items-center justify-between">
-              <span class="px-2.5 py-1 text-xs font-mono bg-emerald-500/10 text-emerald-400 rounded-lg border border-emerald-500/20">Part 02</span>
-              <span class="text-xs font-mono text-emerald-400 flex items-center gap-1 group-hover:translate-x-1 transition">
+              <span class="px-2.5 py-1 text-xs font-mono bg-emerald-50 text-emerald-800 rounded-lg border border-emerald-200 font-semibold">Part 02</span>
+              <span class="text-xs font-mono text-emerald-700 flex items-center gap-1 group-hover:translate-x-1 transition font-semibold">
                 Launch Visualizer →
               </span>
             </div>
-            <h3 class="text-lg font-bold text-white group-hover:text-emerald-300 transition">
+            <h3 class="text-lg font-bold text-slate-900 group-hover:text-emerald-700 transition">
               Computer Vision: Convolutions & Edge Quantization
             </h3>
-            <p class="text-xs text-slate-400 leading-relaxed">
+            <p class="text-xs text-slate-600 leading-relaxed">
               Interactive 2D convolution kernel sliding window, feature map dot-product step breakdown, receptive field growth, and FP32-to-INT8 quantization for edge AI.
             </p>
           </div>
 
           <div class="pt-6 space-y-2">
-            <div class="text-[11px] font-mono text-slate-400 space-y-1 bg-slate-900/90 p-3 rounded-xl border border-slate-800">
-              <div class="text-emerald-400 font-semibold">• 2D Sliding Kernel Simulator</div>
-              <div class="text-emerald-400 font-semibold">• Sobel & Gaussian Filters</div>
-              <div class="text-emerald-400 font-semibold">• ONNX INT8 Quantization Bins</div>
+            <div class="text-[11px] font-mono text-slate-600 space-y-1 bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <div class="text-emerald-800 font-semibold">• 2D Sliding Kernel Simulator</div>
+              <div class="text-emerald-800 font-semibold">• Sobel & Gaussian Filters</div>
+              <div class="text-emerald-800 font-semibold">• ONNX INT8 Quantization Bins</div>
             </div>
           </div>
         </a>
 
         <!-- Module 3 Card: Transformers -->
-        <a href="learn/transformers.html" class="glass-card p-6 rounded-2xl flex flex-col justify-between group hover:border-purple-500/50">
+        <a href="learn/transformers.html" class="glass-card p-6 rounded-2xl flex flex-col justify-between group border border-slate-200 bg-white/92 hover:border-purple-300 shadow-xs hover:shadow-md transition-all">
           <div class="space-y-4">
             <div class="flex items-center justify-between">
-              <span class="px-2.5 py-1 text-xs font-mono bg-purple-500/10 text-purple-400 rounded-lg border border-purple-500/20">Part 03</span>
-              <span class="text-xs font-mono text-purple-400 flex items-center gap-1 group-hover:translate-x-1 transition">
+              <span class="px-2.5 py-1 text-xs font-mono bg-purple-50 text-purple-700 rounded-lg border border-purple-200 font-semibold">Part 03</span>
+              <span class="text-xs font-mono text-purple-700 flex items-center gap-1 group-hover:translate-x-1 transition font-semibold">
                 Launch Visualizer →
               </span>
             </div>
-            <h3 class="text-lg font-bold text-white group-hover:text-purple-300 transition">
+            <h3 class="text-lg font-bold text-slate-900 group-hover:text-purple-700 transition">
               Attention Mechanisms & The Transformer Revolution
             </h3>
-            <p class="text-xs text-slate-400 leading-relaxed">
+            <p class="text-xs text-slate-600 leading-relaxed">
               Interactive Self-Attention token heatmap matrix, co-reference pronoun resolution, Multi-Head subspace specialization, and Diffusion Cross-Attention in SDXL.
             </p>
           </div>
 
           <div class="pt-6 space-y-2">
-            <div class="text-[11px] font-mono text-slate-400 space-y-1 bg-slate-900/90 p-3 rounded-xl border border-slate-800">
-              <div class="text-purple-400 font-semibold">• Clickable Attention Matrix</div>
-              <div class="text-purple-400 font-semibold">• Multi-Head Subspace Router</div>
-              <div class="text-purple-400 font-semibold">• SDXL Cross-Attention Flow</div>
+            <div class="text-[11px] font-mono text-slate-600 space-y-1 bg-slate-50 p-3 rounded-xl border border-slate-200">
+              <div class="text-purple-700 font-semibold">• Clickable Attention Matrix</div>
+              <div class="text-purple-700 font-semibold">• Multi-Head Subspace Router</div>
+              <div class="text-purple-700 font-semibold">• SDXL Cross-Attention Flow</div>
             </div>
           </div>
         </a>
@@ -723,64 +952,64 @@
     <!-- Professional Experience Timeline -->
     <section id="experience" class="space-y-8 scroll-mt-24">
       <div class="flex items-center gap-3">
-        <div class="h-6 w-1 bg-cyan-400 rounded-full"></div>
-        <h2 class="text-2xl font-bold text-white tracking-tight">Work Experience & Track Record</h2>
+        <div class="h-6 w-1 bg-indigo-500 rounded-full"></div>
+        <h2 class="text-2xl font-bold text-slate-900 tracking-tight">Work Experience & Track Record</h2>
       </div>
 
       <div class="space-y-6">
         <!-- Chowa Giken -->
-        <div class="glass-card p-6 rounded-2xl space-y-3">
+        <div class="glass-card p-6 rounded-2xl space-y-3 border border-slate-200 bg-white/92">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-            <h3 class="text-lg font-bold text-white">Chowa Giken Co., Ltd. (調和技研)</h3>
-            <span class="text-xs font-mono text-cyan-400">Senior AI Engineer · Sapporo / Tokyo, Japan</span>
+            <h3 class="text-lg font-bold text-slate-900">Chowa Giken Co., Ltd. (調和技研)</h3>
+            <span class="text-xs font-mono text-indigo-600 font-semibold">Senior AI Engineer · Sapporo / Tokyo, Japan</span>
           </div>
-          <p class="text-sm text-slate-300 leading-relaxed">
+          <p class="text-sm text-slate-600 leading-relaxed">
             Leading end-to-end AI system delivery for industrial enterprise clients across Japan. Architected generative AI pipelines (SDXL with custom LoRA, ControlNet), industrial computer vision (TEM sub-nanometer metrology), 3D point cloud segmentation (Open3D), and mathematical optimization algorithms (Google OR-Tools CAD nesting).
           </p>
-          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400 pt-1">
-            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">PyTorch</span>
-            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">Diffusers</span>
-            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">OR-Tools</span>
-            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">ONNX</span>
-            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">Open3D</span>
+          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-700 pt-1">
+            <span class="px-2.5 py-1 rounded bg-slate-100 border border-slate-200">PyTorch</span>
+            <span class="px-2.5 py-1 rounded bg-slate-100 border border-slate-200">Diffusers</span>
+            <span class="px-2.5 py-1 rounded bg-slate-100 border border-slate-200">OR-Tools</span>
+            <span class="px-2.5 py-1 rounded bg-slate-100 border border-slate-200">ONNX</span>
+            <span class="px-2.5 py-1 rounded bg-slate-100 border border-slate-200">Open3D</span>
           </div>
         </div>
 
         <!-- Pasona Inc -->
-        <div class="glass-card p-6 rounded-2xl space-y-3">
+        <div class="glass-card p-6 rounded-2xl space-y-3 border border-slate-200 bg-white/92">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
-            <h3 class="text-lg font-bold text-white">Pasona Inc. (パソナ)</h3>
-            <span class="text-xs font-mono text-slate-400">Software & Mobile Solutions Engineer · Tokyo, Japan</span>
+            <h3 class="text-lg font-bold text-slate-900">Pasona Inc. (パソナ)</h3>
+            <span class="text-xs font-mono text-slate-500 font-semibold">Software & Mobile Solutions Engineer · Tokyo, Japan</span>
           </div>
-          <p class="text-sm text-slate-300 leading-relaxed">
+          <p class="text-sm text-slate-600 leading-relaxed">
             Engineered cross-platform mobile systems and cloud backends. Developed iOS applications (Swift, CoreML, UIKit), RESTful API microservices, database schemas, and continuous integration deployment workflows in high-compliance Japanese enterprise environments.
           </p>
-          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-400 pt-1">
-            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">iOS (Swift)</span>
-            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">CoreML</span>
-            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">GCP</span>
-            <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300">REST APIs</span>
+          <div class="flex flex-wrap gap-2 text-xs font-mono text-slate-700 pt-1">
+            <span class="px-2.5 py-1 rounded bg-slate-100 border border-slate-200">iOS (Swift)</span>
+            <span class="px-2.5 py-1 rounded bg-slate-100 border border-slate-200">CoreML</span>
+            <span class="px-2.5 py-1 rounded bg-slate-100 border border-slate-200">GCP</span>
+            <span class="px-2.5 py-1 rounded bg-slate-100 border border-slate-200">REST APIs</span>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Footer & Contact -->
-    <footer id="contact" class="pt-12 border-t border-slate-800/80 flex flex-col sm:flex-row justify-between items-center gap-6 text-sm text-slate-400 scroll-mt-24">
+    <footer id="contact" class="pt-12 border-t border-slate-200/80 flex flex-col sm:flex-row justify-between items-center gap-6 text-sm text-slate-500 scroll-mt-24">
       <div>
-        <div class="text-white font-bold text-base">Darwin Harianto</div>
+        <div class="text-slate-900 font-bold text-base">Darwin Harianto</div>
         <div class="text-xs text-slate-500">Senior AI Engineer & Systems Architect</div>
       </div>
       <div class="flex items-center gap-6">
-        <a href="https://github.com/darwinharianto" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition flex items-center gap-1.5">
+        <a href="https://github.com/darwinharianto" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-600 transition flex items-center gap-1.5 font-medium">
           <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
           GitHub
         </a>
-        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition flex items-center gap-1.5">
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="hover:text-indigo-600 transition flex items-center gap-1.5 font-medium">
           <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
           LinkedIn
         </a>
-        <a href="mailto:darwinharianto@gmail.com" class="hover:text-cyan-400 transition flex items-center gap-1.5">
+        <a href="mailto:darwinharianto@gmail.com" class="hover:text-indigo-600 transition flex items-center gap-1.5 font-medium">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
           Email
         </a>
@@ -790,42 +1019,42 @@
   </main>
 
   <!-- Interactive Project Technical Deep-Dive Modal -->
-  <div id="projectModal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md hidden flex items-center justify-center p-4">
-    <div class="glass-panel max-w-2xl w-full rounded-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto border border-slate-700 glow-cyan">
+  <div id="projectModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="glass-panel max-w-2xl w-full rounded-2xl p-6 sm:p-8 space-y-6 max-h-[90vh] overflow-y-auto border border-slate-200 bg-white/95 shadow-2xl">
       <div class="flex items-start justify-between">
         <div>
-          <span id="modalCategory" class="text-xs font-mono px-2.5 py-1 rounded bg-blue-950 border border-blue-800 text-blue-300">Category</span>
-          <h3 id="modalTitle" class="text-xl sm:text-2xl font-bold text-white mt-2">Project Title</h3>
+          <span id="modalCategory" class="text-xs font-mono px-2.5 py-1 rounded bg-indigo-50 border border-indigo-200 text-indigo-700 font-semibold">Category</span>
+          <h3 id="modalTitle" class="text-xl sm:text-2xl font-bold text-slate-900 mt-2">Project Title</h3>
         </div>
-        <button onclick="closeProjectModal()" class="text-slate-400 hover:text-white p-2 rounded-lg bg-slate-800/80 hover:bg-slate-700 transition">
+        <button onclick="closeProjectModal()" class="text-slate-500 hover:text-slate-900 p-2 rounded-lg bg-slate-100 hover:bg-slate-200 transition">
           ✕
         </button>
       </div>
 
-      <div class="space-y-4 text-xs sm:text-sm text-slate-300 leading-relaxed">
+      <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed">
         <div>
-          <h4 class="font-bold text-white font-mono uppercase text-xs tracking-wider mb-1">Problem & Context</h4>
-          <p id="modalProblem" class="text-slate-400"></p>
+          <h4 class="font-bold text-slate-900 font-mono uppercase text-xs tracking-wider mb-1">Problem & Context</h4>
+          <p id="modalProblem" class="text-slate-600"></p>
         </div>
 
         <div>
-          <h4 class="font-bold text-white font-mono uppercase text-xs tracking-wider mb-1">Darwin's Engineering Architecture</h4>
-          <p id="modalSolution" class="text-slate-300"></p>
+          <h4 class="font-bold text-slate-900 font-mono uppercase text-xs tracking-wider mb-1">Darwin's Engineering Architecture</h4>
+          <p id="modalSolution" class="text-slate-700"></p>
         </div>
 
-        <div class="p-4 rounded-xl bg-slate-900 border border-slate-800 space-y-2 font-mono text-xs">
-          <div class="text-cyan-400 font-bold">Key Technologies & Pipeline:</div>
-          <div id="modalTech" class="text-slate-300"></div>
+        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2 font-mono text-xs text-slate-800">
+          <div class="text-indigo-600 font-bold">Key Technologies & Pipeline:</div>
+          <div id="modalTech" class="text-slate-700"></div>
         </div>
 
         <div>
-          <h4 class="font-bold text-white font-mono uppercase text-xs tracking-wider mb-1">Production Impact & Results</h4>
-          <p id="modalImpact" class="text-emerald-400 font-medium"></p>
+          <h4 class="font-bold text-slate-900 font-mono uppercase text-xs tracking-wider mb-1">Production Impact & Results</h4>
+          <p id="modalImpact" class="text-emerald-700 font-semibold"></p>
         </div>
       </div>
 
-      <div class="pt-4 border-t border-slate-800 flex justify-end">
-        <button onclick="closeProjectModal()" class="px-5 py-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-mono transition">
+      <div class="pt-4 border-t border-slate-200 flex justify-end">
+        <button onclick="closeProjectModal()" class="px-5 py-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-mono font-semibold transition">
           Close Window
         </button>
       </div>
@@ -908,15 +1137,76 @@
       }
     };
 
+    // --- Interactive Systems & Tech Stack Radar & Project Cross-Linking ---
+    let currentSpotlightTech = null;
+
+    function spotlightTech(techKey, techName) {
+      currentSpotlightTech = techKey;
+      const cards = document.querySelectorAll('.project-card');
+      const radarBtns = document.querySelectorAll('.tech-radar-btn');
+      let matchCount = 0;
+
+      // Ensure all cards are visible in the container so matching ones show
+      cards.forEach(card => {
+        const cardTech = (card.getAttribute('data-tech') || '').toLowerCase();
+        if (cardTech.includes(techKey.toLowerCase())) {
+          card.classList.add('project-highlight-ring');
+          card.style.display = 'flex';
+          matchCount++;
+        } else {
+          card.classList.remove('project-highlight-ring');
+        }
+      });
+
+      // Update radar button states
+      radarBtns.forEach(btn => {
+        if (btn.getAttribute('data-tech') === techKey) {
+          btn.className = 'tech-radar-btn px-2.5 py-1 rounded-md bg-indigo-600 text-white font-semibold shadow-xs transition';
+        } else {
+          btn.className = 'tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-indigo-100/80 border border-slate-200 text-slate-700 hover:text-indigo-800 transition';
+        }
+      });
+
+      // Update spotlight status bar
+      const bar = document.getElementById('radarSpotlightBar');
+      const nameElem = document.getElementById('radarActiveTechName');
+      const countElem = document.getElementById('radarMatchCount');
+      if (bar && nameElem && countElem) {
+        nameElem.textContent = techName || techKey;
+        countElem.textContent = `(${matchCount} matching project${matchCount === 1 ? '' : 's'})`;
+        bar.classList.remove('hidden');
+      }
+    }
+
+    function clearTechSpotlight() {
+      currentSpotlightTech = null;
+      document.querySelectorAll('.project-card').forEach(card => {
+        card.classList.remove('project-highlight-ring');
+      });
+      document.querySelectorAll('.tech-radar-btn').forEach(btn => {
+        btn.className = 'tech-radar-btn px-2.5 py-1 rounded-md bg-slate-100 hover:bg-indigo-100/80 border border-slate-200 text-slate-700 hover:text-indigo-800 transition';
+      });
+      const bar = document.getElementById('radarSpotlightBar');
+      if (bar) bar.classList.add('hidden');
+    }
+
+    function scrollToProjects() {
+      const projectsSection = document.getElementById('projects');
+      if (projectsSection) {
+        projectsSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
     function filterProjects(category) {
+      clearTechSpotlight();
       const cards = document.querySelectorAll('.project-card');
       const pills = document.querySelectorAll('.filter-pill');
 
       pills.forEach(pill => {
         if (pill.getAttribute('data-filter') === category) {
-          pill.className = 'filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-cyan-500 text-slate-950 border border-cyan-400 shadow-md shadow-cyan-500/20';
+          pill.className = 'filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-indigo-600 text-white border border-indigo-600 shadow-md shadow-indigo-600/20';
         } else {
-          pill.className = 'filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-slate-900 text-slate-400 hover:text-white border border-slate-800';
+          pill.className = 'filter-pill px-3.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50 border border-slate-200';
         }
       });
 
@@ -951,8 +1241,404 @@
       }
     });
 
+    // --- Developer Command Palette Controller (Feature 3) ---
+    const PALETTE_ITEMS = [
+      // 9 Engineering Projects
+      {
+        type: 'project',
+        category: 'Project Visualizer',
+        title: 'CAD 2D Irregular Nesting & Packing Engine',
+        subtitle: 'Google OR-Tools · NFP Geometry · DXF Workpiece Layout',
+        badge: 'Optimization',
+        badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+        url: 'projects/cad-nesting.html',
+        keywords: 'cad nesting optimization dxf or-tools geometry packing cutting stock sheet waste'
+      },
+      {
+        type: 'project',
+        category: 'Project Visualizer',
+        title: 'Architectural Floor Plan Synthesis with SDXL & LoRA',
+        subtitle: 'PyTorch · SDXL Diffusers · LoRA Fine-Tuning · Spatial Geometry',
+        badge: 'GenAI',
+        badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
+        url: 'projects/floorplan-synthesis.html',
+        keywords: 'floorplan sdxl lora diffusers genai blueprint diffusion architectural rooms'
+      },
+      {
+        type: 'project',
+        category: 'Project Visualizer',
+        title: 'TEM Semiconductor Automated Sub-nanometer Metrology',
+        subtitle: 'OpenCV · PyTorch · Sub-pixel Edge Metrology · TEM Micrographs',
+        badge: 'Computer Vision',
+        badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+        url: 'projects/tem-metrology.html',
+        keywords: 'tem metrology semiconductor opencv pytorch sub-pixel fab layer caliper oxide'
+      },
+      {
+        type: 'project',
+        category: 'Project Visualizer',
+        title: 'Hospital Corridor Robot 6D Pose Estimation',
+        subtitle: 'Detectron2 · Custom PVNet Vector Head · SolvePnP (< 5 cm error)',
+        badge: 'Robotics 6D',
+        badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
+        url: 'projects/robot-pose.html',
+        keywords: 'robot pose amr 6d pvnet solvepnp detectron2 corridor hospital cctv'
+      },
+      {
+        type: 'project',
+        category: 'Project Visualizer',
+        title: 'Autonomous Excavator Automation & Unity Digital Twin',
+        subtitle: '3D LiDAR Terrain Mapping · Unity Digital Twin · Python gRPC Bridge',
+        badge: 'Robotics 3D',
+        badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
+        url: 'projects/excavator-automation.html',
+        keywords: 'excavator digital twin lidar unity grpc robotics autonomous heavy machinery'
+      },
+      {
+        type: 'project',
+        category: 'Project Visualizer',
+        title: 'iOS On-Device AI: Bolt Safety Check & 3D Angle Metrology',
+        subtitle: 'Apple CoreML INT8 Quantization · Monocular 3D Depth · ANE',
+        badge: 'Edge AI',
+        badgeColor: 'bg-sky-50 text-sky-800 border-sky-200',
+        url: 'projects/bolt-inspection.html',
+        keywords: 'bolt inspection coreml int8 quantization ios angle 3d torque ane mobile'
+      },
+      {
+        type: 'project',
+        category: 'Project Visualizer',
+        title: 'Building Image Text, Color & Pattern Vector Search',
+        subtitle: 'Gemini VLM API · 2.4M Image FAISS Index · Fast Sub-30ms Retrieval',
+        badge: 'Multimodal',
+        badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
+        url: 'projects/multimodal-search.html',
+        keywords: 'multimodal vlm gemini faiss vector search building embeddings facade texture'
+      },
+      {
+        type: 'project',
+        category: 'Project Visualizer',
+        title: 'Automated Japanese Signed Document Detection & OCR',
+        subtitle: 'PDF Layout Segmentation · Japanese Kanji OCR · Name NER (99% Acc)',
+        badge: 'Document AI',
+        badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+        url: 'projects/document-signature-detection.html',
+        keywords: 'document signature ocr kanji japanese ner cadastral pdf survey'
+      },
+      {
+        type: 'project',
+        category: 'Project Visualizer',
+        title: 'Flow Free Constraint Programming Solver (Google OR-Tools)',
+        subtitle: 'CP-SAT Solver · Turn Minimization · 100% Codecov · Python CLI',
+        badge: 'Optimization',
+        badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+        url: 'projects/flow-free-solver.html',
+        keywords: 'flow free solver cp-sat or-tools turns path optimization grid puzzle'
+      },
+      // Interactive ML Concept Lab
+      {
+        type: 'learn',
+        category: 'ML Concept Lab',
+        title: 'Part 01: Neural Networks, Activations & Loss Landscapes',
+        subtitle: 'Live Perceptron Canvas · Vanishing Gradient · 2D Gradient Descent',
+        badge: 'Foundations',
+        badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+        url: 'learn/foundations.html',
+        keywords: 'neural networks loss landscape activation relu gelu gradient descent perceptron'
+      },
+      {
+        type: 'learn',
+        category: 'ML Concept Lab',
+        title: 'Part 02: Convolutions & Edge Quantization',
+        subtitle: '2D Sliding Kernel · Sobel / Gaussian · FP32 to INT8 Quantization Bins',
+        badge: 'Computer Vision',
+        badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+        url: 'learn/vision.html',
+        keywords: 'convolution kernel sliding window int8 quantization onnx vision receptive'
+      },
+      {
+        type: 'learn',
+        category: 'ML Concept Lab',
+        title: 'Part 03: Attention Mechanisms & Transformers',
+        subtitle: 'Self-Attention Heatmap · Multi-Head Subspaces · SDXL Cross-Attention',
+        badge: 'Transformers',
+        badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
+        url: 'learn/transformers.html',
+        keywords: 'attention transformer multihead sdxl cross-attention query key value'
+      },
+      // Tech Radar Spotlight Filters
+      {
+        type: 'radar',
+        category: 'Tech Radar Spotlight',
+        title: 'Spotlight: Google OR-Tools & Optimization',
+        subtitle: 'Highlights CAD Nesting and Flow Free Solver in the grid',
+        badge: 'Radar Filter',
+        badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+        action: 'radar:ortools:Google OR-Tools',
+        keywords: 'radar ortools optimization cp-sat nesting flow solver geometry'
+      },
+      {
+        type: 'radar',
+        category: 'Tech Radar Spotlight',
+        title: 'Spotlight: Generative AI, SDXL & LoRA',
+        subtitle: 'Highlights Architectural Floor Plan Synthesis & Multimodal Search',
+        badge: 'Radar Filter',
+        badgeColor: 'bg-purple-50 text-purple-700 border-purple-200',
+        action: 'radar:sdxl:SDXL & Diffusers',
+        keywords: 'radar sdxl lora diffusion genai generative ai floorplan diffusers'
+      },
+      {
+        type: 'radar',
+        category: 'Tech Radar Spotlight',
+        title: 'Spotlight: Industrial Metrology & Computer Vision',
+        subtitle: 'Highlights TEM Metrology, Document OCR, and 6D Pose',
+        badge: 'Radar Filter',
+        badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+        action: 'radar:opencv:OpenCV Metrology',
+        keywords: 'radar opencv metrology vision tem document signature'
+      },
+      {
+        type: 'radar',
+        category: 'Tech Radar Spotlight',
+        title: 'Spotlight: Robotics & 3D Spatial Systems',
+        subtitle: 'Highlights Hospital AMR 6D Pose and Autonomous Excavator Twin',
+        badge: 'Radar Filter',
+        badgeColor: 'bg-amber-50 text-amber-800 border-amber-200',
+        action: 'radar:robotics:Robotics & 3D',
+        keywords: 'radar robotics pvnet solvepnp lidar unity grpc excavator'
+      },
+      {
+        type: 'radar',
+        category: 'Tech Radar Spotlight',
+        title: 'Spotlight: Edge AI & Apple CoreML',
+        subtitle: 'Highlights iOS Bolt Safety & On-Device INT8 Quantization',
+        badge: 'Radar Filter',
+        badgeColor: 'bg-sky-50 text-sky-800 border-sky-200',
+        action: 'radar:coreml:iOS CoreML (ANE)',
+        keywords: 'radar coreml edge quantization ane int8 ios mobile'
+      },
+      // Quick Developer Actions
+      {
+        type: 'action',
+        category: 'Quick Action',
+        title: 'Ask Darwin AI Assistant',
+        subtitle: 'Instant Q&A regarding Darwin\'s 8+ years of production engineering',
+        badge: 'Gemini AI',
+        badgeColor: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+        action: 'chat',
+        keywords: 'ask darwin ai assistant chat question gemini'
+      },
+      {
+        type: 'action',
+        category: 'Quick Action',
+        title: 'Copy Email Address',
+        subtitle: 'darwinharianto@gmail.com (copies directly to clipboard)',
+        badge: 'Contact',
+        badgeColor: 'bg-emerald-50 text-emerald-800 border-emerald-200',
+        action: 'copy_email',
+        keywords: 'email copy contact darwinharianto@gmail.com mail'
+      },
+      {
+        type: 'action',
+        category: 'Quick Action',
+        title: 'Request Curriculum Vitae / Resume (PDF)',
+        subtitle: 'Pre-fills an email request directly to Darwin',
+        badge: 'CV / PDF',
+        badgeColor: 'bg-blue-50 text-blue-700 border-blue-200',
+        action: 'request_cv',
+        keywords: 'cv resume pdf request download job hire'
+      },
+      {
+        type: 'action',
+        category: 'Quick Action',
+        title: 'Open GitHub Profile (@darwinharianto)',
+        subtitle: 'Explore open-source repositories and research implementations',
+        badge: 'GitHub',
+        badgeColor: 'bg-slate-100 text-slate-700 border-slate-200',
+        url: 'https://github.com/darwinharianto',
+        isExternal: true,
+        keywords: 'github profile code repo flow darwinharianto'
+      }
+    ];
+
+    let activePaletteIndex = 0;
+    let filteredPaletteItems = [];
+
+    function openCommandPalette() {
+      const modal = document.getElementById('commandPaletteModal');
+      const input = document.getElementById('paletteSearchInput');
+      if (!modal || !input) return;
+
+      modal.classList.remove('hidden');
+      input.value = '';
+      filterCommandPalette();
+      input.focus();
+    }
+
+    function closeCommandPalette() {
+      const modal = document.getElementById('commandPaletteModal');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function filterCommandPalette() {
+      const input = document.getElementById('paletteSearchInput');
+      const query = (input ? input.value : '').trim().toLowerCase();
+      
+      if (!query) {
+        filteredPaletteItems = PALETTE_ITEMS;
+      } else {
+        filteredPaletteItems = PALETTE_ITEMS.filter(item => {
+          const text = `${item.title} ${item.subtitle} ${item.category} ${item.keywords || ''}`.toLowerCase();
+          return text.includes(query);
+        });
+      }
+
+      activePaletteIndex = 0;
+      renderPaletteResults();
+    }
+
+    function renderPaletteResults() {
+      const container = document.getElementById('paletteResults');
+      if (!container) return;
+
+      if (filteredPaletteItems.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 text-center text-xs text-slate-500 font-mono space-y-1">
+            <p>No commands or visualizers found matching your query.</p>
+            <p class="text-[11px] text-slate-400">Try searching "OR-Tools", "SDXL", "CoreML", "CV", or "Ask".</p>
+          </div>
+        `;
+        return;
+      }
+
+      let html = '';
+      filteredPaletteItems.forEach((item, index) => {
+        const isSelected = index === activePaletteIndex;
+        const selectedClasses = isSelected ? 'bg-indigo-50/90 border-indigo-200' : 'hover:bg-slate-50 border-transparent';
+        
+        html += `
+          <div onclick="executePaletteItem(${index})" onmouseenter="setActivePaletteIndex(${index})" class="palette-item p-3 rounded-xl border transition cursor-pointer flex items-center justify-between gap-3 ${selectedClasses}">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-7 h-7 rounded-lg ${isSelected ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-600'} flex items-center justify-center text-xs font-mono font-bold shrink-0 shadow-xs transition">
+                ${item.type === 'project' ? '↗' : item.type === 'learn' ? '⚡' : item.type === 'radar' ? '◎' : '✦'}
+              </div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="text-xs font-bold text-slate-900 truncate">${escapeHtml(item.title)}</span>
+                  <span class="text-[10px] font-mono px-2 py-0.5 rounded border ${item.badgeColor} shrink-0">${escapeHtml(item.badge)}</span>
+                </div>
+                <div class="text-[11px] text-slate-500 truncate">${escapeHtml(item.subtitle)}</div>
+              </div>
+            </div>
+            <div class="text-[11px] font-mono text-slate-400 shrink-0 flex items-center gap-1">
+              ${isSelected ? '<kbd class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-slate-600 text-[10px] shadow-xs">↵ Select</kbd>' : ''}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      
+      const selectedElem = container.children[activePaletteIndex];
+      if (selectedElem) {
+        selectedElem.scrollIntoView({ block: 'nearest' });
+      }
+    }
+
+    function setActivePaletteIndex(index) {
+      activePaletteIndex = index;
+      renderPaletteResults();
+    }
+
+    function executePaletteItem(index) {
+      const item = filteredPaletteItems[index];
+      if (!item) return;
+
+      closeCommandPalette();
+
+      if (item.url) {
+        if (item.isExternal) {
+          window.open(item.url, '_blank', 'noopener,noreferrer');
+        } else {
+          window.location.href = item.url;
+        }
+      } else if (item.action) {
+        if (item.action.startsWith('radar:')) {
+          const parts = item.action.split(':');
+          const techKey = parts[1];
+          const techName = parts[2] || techKey;
+          spotlightTech(techKey, techName);
+          scrollToProjects();
+        } else if (item.action === 'chat') {
+          const chatWidget = document.getElementById('chatWidget');
+          if (chatWidget && chatWidget.classList.contains('hidden')) {
+            toggleChatWidget();
+          }
+          const chatInput = document.getElementById('chatInput');
+          if (chatInput) setTimeout(() => chatInput.focus(), 150);
+        } else if (item.action === 'copy_email') {
+          navigator.clipboard.writeText('darwinharianto@gmail.com').then(() => {
+            alert('✓ Copied darwinharianto@gmail.com to clipboard!');
+          }).catch(() => {
+            window.location.href = 'mailto:darwinharianto@gmail.com';
+          });
+        } else if (item.action === 'request_cv') {
+          window.location.href = 'mailto:darwinharianto@gmail.com?subject=Resume%20Request%20-%20Darwin%20Harianto';
+        }
+      }
+    }
+
     document.addEventListener('keydown', (e) => {
+      // ⌘K or Ctrl+K opens palette
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        const palette = document.getElementById('commandPaletteModal');
+        if (palette && !palette.classList.contains('hidden')) {
+          closeCommandPalette();
+        } else {
+          openCommandPalette();
+        }
+        return;
+      }
+
+      // Slash '/' shortcut when not in input
+      if (e.key === '/' && !['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+        e.preventDefault();
+        openCommandPalette();
+        return;
+      }
+
+      // Palette keyboard navigation
+      const palette = document.getElementById('commandPaletteModal');
+      if (palette && !palette.classList.contains('hidden')) {
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (filteredPaletteItems.length > 0) {
+            activePaletteIndex = (activePaletteIndex + 1) % filteredPaletteItems.length;
+            renderPaletteResults();
+          }
+          return;
+        }
+        if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (filteredPaletteItems.length > 0) {
+            activePaletteIndex = (activePaletteIndex - 1 + filteredPaletteItems.length) % filteredPaletteItems.length;
+            renderPaletteResults();
+          }
+          return;
+        }
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          executePaletteItem(activePaletteIndex);
+          return;
+        }
+      }
+
+      // Escape key closes modals
       if (e.key === 'Escape') {
+        if (palette && !palette.classList.contains('hidden')) {
+          closeCommandPalette();
+          return;
+        }
         closeProjectModal();
         const chatWidget = document.getElementById('chatWidget');
         if (chatWidget && !chatWidget.classList.contains('hidden')) {
@@ -1126,20 +1812,20 @@ RESPONSE FORMATTING & LENGTH:
 
       // 2. Inline Markdown Parsing
       // Bold: **text** or __text__
-      safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong class="text-white font-semibold">$1</strong>');
-      safe = safe.replace(/__(.+?)__/g, '<strong class="text-white font-semibold">$1</strong>');
+      safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong class="text-slate-900 font-semibold">$1</strong>');
+      safe = safe.replace(/__(.+?)__/g, '<strong class="text-slate-900 font-semibold">$1</strong>');
 
       // Inline code: `code`
-      safe = safe.replace(/`([^`]+)`/g, '<code class="bg-slate-800 text-cyan-300 px-1 py-0.5 rounded text-[11px] font-mono">$1</code>');
+      safe = safe.replace(/`([^`]+)`/g, '<code class="bg-indigo-50 text-indigo-700 border border-indigo-200/80 px-1 py-0.5 rounded text-[11px] font-mono">$1</code>');
 
       // Italics: *text* (single asterisk)
-      safe = safe.replace(/(^|[^\*])\*([^\*]+?)\*([^\*]|$)/g, '$1<em class="text-slate-300 italic">$2</em>$3');
+      safe = safe.replace(/(^|[^\*])\*([^\*]+?)\*([^\*]|$)/g, '$1<em class="text-slate-600 italic">$2</em>$3');
 
       // Auto-link email addresses
-      safe = safe.replace(/\b([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})\b/g, '<a href="mailto:$1" class="text-cyan-400 underline hover:text-cyan-300 transition-colors">$1</a>');
+      safe = safe.replace(/\b([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})\b/g, '<a href="mailto:$1" class="text-indigo-600 underline hover:text-indigo-800 transition-colors font-medium">$1</a>');
 
       // Auto-link web URLs
-      safe = safe.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-cyan-400 underline hover:text-cyan-300 transition-colors">$1</a>');
+      safe = safe.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener noreferrer" class="text-indigo-600 underline hover:text-indigo-800 transition-colors font-medium">$1</a>');
 
       // 3. Block parsing: list items and paragraphs
       const lines = safe.split('\n');
@@ -1162,7 +1848,7 @@ RESPONSE FORMATTING & LENGTH:
         if (bulletMatch) {
           if (inOl) { result += '</ol>'; inOl = false; }
           if (!inUl) {
-            result += '<ul class="my-1.5 space-y-1.5 pl-3 list-disc marker:text-cyan-400 text-slate-200">';
+            result += '<ul class="my-1.5 space-y-1.5 pl-3 list-disc marker:text-indigo-600 text-slate-700">';
             inUl = true;
           }
           result += `<li class="leading-relaxed pl-1">${bulletMatch[1]}</li>`;
@@ -1174,7 +1860,7 @@ RESPONSE FORMATTING & LENGTH:
         if (numMatch) {
           if (inUl) { result += '</ul>'; inUl = false; }
           if (!inOl) {
-            result += '<ol class="my-1.5 space-y-1.5 pl-4 list-decimal marker:text-cyan-400 text-slate-200">';
+            result += '<ol class="my-1.5 space-y-1.5 pl-4 list-decimal marker:text-indigo-600 text-slate-700">';
             inOl = true;
           }
           result += `<li class="leading-relaxed pl-1">${numMatch[2]}</li>`;
@@ -1185,7 +1871,7 @@ RESPONSE FORMATTING & LENGTH:
         if (inUl) { result += '</ul>'; inUl = false; }
         if (inOl) { result += '</ol>'; inOl = false; }
 
-        result += `<p class="my-1 leading-relaxed text-slate-200">${line}</p>`;
+        result += `<p class="my-1 leading-relaxed text-slate-700">${line}</p>`;
       }
 
       if (inUl) result += '</ul>';
@@ -1200,8 +1886,8 @@ RESPONSE FORMATTING & LENGTH:
       assistantBubble.className = 'flex items-start gap-2';
       const htmlBody = isPreformattedHtml ? content : renderMarkdownToHtml(content);
       assistantBubble.innerHTML = `
-        <div class="w-5 h-5 rounded-md bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">AI</div>
-        <div class="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl rounded-tl-none text-slate-200 text-xs leading-relaxed max-w-[88%] shadow-sm">
+        <div class="w-5 h-5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">AI</div>
+        <div class="bg-slate-50 border border-slate-200/90 p-2.5 rounded-xl rounded-tl-none text-slate-700 text-xs leading-relaxed max-w-[88%] shadow-xs">
           ${htmlBody}
         </div>
       `;
@@ -1216,9 +1902,9 @@ RESPONSE FORMATTING & LENGTH:
       typingIndicator.id = typingId;
       typingIndicator.className = 'flex items-start gap-2';
       typingIndicator.innerHTML = `
-        <div class="w-5 h-5 rounded-md bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">AI</div>
-        <div class="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl rounded-tl-none text-slate-400 text-xs flex items-center gap-1.5">
-          <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+        <div class="w-5 h-5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">AI</div>
+        <div class="bg-slate-50 border border-slate-200 p-2.5 rounded-xl rounded-tl-none text-slate-500 text-xs flex items-center gap-1.5 shadow-xs">
+          <span class="w-1.5 h-1.5 rounded-full bg-indigo-600 animate-pulse"></span>
           <span>Thinking with Gemini...</span>
         </div>
       `;
@@ -1340,17 +2026,17 @@ RESPONSE FORMATTING & LENGTH:
       const setupBubble = document.createElement('div');
       setupBubble.className = 'flex items-start gap-2';
       setupBubble.innerHTML = `
-        <div class="w-5 h-5 rounded-md bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">⚙</div>
-        <div class="bg-slate-900 border border-slate-800 p-3 rounded-xl rounded-tl-none text-slate-200 text-xs space-y-2.5 max-w-[92%]">
-          <div class="font-bold text-cyan-400 flex items-center gap-1.5">
+        <div class="w-5 h-5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">⚙</div>
+        <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl rounded-tl-none text-slate-700 text-xs space-y-2.5 max-w-[92%] shadow-xs">
+          <div class="font-bold text-indigo-700 flex items-center gap-1.5">
             <span>Activate Gemini AI Chat</span>
           </div>
-          <p class="text-slate-400 text-[11px] leading-relaxed">
+          <p class="text-slate-600 text-[11px] leading-relaxed">
             You are browsing on GitHub Pages. To enable instant live responses, paste your Gemini API key below (stored safely only in your browser's localStorage):
           </p>
           <div class="flex items-center gap-1.5">
-            <input type="password" id="inlineApiKeyInput" placeholder="Paste Gemini API Key (AIzaSy...)" class="flex-1 bg-slate-950 border border-slate-700 px-2.5 py-1.5 rounded-lg text-xs text-white focus:outline-none focus:border-cyan-400 font-mono" />
-            <button onclick="saveInlineApiKey()" class="px-3 py-1.5 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg font-semibold text-xs shadow-md shadow-cyan-600/20 shrink-0">
+            <input type="password" id="inlineApiKeyInput" placeholder="Paste Gemini API Key (AIzaSy...)" class="flex-1 bg-white border border-slate-300 px-2.5 py-1.5 rounded-lg text-xs text-slate-900 focus:outline-none focus:border-indigo-500 font-mono" />
+            <button onclick="saveInlineApiKey()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold text-xs shadow-md shadow-indigo-600/20 shrink-0">
               Save & Ask
             </button>
           </div>
@@ -1370,62 +2056,103 @@ RESPONSE FORMATTING & LENGTH:
     }
   </script>
 
+  <!-- Developer Command Palette Modal (⌘K / Ctrl+K / '/' shortcut) -->
+  <div id="commandPaletteModal" class="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-md hidden flex items-start justify-center pt-16 sm:pt-24 px-4 transition-all">
+    <div class="glass-panel max-w-xl w-full rounded-2xl overflow-hidden shadow-2xl border border-slate-200 bg-white/98 flex flex-col max-h-[80vh] transition-all" onclick="event.stopPropagation()">
+      
+      <!-- Palette Search Header -->
+      <div class="p-3.5 border-b border-slate-200/80 flex items-center gap-3 bg-slate-50/70">
+        <svg class="w-4 h-4 text-slate-400 shrink-0 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+        <input type="text" id="paletteSearchInput" oninput="filterCommandPalette()" placeholder="Search visualizers, projects, tech radar, or commands..." class="flex-1 bg-transparent border-none text-sm text-slate-900 placeholder-slate-400 focus:outline-none font-sans" autocomplete="off" />
+        <button onclick="closeCommandPalette()" class="px-2 py-0.5 rounded-md bg-white border border-slate-200 text-[11px] font-mono text-slate-500 hover:text-slate-800 shadow-xs transition">
+          Esc
+        </button>
+      </div>
+
+      <!-- Quick Filter Chips Strip -->
+      <div class="px-4 py-2 border-b border-slate-100 bg-white flex items-center gap-2 overflow-x-auto text-[11px] font-mono text-slate-500">
+        <span class="text-slate-400 text-[10px] uppercase tracking-wider font-semibold">Filter:</span>
+        <button onclick="document.getElementById('paletteSearchInput').value = 'visualizer'; filterCommandPalette();" class="px-2 py-0.5 rounded-md bg-slate-100 hover:bg-indigo-50 hover:text-indigo-700 text-slate-600 transition">Visualizers (9)</button>
+        <button onclick="document.getElementById('paletteSearchInput').value = 'learn'; filterCommandPalette();" class="px-2 py-0.5 rounded-md bg-slate-100 hover:bg-purple-50 hover:text-purple-700 text-slate-600 transition">ML Lab (3)</button>
+        <button onclick="document.getElementById('paletteSearchInput').value = 'radar'; filterCommandPalette();" class="px-2 py-0.5 rounded-md bg-slate-100 hover:bg-amber-50 hover:text-amber-700 text-slate-600 transition">Tech Radar</button>
+        <button onclick="document.getElementById('paletteSearchInput').value = 'action'; filterCommandPalette();" class="px-2 py-0.5 rounded-md bg-slate-100 hover:bg-emerald-50 hover:text-emerald-700 text-slate-600 transition">Actions</button>
+      </div>
+
+      <!-- Results List Container -->
+      <div id="paletteResults" class="flex-1 p-2 overflow-y-auto space-y-1 max-h-[55vh]">
+        <!-- Rendered dynamically by renderPaletteResults() -->
+      </div>
+
+      <!-- Palette Footer Keyboard Hints -->
+      <div class="p-3 bg-slate-50/90 border-t border-slate-200/80 flex items-center justify-between text-[11px] font-mono text-slate-500">
+        <div class="flex items-center gap-2">
+          <span>Navigate <kbd class="px-1.5 py-0.5 rounded bg-white border border-slate-200 shadow-xs">↑</kbd> <kbd class="px-1.5 py-0.5 rounded bg-white border border-slate-200 shadow-xs">↓</kbd></span>
+          <span>Select <kbd class="px-1.5 py-0.5 rounded bg-white border border-slate-200 shadow-xs">↵</kbd></span>
+        </div>
+        <div class="flex items-center gap-2 text-[10px] text-slate-400">
+          <span>Tip: Press <kbd class="px-1 rounded bg-white border border-slate-200">⌘K</kbd> or <kbd class="px-1 rounded bg-white border border-slate-200">/</kbd> anytime</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
   <!-- Floating AI Assistant Chat Widget -->
   <div class="fixed bottom-6 right-6 z-50 flex flex-col items-end">
     <!-- Chat Window (initially hidden) -->
-    <div id="chatWidget" class="hidden w-[92vw] sm:w-96 h-[520px] glass-panel rounded-2xl flex flex-col overflow-hidden shadow-2xl border border-slate-700/80 mb-3 transition-all duration-300 relative">
+    <div id="chatWidget" class="hidden w-[92vw] sm:w-96 h-[520px] glass-panel rounded-2xl flex flex-col overflow-hidden shadow-2xl border border-slate-200 bg-white/98 mb-3 transition-all duration-300 relative">
       <!-- Chat Header -->
-      <div class="p-3.5 bg-slate-900/95 border-b border-slate-800 flex items-center justify-between">
+      <div class="p-3.5 bg-slate-50/90 border-b border-slate-200 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-cyan-500/20">
+          <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-indigo-600 to-sky-500 flex items-center justify-center text-white text-xs font-bold shadow-md shadow-indigo-500/20">
             ✦
           </div>
           <div>
-            <div class="text-xs font-bold text-white flex items-center gap-1.5">
+            <div class="text-xs font-bold text-slate-900 flex items-center gap-1.5">
               Darwin AI Assistant
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
             </div>
             <div class="flex items-center gap-2">
-              <span class="text-[10px] font-mono text-cyan-400">Google Gemini</span>
+              <span class="text-[10px] font-mono text-indigo-600 font-semibold">Google Gemini</span>
               <span id="keyStatusIndicator" class="text-[9px] font-mono text-slate-500">○ Key Not Set</span>
             </div>
           </div>
         </div>
         <div class="flex items-center gap-1">
-          <button onclick="toggleSettingsModal()" title="API Key & Backend Settings" class="text-slate-400 hover:text-cyan-400 p-1.5 rounded-lg hover:bg-slate-800 transition text-xs font-mono flex items-center gap-1">
+          <button onclick="toggleSettingsModal()" title="API Key & Backend Settings" class="text-slate-500 hover:text-indigo-600 p-1.5 rounded-lg hover:bg-slate-200/60 transition text-xs font-mono flex items-center gap-1">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
             <span class="text-[10px]">⚙ Key</span>
           </button>
-          <button onclick="toggleChatWidget()" class="text-slate-400 hover:text-white p-1.5 rounded-lg hover:bg-slate-800 transition text-sm">
+          <button onclick="toggleChatWidget()" class="text-slate-500 hover:text-slate-900 p-1.5 rounded-lg hover:bg-slate-200/60 transition text-sm">
             ✕
           </button>
         </div>
       </div>
 
       <!-- Settings Overlay Modal -->
-      <div id="chatSettingsModal" class="hidden absolute inset-0 z-20 bg-slate-950/95 p-4 flex flex-col justify-between backdrop-blur-md">
+      <div id="chatSettingsModal" class="hidden absolute inset-0 z-20 bg-white/98 p-4 flex flex-col justify-between backdrop-blur-md border border-slate-200">
         <div class="space-y-4">
-          <div class="flex items-center justify-between border-b border-slate-800 pb-2">
-            <h4 class="text-xs font-bold text-white uppercase tracking-wider font-mono">Gemini AI Settings</h4>
-            <button onclick="toggleSettingsModal()" class="text-slate-400 hover:text-white text-xs">✕</button>
+          <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+            <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono">Gemini AI Settings</h4>
+            <button onclick="toggleSettingsModal()" class="text-slate-500 hover:text-slate-900 text-xs">✕</button>
           </div>
 
           <div class="space-y-1.5">
-            <label class="text-[11px] text-slate-300 font-semibold block">Option 1: Gemini API Key (Direct Browser Mode)</label>
-            <p class="text-[10px] text-slate-400">Enables live Gemini chat directly on GitHub Pages. Stored only in your local browser storage:</p>
-            <input type="password" id="apiKeyInput" placeholder="Paste AIzaSy..." class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono" />
+            <label class="text-[11px] text-slate-700 font-semibold block">Option 1: Gemini API Key (Direct Browser Mode)</label>
+            <p class="text-[10px] text-slate-500">Enables live Gemini chat directly on GitHub Pages. Stored only in your local browser storage:</p>
+            <input type="password" id="apiKeyInput" placeholder="Paste AIzaSy..." class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-500 font-mono" />
           </div>
 
           <div class="space-y-1.5">
-            <label class="text-[11px] text-slate-300 font-semibold block">Option 2: Vercel Backend URL (Optional)</label>
-            <p class="text-[10px] text-slate-400">If you deployed to Vercel, enter your project URL (e.g. <code>https://darwinharianto.vercel.app</code>):</p>
-            <input type="text" id="vercelUrlInput" placeholder="https://your-app.vercel.app" class="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-cyan-400 font-mono" />
+            <label class="text-[11px] text-slate-700 font-semibold block">Option 2: Vercel Backend URL (Optional)</label>
+            <p class="text-[10px] text-slate-500">If you deployed to Vercel, enter your project URL (e.g. <code>https://darwinharianto.vercel.app</code>):</p>
+            <input type="text" id="vercelUrlInput" placeholder="https://your-app.vercel.app" class="w-full bg-slate-50 border border-slate-300 rounded-lg px-2.5 py-1.5 text-xs text-slate-900 focus:outline-none focus:border-indigo-500 font-mono" />
           </div>
         </div>
 
-        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-800">
-          <button onclick="toggleSettingsModal()" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs">Cancel</button>
-          <button onclick="saveSettings()" class="px-4 py-1.5 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs shadow-md shadow-cyan-600/20">Save & Apply</button>
+        <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-200">
+          <button onclick="toggleSettingsModal()" class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs transition">Cancel</button>
+          <button onclick="saveSettings()" class="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs shadow-md shadow-indigo-600/20 transition">Save & Apply</button>
         </div>
       </div>
 
@@ -1433,8 +2160,8 @@ RESPONSE FORMATTING & LENGTH:
       <div id="chatMessages" class="flex-1 p-3.5 overflow-y-auto space-y-3 text-xs leading-relaxed">
         <!-- Assistant Welcome Message -->
         <div class="flex items-start gap-2">
-          <div class="w-5 h-5 rounded-md bg-cyan-600/30 text-cyan-400 border border-cyan-500/30 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">AI</div>
-          <div class="bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl rounded-tl-none text-slate-300">
+          <div class="w-5 h-5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200 flex items-center justify-center text-[10px] shrink-0 font-bold mt-0.5">AI</div>
+          <div class="bg-slate-50 border border-slate-200 p-2.5 rounded-xl rounded-tl-none text-slate-700 shadow-xs">
             Hello! I am Darwin's AI agent. Ask me anything about Darwin's 8+ years of engineering experience, projects (6D Pose, Excavators, LoRA, CoreML), or technical stack.
           </div>
         </div>
@@ -1443,16 +2170,16 @@ RESPONSE FORMATTING & LENGTH:
         <div id="quickPrompts" class="space-y-1.5 pt-1">
           <div class="text-[10px] font-mono text-slate-500 uppercase tracking-wider">Suggested Questions:</div>
           <div class="flex flex-col gap-1">
-            <button onclick="sendQuickPrompt('What are Darwin\'s key strengths and technical expertise?')" class="text-left p-2 rounded-lg bg-slate-900/70 hover:bg-slate-800 text-slate-300 border border-slate-800/80 hover:border-cyan-500/40 text-[11px] transition">
+            <button onclick="sendQuickPrompt('What are Darwin\'s key strengths and technical expertise?')" class="text-left p-2 rounded-lg bg-slate-50 hover:bg-indigo-50/80 text-slate-700 border border-slate-200 hover:border-indigo-200 text-[11px] transition shadow-2xs">
               ⭐ What are Darwin's key strengths?
             </button>
-            <button onclick="sendQuickPrompt('Tell me about your 6D robot pose estimation project in hospital corridors.')" class="text-left p-2 rounded-lg bg-slate-900/70 hover:bg-slate-800 text-slate-300 border border-slate-800/80 hover:border-cyan-500/40 text-[11px] transition">
+            <button onclick="sendQuickPrompt('Tell me about your 6D robot pose estimation project in hospital corridors.')" class="text-left p-2 rounded-lg bg-slate-50 hover:bg-indigo-50/80 text-slate-700 border border-slate-200 hover:border-indigo-200 text-[11px] transition shadow-2xs">
               🤖 Hospital AMR 6D Pose Estimation
             </button>
-            <button onclick="sendQuickPrompt('How did you achieve 99% accuracy on Japanese signed document detection?')" class="text-left p-2 rounded-lg bg-slate-900/70 hover:bg-slate-800 text-slate-300 border border-slate-800/80 hover:border-cyan-500/40 text-[11px] transition">
+            <button onclick="sendQuickPrompt('How did you achieve 99% accuracy on Japanese signed document detection?')" class="text-left p-2 rounded-lg bg-slate-50 hover:bg-indigo-50/80 text-slate-700 border border-slate-200 hover:border-indigo-200 text-[11px] transition shadow-2xs">
               📄 Japanese Signed Document OCR
             </button>
-            <button onclick="sendQuickPrompt('What models have you trained with SDXL and LoRA?')" class="text-left p-2 rounded-lg bg-slate-900/70 hover:bg-slate-800 text-slate-300 border border-slate-800/80 hover:border-cyan-500/40 text-[11px] transition">
+            <button onclick="sendQuickPrompt('What models have you trained with SDXL and LoRA?')" class="text-left p-2 rounded-lg bg-slate-50 hover:bg-indigo-50/80 text-slate-700 border border-slate-200 hover:border-indigo-200 text-[11px] transition shadow-2xs">
               🎨 SDXL & LoRA Floor Plan Synthesis
             </button>
           </div>
@@ -1460,16 +2187,16 @@ RESPONSE FORMATTING & LENGTH:
       </div>
 
       <!-- Chat Input Bar -->
-      <form id="chatForm" onsubmit="handleChatSubmit(event)" class="p-2.5 bg-slate-900/95 border-t border-slate-800 flex items-center gap-1.5">
-        <input type="text" id="chatInput" placeholder="Ask about Darwin's projects, tech..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 font-sans" autocomplete="off" />
-        <button type="submit" id="chatSendBtn" class="px-3 py-2 rounded-lg bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs transition flex items-center justify-center shrink-0 shadow-md shadow-cyan-600/20">
+      <form id="chatForm" onsubmit="handleChatSubmit(event)" class="p-2.5 bg-slate-50/90 border-t border-slate-200 flex items-center gap-1.5">
+        <input type="text" id="chatInput" placeholder="Ask about Darwin's projects, tech..." class="flex-1 bg-white border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-indigo-500 font-sans" autocomplete="off" />
+        <button type="submit" id="chatSendBtn" class="px-3 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs transition flex items-center justify-center shrink-0 shadow-md shadow-indigo-600/20">
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
         </button>
       </form>
     </div>
 
     <!-- Floating Chat Trigger Button -->
-    <button id="chatToggleBtn" onclick="toggleChatWidget()" class="px-4 py-2.5 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white font-medium text-xs shadow-xl shadow-cyan-500/20 flex items-center gap-2 transition hover:scale-105 group border border-cyan-400/30">
+    <button id="chatToggleBtn" onclick="toggleChatWidget()" class="px-4 py-2.5 rounded-full bg-gradient-to-r from-indigo-600 to-sky-600 hover:from-indigo-500 hover:to-sky-500 text-white font-medium text-xs shadow-xl shadow-indigo-600/25 flex items-center gap-2 transition hover:scale-105 group border border-indigo-400/30">
       <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
       <span class="font-bold">Ask Darwin AI</span>
       <svg class="w-4 h-4 transform group-hover:rotate-12 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>

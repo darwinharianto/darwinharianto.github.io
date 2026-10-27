@@ -183,6 +183,31 @@ cardCategories.forEach(cat => {
   assert(filterPills.has(cat), `Project card category '${cat}' has a corresponding filter pill`);
 });
 
+// --- Test Suite 5: Tech Stack Radar & Developer Command Palette Integrity ---
+console.log('--- Test Suite 5: Tech Stack Radar & Developer Command Palette ---');
+assert(indexContent.includes('id="commandPaletteModal"'), '#commandPaletteModal exists in index.html');
+assert(indexContent.includes('id="paletteSearchInput"'), '#paletteSearchInput exists in index.html');
+assert(indexContent.includes('id="paletteResults"'), '#paletteResults exists in index.html');
+assert(indexContent.includes('id="radarSpotlightBar"'), '#radarSpotlightBar exists in index.html');
+assert(indexContent.includes('id="radarActiveTechName"'), '#radarActiveTechName exists in index.html');
+assert(indexContent.includes('id="radarMatchCount"'), '#radarMatchCount exists in index.html');
+
+// Verify all 9 project cards have data-tech attributes
+const cardTechRegex = /class=["'][^"']*project-card[^"']*["'][^>]*data-tech=["']([^"']+)["']/g;
+let cardTechCount = 0;
+while (cardTechRegex.exec(indexContent) !== null) {
+  cardTechCount++;
+}
+assert(cardTechCount === 9, `All 9 project cards have data-tech attributes for radar cross-linking (found ${cardTechCount})`);
+
+// Verify tech radar buttons exist
+const radarBtnRegex = /class=["'][^"']*tech-radar-btn[^"']*["']/g;
+let radarBtnCount = 0;
+while (radarBtnRegex.exec(indexContent) !== null) {
+  radarBtnCount++;
+}
+assert(radarBtnCount >= 18, `At least 18 clickable tech radar badges exist across 6 pillars (found ${radarBtnCount})`);
+
 // Summary
 console.log('\n========================================');
 console.log(`  Tests Completed: ${totalTests}`);
